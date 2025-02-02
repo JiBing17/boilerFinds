@@ -29,6 +29,11 @@ function Login() {
 
   };
 
+  const switchToSignUp = () => {
+    navigate('/signup'); 
+
+  }
+
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100" style={{backgroundColor: "#CFB991"}}>
@@ -58,19 +63,19 @@ function Login() {
               required
             />
           </div>
-          <button type="submit" className="btn btn-primary w-100" 
+          <button type="submit" className="btn btn-primary w-100 rounded-4" 
               style={{
                 backgroundColor: "#CFB991",
                 border: "2px solid #000000",
                 color: "white",
                 fontWeight: "bold",
-                borderRadius: "50px",
                 padding: "12px",
                 transition: "0.3s"
               }}>
             Login
           </button>
         </form>
+        <p className="mt-3 text-black">Don't have an account? Sign up <a onClick={switchToSignUp} style={{color: "#CFB991"}}>here</a></p>
       </div>
     </div>
   );
