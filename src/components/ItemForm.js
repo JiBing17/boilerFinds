@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function ItemForm() {
   const [name, setName] = useState('');
@@ -24,6 +25,12 @@ function ItemForm() {
   useEffect(() => {
     fetchItems();
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('user'); // Clear user session
+    navigate('/login'); // Redirect to login
+  };
+
 
   // function called when form is submitted
   const handleSubmit = async (e) => {
@@ -65,6 +72,8 @@ function ItemForm() {
   return (
     <div>
       <h2>Item Submission Form</h2>
+      <button onClick={handleLogout}>Logout</button>
+
       <form onSubmit={handleSubmit}>
         <div>
           <label>Name:</label>

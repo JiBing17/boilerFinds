@@ -4,6 +4,7 @@ from psycopg2 import sql
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 app = Flask(__name__)
@@ -51,9 +52,111 @@ def create_items_table():
         print("✅ Table 'items' checked/created successfully.")
     except Exception as e:
         print(f"⚠️ Error creating table: {e}")
+        
+# function to create the 'users' table if it doesn't exist
+def create_users_table():
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        create_table_query = """
+        CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+            name VARCHAR(100) NOT NULL,
+            email VARCHAR(100) UNIQUE NOT NULL,
+            password_hash TEXT NOT NULL
+        );
+        """
+        cur.execute(create_table_query)
+        conn.commit()
+
+        cur.close()
+        conn.close()
+        print("✅ Table 'users' checked/created successfully.")
+    except Exception as e:
+        print(f"⚠️ Error creating users table: {e}")
+
 
 # tables gets created on server start
 create_items_table()
+create_users_table()
+
+# signup endpoint
+@app.route('/signup', methods=['POST'])
+def signup():
+    try:
+        
+        # get sign up info from call
+        data = request.get_json()
+        name = data.get('name')
+        email = data.get('email')
+        password = data.get('password')
+        
+        # all filled
+        if not all([name, email, password]):
+            return jsonify({"error": "All fields are required!"}), 400
+        
+        
+        hashed_password = generate_password_hash(password)  # hash password
+        
+        # add to db user info
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # insert user data
+        insert_query = sql.SQL(
+            "INSERT INTO users (name, email, password_hash) VALUES (%s, %s, %s)"
+        )
+        cur.execute(insert_query, (name, email, hashed_password))
+        
+        # save and close db
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        return jsonify({"message": "User registered successfully!"}), 201
+
+    except psycopg2.IntegrityError:
+        return jsonify({"error": "Email already exists!"}), 400
+    except Exception as e:
+        print(f"⚠️ Error inserting user: {e}")
+        return jsonify({"error": "An error occurred while registering."}), 500
+
+# login endpoint
+@app.route('/login', methods=['POST'])
+def login():
+    try:
+        
+        # get info from call
+        data = request.get_json()
+        email = data.get('email')
+        password = data.get('password')
+
+        # not filled
+        if not all([email, password]):
+            return jsonify({"error": "All fields are required!"}), 400
+        
+        # connect to db and run SQL query for grabbing user with that email and password
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT id, name, password_hash FROM users WHERE email = %s", (email,))
+        user = cur.fetchone()
+        
+        # close db
+        cur.close()
+        conn.close()
+
+        # valid and user exist
+        if user and check_password_hash(user[2], password):
+            return jsonify({"message": "Login successful!", "user": {"id": user[0], "name": user[1], "email": email}}), 200
+        # failed
+        else:
+            return jsonify({"error": "Invalid credentials!"}), 401
+        
+    # server error when getting data
+    except Exception as e:
+        print(f"⚠️ Error during login: {e}")
+        return jsonify({"error": "An error occurred during login."}), 500
 
 
 # flask route to handle form submission
@@ -124,9 +227,11 @@ def get_items():
         # return that data
         return jsonify(items_list), 200
 
+    # server error when getting data
     except Exception as e:
         print(f"⚠️ Error fetching data: {e}")
         return jsonify({"error": "Failed to retrieve items."}), 500
 
+# run server
 if __name__ == '__main__':
     app.run(debug=True)
