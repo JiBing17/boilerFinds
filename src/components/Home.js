@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Header from './Header';
 
 function ItemForm() {
   const [name, setName] = useState('');
@@ -9,7 +10,7 @@ function ItemForm() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [items, setItems] = useState([]);
-
+  const navigate = useNavigate();
   // Fetch all items from the database
   const fetchItems = async () => {
     try {
@@ -28,7 +29,7 @@ function ItemForm() {
 
   const handleLogout = () => {
     localStorage.removeItem('user'); // Clear user session
-    navigate('/login'); // Redirect to login
+    navigate('/'); // Redirect to login
   };
 
 
@@ -70,9 +71,11 @@ function ItemForm() {
   };
 
   return (
-    <div>
+    <>
+      <Header/>
+
+      <div>
       <h2>Item Submission Form</h2>
-      <button onClick={handleLogout}>Logout</button>
 
       <form onSubmit={handleSubmit}>
         <div>
@@ -113,6 +116,8 @@ function ItemForm() {
         ))}
       </ul>
     </div>
+    </>
+    
   );
 }
 

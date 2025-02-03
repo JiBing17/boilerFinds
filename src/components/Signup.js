@@ -22,7 +22,7 @@ function Signup() {
     setMessage(data.message || data.error);
   };
   const switchToLogin = () => {
-    navigate('/login')
+    navigate('/')
   }
 
   return (
