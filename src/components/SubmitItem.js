@@ -92,7 +92,7 @@ const SubmitItem = () => {
   return (
 
     <>
-    <div className='d-flex align-items-center justify-content-center p-5' style={{backgroundColor: "#101010"}}>
+    <div className='d-flex align-items-center justify-content-center p-5' style={{backgroundColor: "#101010", marginTop: "3rem"}}>
 
       {/* Left - Text */}
       <div className='d-flex flex-column align-items-center justify-content-center w-50'>
@@ -200,7 +200,7 @@ const SubmitItem = () => {
       </div>
           
     </div>
-    
+
     {/* Grid for displaying items being sold from ALL users */}
     <div className="p-5" style={{backgroundColor: "#CFB991"}}>
       <h3 className="text-center mb-4" style={{ color: "#101010" }}>
@@ -213,7 +213,8 @@ const SubmitItem = () => {
               className="card h-100"
               style={{
                 backgroundColor: "#101010",
-                border: "3px solid #101010",
+                border: "4px solid #ffffff",
+                borderRadius: ".5rem"
               }}
             >
               <img

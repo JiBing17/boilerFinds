@@ -7,7 +7,7 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const navigate = useNavigate(); // To redirect after login
+  const navigate = useNavigate(); 
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,7 +22,7 @@ function Login() {
     const data = await response.json();
     if (response.ok) {
         localStorage.setItem('user', JSON.stringify(data.user)); // Save user info
-        navigate('/item-form'); // Redirect to ItemForm
+        navigate('/home'); // Redirect to ItemForm
     } else {
         setMessage(data.error);
     }

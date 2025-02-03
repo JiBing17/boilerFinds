@@ -20,7 +20,11 @@ function Signup() {
 
     const data = await response.json();
     setMessage(data.message || data.error);
+    if ( data.message ) {
+      switchToLogin()
+    }
   };
+
   const switchToLogin = () => {
     navigate('/')
   }
