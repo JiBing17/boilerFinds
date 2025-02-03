@@ -5,11 +5,18 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 
 
 app = Flask(__name__)
 CORS(app)  # enable CORS so React can call the Flask API
 load_dotenv()  # load environment variables from .env file
+
+# Configure upload folder for images
+UPLOAD_FOLDER = 'uploads'
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 # function to connect to PostgreSQL
@@ -41,7 +48,8 @@ def create_items_table():
             item VARCHAR(100) NOT NULL,
             price DECIMAL(10,2) NOT NULL,
             description TEXT,
-            email VARCHAR(100) NOT NULL
+            email VARCHAR(100) NOT NULL,
+            image TEXT
         );
         """
         cur.execute(create_table_query)
@@ -163,14 +171,20 @@ def login():
 @app.route('/submit', methods=['POST'])
 def submit_form():
     try:
-        # get JSON data from the request that was passed in
-        data = request.get_json()
-        name = data.get('name')
-        item = data.get('item')
-        price = data.get('price')
-        description = data.get('description')
-        email = data.get('email')
-
+        # Using multipart/form-data: get text fields from request.form and file from request.files
+        name = request.form.get('name')
+        item = request.form.get('item')
+        price = request.form.get('price')
+        description = request.form.get('description')
+        email = request.form.get('email')
+        image_file = request.files.get('image')
+        image_filename = None
+        
+        if image_file:
+            image_filename = secure_filename(image_file.filename)
+            image_file.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
+                    
+                    
         # all fields must be filled
         if not all([name, item, price, description, email]):
             return jsonify({"error": "All fields are required!"}), 400
@@ -186,10 +200,9 @@ def submit_form():
 
         # get table to insert and parameters 
         insert_query = sql.SQL(
-            "INSERT INTO items (name, item, price, description, email) VALUES (%s, %s, %s, %s, %s)"
+            "INSERT INTO items (name, item, price, description, email, image) VALUES (%s, %s, %s, %s, %s, %s)"
         )
-        
-        cur.execute(insert_query, (name, item, price, description, email)) # write to db given table and parameters + values
+        cur.execute(insert_query, (name, item, price, description, email, image_filename)) # write to db given table and parameters + values
         
         # commit and close the connection
         conn.commit()
@@ -212,7 +225,7 @@ def get_items():
         # get connection and write SQL query to fetch ALL rows within given table
         conn = get_db_connection()
         cur = conn.cursor()
-        cur.execute("SELECT id, name, item, price, description, email FROM items ORDER BY id DESC;")
+        cur.execute("SELECT id, name, item, price, description, email, image FROM items ORDER BY id DESC;")
         items = cur.fetchall()
         
         # close all connection to postgres
@@ -221,7 +234,7 @@ def get_items():
 
         # store data in array of objects
         items_list = [  
-            {"id": row[0], "name": row[1], "item": row[2], "price": float(row[3]), "description": row[4], "email": row[5]}
+            {"id": row[0], "name": row[1], "item": row[2], "price": float(row[3]), "description": row[4], "email": row[5], "image": row[6]}
             for row in items
         ]
         # return that data
