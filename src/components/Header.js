@@ -37,7 +37,7 @@ const handleLogout = () => {
                 gap: "1rem"
               }}
             >
-              <h1 style={{ margin: 0 }}>BolerFINDS</h1>
+              <h1 style={{ margin: 0 }}>Boiler<span className='text-white fw-bold fst-italic'>FINDS</span></h1>
                 <FontAwesomeIcon icon={faMagnifyingGlass} style={{fontSize: "2rem"}} />
             </div>
             <div

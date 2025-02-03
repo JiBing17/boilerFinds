@@ -1,4 +1,6 @@
 import React, { useState , useEffect } from 'react'
+import placeHolder from '../pictures/placeholder.jpg'
+
 
 const SubmitItem = () => {
 
@@ -196,19 +198,64 @@ const SubmitItem = () => {
         {/* Show success or error message */}
         {message && <p className="mt-3 text-black">{message}</p>}
       </div>
+          
     </div>
-    {/* Display all submitted items */}
-    <h3>Submitted Items</h3>
-      <ul>
+    
+    {/* Grid for displaying items being sold from ALL users */}
+    <div className="p-5" style={{backgroundColor: "#CFB991"}}>
+      <h3 className="text-center mb-4" style={{ color: "#101010" }}>
+        Browse Here for Potential Deals!
+      </h3>
+      <div className="row">
         {items.map((itm) => (
-          <li key={itm.id}>
-            <strong>{itm.item}</strong> - ${itm.price} <br />
-            <small>Submitted by: {itm.name} ({itm.email})</small>
-            <p>{itm.description}</p>
-          </li>
+          <div className="col-md-4 mb-4" key={itm.id}>
+            <div
+              className="card h-100"
+              style={{
+                backgroundColor: "#101010",
+                border: "3px solid #101010",
+              }}
+            >
+              <img
+                src={
+                  itm.image && itm.image !== ""
+                    ? `http://127.0.0.1:5000/uploads/${itm.image}`
+                    : placeHolder
+                }
+                alt={itm.item}
+                style={{ height: "200px", objectFit: "cover" }}
+              />
+              <div className="card-body">
+                <h5 className="card-title" style={{ color: "#FFFFFF" }}>
+                  Item Name: <h5 style={{ color: "#CFB991", display: "inline"}} >{itm.item}</h5>
+                </h5>
+                <h6 className="card-subtitle mb-2" style={{ color: "#FFFFFF" }}>
+                  Sells for:  <h6 style={{ color: "#CFB991", display: "inline"}} >{itm.price}</h6>
+                </h6>
+                <p className="card-text" style={{ color: "#FFFFFF" }}>
+                  Description: {itm.description && itm.description.trim() !== ""
+                    ?  <p style={{ color: "#CFB991", display: "inline"}} >{itm.description}</p>
+                    : "No description provided. Contact seller for more details."}
+                </p>
+              </div>
+              <div
+                className="card-footer"
+                style={{
+                  backgroundColor: "#101010",
+                  color: "#FFFFFF",
+                }}
+              >
+                <p>
+                  Submitted by: <p style={{ color: "#CFB991", display: "inline" }}> {itm.name} ({itm.email}) </p>
+                </p>
+              </div>
+            </div>
+          </div>
         ))}
-      </ul>
-    </>
+      </div>
+    </div>
+
+  </>
   )
 }
 

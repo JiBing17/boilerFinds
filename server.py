@@ -6,17 +6,25 @@ from dotenv import load_dotenv
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
+from flask import send_from_directory
 
 
 app = Flask(__name__)
 CORS(app)  # enable CORS so React can call the Flask API
 load_dotenv()  # load environment variables from .env file
 
-# Configure upload folder for images
-UPLOAD_FOLDER = 'uploads'
+# build the path to the uploads folder inside the src folder
+UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'src', 'uploads')
+
+# folder for submited item pics
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# route for accessing pics
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
 # function to connect to PostgreSQL
