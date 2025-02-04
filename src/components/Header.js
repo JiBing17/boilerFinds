@@ -57,7 +57,7 @@ const handleLogout = () => {
             >   
             <div className='d-flex align-items-center justify-content-center gap-3'>
                 <FontAwesomeIcon icon={faCircleQuestion} style={{ fontSize: "1.3rem", cursor: "pointer" }} onClick={ ()=> navigate('/help')} />
-                <FontAwesomeIcon icon={faUser} style={{fontSize: "1.3rem", cursor: "pointer"}} />
+                <FontAwesomeIcon icon={faUser} style={{fontSize: "1.3rem", cursor: "pointer"}}  onClick={ ()=> navigate('/profile')}/>
                 <FontAwesomeIcon icon={faRightFromBracket} style={{fontSize: "1.3rem", cursor: "pointer"}} onClick={handleLogout}/>
             </div>
                 
