@@ -40,11 +40,11 @@ const handleLogout = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: "1rem"
+                gap: "1rem",
               }}
             >
-              <h1 style={{ margin: 0 }}>Boiler<span className='text-white fw-bold fst-italic'>FINDS</span></h1>
-                <FontAwesomeIcon icon={faMagnifyingGlass} style={{fontSize: "2rem"}} />
+              <h1 style={{ margin: 0 }} onClick={()=>{navigate("/home")}}>Boiler<span className='text-white fw-bold fst-italic'>FINDS</span></h1>
+                <FontAwesomeIcon icon={faMagnifyingGlass} style={{fontSize: "2rem"}} onClick={()=>{navigate("/home")}} />
             </div>
             <div
               className="position-absolute"
