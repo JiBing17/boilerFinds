@@ -252,6 +252,43 @@ def get_items():
     except Exception as e:
         print(f"⚠️ Error fetching data: {e}")
         return jsonify({"error": "Failed to retrieve items."}), 500
+    
+    
+# route for obtaining current user's info
+@app.route('/userinfo', methods=['GET'])
+def get_user_info():
+    
+    
+    email = request.args.get('email') # get email passed in from call
+    if not email:
+        return jsonify({"error": "Email parameter is required"}), 400
+
+    try:
+        # connect and fetch user info based on email 
+        conn = get_db_connection() 
+        cur = conn.cursor()
+        cur.execute("SELECT id, name, email, password_hash FROM users WHERE email = %s", (email,))
+        user = cur.fetchone()
+        cur.close()
+        conn.close()
+        
+        # if user exists return the user's info
+        if user:
+            # Return the user info as JSON
+            return jsonify({
+                "id": user[0],
+                "name": user[1],
+                "username": user[2],
+                "password": user[3] 
+            }), 200
+        else:
+            return jsonify({"error": "User not found"}), 404
+
+    except Exception as e:
+        print(f"Error fetching user: {e}")
+        return jsonify({"error": "An error occurred while fetching user info"}), 500
+
+
 
 # run server
 if __name__ == '__main__':
