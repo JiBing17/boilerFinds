@@ -80,7 +80,12 @@ def create_users_table():
             id SERIAL PRIMARY KEY,
             name VARCHAR(100) NOT NULL,
             email VARCHAR(100) UNIQUE NOT NULL,
-            password_hash TEXT NOT NULL
+            password_hash TEXT NOT NULL,
+            bio TEXT,
+            country VARCHAR(100),
+            phone VARCHAR(20),
+            dob VARCHAR(20),
+            occupation VARCHAR(20)
         );
         """
         cur.execute(create_table_query)
@@ -267,27 +272,86 @@ def get_user_info():
         # connect and fetch user info based on email 
         conn = get_db_connection() 
         cur = conn.cursor()
-        cur.execute("SELECT id, name, email, password_hash FROM users WHERE email = %s", (email,))
+        
+        # obtain certain user info from SELECT sql query
+        cur.execute("SELECT id, name, email, occupation, bio, country, phone, dob FROM users WHERE email = %s", (email,))
         user = cur.fetchone()
         cur.close()
         conn.close()
         
         # if user exists return the user's info
         if user:
-            # Return the user info as JSON
+            # return the user info as JSON based on SELECT
             return jsonify({
                 "id": user[0],
                 "name": user[1],
-                "username": user[2],
-                "password": user[3] 
+                "email": user[2],
+                "occupation": user[3],
+                "bio": user[4],
+                "country": user[5],
+                "phone": user[6],
+                "dob": user[7],
+                 
             }), 200
+        # no user with that email
         else:
             return jsonify({"error": "User not found"}), 404
-
+        
+    # general error for connection to server
     except Exception as e:
         print(f"Error fetching user: {e}")
         return jsonify({"error": "An error occurred while fetching user info"}), 500
+    
+# route used to update user's profile
+@app.route('/update_profile', methods=['POST'])
+def update_profile():
+    
+    # get data from body
+    data = request.get_json()
+    print("Payload:", data)
 
+    # check id before updating the db
+    user_id = data.get('id')
+    if not user_id:
+        return jsonify({"error": "User ID is required."}), 400
+
+    # get fields that were passed in
+    name = data.get('name')
+    new_email = data.get('email')
+    
+    # optional fields 
+    occupation = data.get('occupation') or ""
+    phone = data.get('phone') or ""
+    dob = data.get('dob') or ""
+    country = data.get('country') or ""
+    bio = data.get('bio') or ""
+
+    # update db based on the passed in data
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        
+        # sql query for update 
+        update_query = """
+            UPDATE users 
+            SET name=%s, email=%s, occupation=%s, bio=%s, dob=%s, country=%s, phone=%s
+            WHERE id=%s
+        """
+        # run that sql query
+        cur.execute(update_query, (name, new_email, occupation, bio, dob, country, phone, user_id))
+        
+        # save and close db
+        conn.commit()
+        cur.close()
+        conn.close()
+        
+        # return success message
+        return jsonify({"message": "Profile updated successfully!"}), 200
+    
+    # return error message
+    except Exception as e:
+        print(f"Error updating profile: {e}")
+        return jsonify({"error": "An error occurred while updating the profile."}), 500
 
 
 # run server

@@ -21,6 +21,7 @@ function Login() {
 
     const data = await response.json();
     if (response.ok) {
+        console.log(data.user)
         localStorage.setItem('user', JSON.stringify(data.user)); // Save user info
         navigate('/home'); // Redirect to ItemForm
     } else {
