@@ -5,16 +5,35 @@ import avatar from '../pictures/avatarPFP.png';
 const Profile = () => {
 
   // state for storing user info
-  const [message, setMessage] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [country, setCountry] = useState('');
   const [bio, setBio] = useState('');
   const [dob, setDob] = useState('');
   const [id, setId] = useState('');
   const [occupation, setOccupation] = useState('')
+  const [notification, setNotification] = useState({ message: '', type: '' });
+
+  // a reusable notification component
+  const Notification = ({message, type}) => {
+    if (!message) return null;
+  
+    return (
+      <div 
+        className="toast-container position-fixed top-0 end-0 p-3" 
+        style={{ zIndex: 1100 }}
+      >
+        <div 
+          className={`toast show ${type === 'success' ? 'bg-success' : 'bg-danger'} text-white`} 
+        >
+          <div className="toast-body">
+            {message}
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   useEffect(()=>{
 
@@ -34,7 +53,7 @@ const Profile = () => {
 
         // error handling 
         if (data.error) {
-          setMessage(data.error);
+          showNotification(data.error, 'error');
 
         // sucess case
         } else {
@@ -42,7 +61,6 @@ const Profile = () => {
            // Update fields with fetched data
            setName(data.name);
            setEmail(data.email); 
-           setPassword(data.password); 
            setBio(data.bio || '');
            setDob(data.dob || '');
            setCountry(data.country || '');
@@ -52,10 +70,10 @@ const Profile = () => {
 
       }).catch(error => {
         console.error("Error fetching user info:", error);
-        setMessage("Error fetching user info.");
+        showNotification("Error fetching user info.", 'error');
       })
     } else {
-      setMessage("User not logged in.");
+      showNotification("User not logged in.", 'error');
     }
   }, []);
 
@@ -87,28 +105,42 @@ const Profile = () => {
 
         // error handling 
         if (data.error) {
-          setMessage(data.error);
+          showNotification(data.error, 'error');
 
         // on success
         } else {
-          setMessage(data.message);
+          showNotification(data.message, 'success');
           localStorage.setItem('user', JSON.stringify({ name, email, id})); // localStorage with new info
         }
       })
       .catch(error => {
-        console.error("Error updating profile:", error);
-        setMessage("Error updating profile.");
+        showNotification("Error updating profile.", 'error');
       });
     
   }
 
+  const showNotification = (message, type) => {
+    setNotification({ message, type });
+    // Clear notification after 4 seconds
+    setTimeout(() => {
+      setNotification({ message: '', type: '' });
+    }, 4000);
+  };
+
   return (
     <>
       <Header />
+      {/* Notification pop-up */}
+      <Notification 
+        message={notification.message} 
+        type={notification.type} 
+        onClose={() => setNotification({ message: '', type: '' })}
+      />
       <div 
         className='d-flex align-items-start justify-content-start' 
         style={{ backgroundColor: "#101010", marginTop: "1rem", height: "100vh" }}
       >
+
 
         {/* Sidebar */}
         <div 
@@ -296,7 +328,6 @@ const Profile = () => {
                   </button>            
               </div>
             </form>
-            {message && <p className="mt-3 text-center" style={{ color: "#CFB991" }}>{message}</p>}
           </div>
         </div>
       </div>

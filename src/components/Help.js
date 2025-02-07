@@ -7,7 +7,32 @@ const Help = () => {
     const [description, setDescription] = useState('');
     const [message, setMessage] = useState('');
 
-
+    // Handle form submission
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const payload = { title, description };
+      
+      fetch('http://127.0.0.1:5000/send_help_email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.error) {
+            setMessage(data.error);
+          } else {
+            setMessage(data.message);
+            // Optionally, clear the form fields on success:
+            setTitle('');
+            setDescription('');
+          }
+        })
+        .catch((error) => {
+          console.error("Error sending email:", error);
+          setMessage("Error sending email.");
+        });
+    };
 
   return (
     <>
@@ -16,7 +41,7 @@ const Help = () => {
       {/* Left - FORM */}
       <div className="d-flex flex-column align-items-center justify-content-center w-50">
         <form 
-          
+          onSubmit={handleSubmit}
           className="p-4 rounded-4 shadow-lg"
           style={{
             backgroundColor: "#ffffff", 

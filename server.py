@@ -7,11 +7,24 @@ import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
+from flask_mail import Mail, Message
 
 
 app = Flask(__name__)
 CORS(app)  # enable CORS so React can call the Flask API
 load_dotenv()  # load environment variables from .env file
+
+# configure Flask-Mail for sending emails
+app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
+app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT'))
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS') == 'True'
+app.config['MAIL_USE_SSL'] = os.getenv('MAIL_USE_SSL') == 'True'
+
+mail = Mail(app)
+
+
 
 # build the path to the uploads folder inside the src folder
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'src', 'uploads')
@@ -353,6 +366,26 @@ def update_profile():
         print(f"Error updating profile: {e}")
         return jsonify({"error": "An error occurred while updating the profile."}), 500
 
+@app.route('/send_help_email', methods=['POST'])
+def send_help_email():
+    data = request.get_json()
+    title = data.get('title')
+    description = data.get('description')
+
+    if not title or not description:
+        return jsonify({"error": "Title and description are required."}), 400
+
+    try:
+        # Send the email to your own address
+        msg = Message(subject=title,
+                      sender=app.config['MAIL_USERNAME'],
+                      recipients=[app.config['MAIL_USERNAME']])
+        msg.body = description
+        mail.send(msg)
+        return jsonify({"message": "Email sent successfully!"}), 200
+    except Exception as e:
+        print(f"Error sending email: {e}")
+        return jsonify({"error": "An error occurred while sending email."}), 500
 
 # run server
 if __name__ == '__main__':
