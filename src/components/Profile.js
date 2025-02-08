@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header from './Header';
 import avatar from '../pictures/avatarPFP.png';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 const Profile = () => {
 
   // state for storing user info
@@ -14,6 +15,31 @@ const Profile = () => {
   const [id, setId] = useState('');
   const [occupation, setOccupation] = useState('')
   const [notification, setNotification] = useState({ message: '', type: '' });
+
+  const [profilePic, setProfilePic] = useState(null);
+  const [profilePicPreview, setProfilePicPreview] = useState(null);
+
+  // reference used when dealing with files inputs
+  const fileInputRef = useRef(null);
+
+  //trigger file selection when Change button is clicked
+  const handleButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  // handle file input change and update preview
+  const handleFileChange = (e) => {
+
+
+    // check if file input event occurred and a file was actually selected
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setProfilePic(file);
+      setProfilePicPreview(URL.createObjectURL(file));
+    }
+  };
 
   // a reusable notification component
   const Notification = ({message, type}) => {
@@ -66,6 +92,13 @@ const Profile = () => {
            setCountry(data.country || '');
            setPhone(data.phone || '');
            setOccupation(data.occupation || '');
+          
+           console.log('pic: ', data.profilePic)
+           if (data.profile_pic) {
+            setProfilePicPreview(`http://127.0.0.1:5000/uploads/${data.profile_pic}`);
+          }
+
+          
         }
 
       }).catch(error => {
@@ -80,25 +113,27 @@ const Profile = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    // load up payload with user info after update for updating db 
-    const payload = {
-      id,
-      name,
-      email,
-      occupation,
-      phone,
-      dob,
-      country,
-      bio
+    // create a FormData object (needed for file object)
+    const formData = new FormData();
+    formData.append("id", id);
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("occupation", occupation);
+    formData.append("phone", phone);
+    formData.append("dob", dob);
+    formData.append("country", country);
+    formData.append("bio", bio);
+    
+    // append file if it exists
+    if (profilePic) {
+      formData.append("profile_pic", profilePic);
     }
 
-    console.log(payload)
 
     // call update pfp endpoint with payload for body
     fetch('http://127.0.0.1:5000/update_profile', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: formData
     })
       .then(response => response.json())
       .then(data => {
@@ -120,11 +155,14 @@ const Profile = () => {
   }
 
   const showNotification = (message, type) => {
+
     setNotification({ message, type });
+
     // Clear notification after 4 seconds
     setTimeout(() => {
       setNotification({ message: '', type: '' });
     }, 4000);
+    
   };
 
   return (
@@ -152,11 +190,30 @@ const Profile = () => {
             className='border-bottom border-black d-flex flex-column align-items-center p-3' 
             style={{ backgroundColor: "#CFB991" }}
           >
-            <img 
-              alt="Profile Avatar" 
-              src={avatar} 
-              style={{ height: "150px", width: "150px", borderRadius: "50%", objectFit: "cover", border: "3px solid black" }}
+            <div style={{ position: 'relative' }}>
+              <img
+                alt="Profile Avatar"
+                src={profilePicPreview || avatar}
+                style={{ height: "150px", width: "150px", borderRadius: "50%", objectFit: "cover", border: "3px solid black" }}
+              />
+              <button
+                type="button"
+                onClick={handleButtonClick}
+                className="btn btn-sm btn-primary"
+                style={{ position: 'absolute', top: 0, right: 0, borderRadius: "50%", width: "40px", height: "40px"}}
+              >
+                <FontAwesomeIcon icon={faEdit} />
+              </button>
+            </div>
+            {/* Hidden file input */}
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              accept="image/*"
+              onChange={handleFileChange}
             />
+
             <h2 className='mt-3 text-black'>{name || "Your Name"}</h2>
           </div>
 

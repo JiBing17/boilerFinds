@@ -98,7 +98,8 @@ def create_users_table():
             country VARCHAR(100),
             phone VARCHAR(20),
             dob VARCHAR(20),
-            occupation VARCHAR(20)
+            occupation VARCHAR(20),
+            profile_pic TEXT
         );
         """
         cur.execute(create_table_query)
@@ -197,7 +198,7 @@ def login():
 @app.route('/submit', methods=['POST'])
 def submit_form():
     try:
-        # Using multipart/form-data: get text fields from request.form and file from request.files
+        # extract data from passed in form
         name = request.form.get('name')
         item = request.form.get('item')
         price = request.form.get('price')
@@ -287,7 +288,7 @@ def get_user_info():
         cur = conn.cursor()
         
         # obtain certain user info from SELECT sql query
-        cur.execute("SELECT id, name, email, occupation, bio, country, phone, dob FROM users WHERE email = %s", (email,))
+        cur.execute("SELECT id, name, email, occupation, bio, country, phone, dob, profile_pic FROM users WHERE email = %s", (email,))
         user = cur.fetchone()
         cur.close()
         conn.close()
@@ -304,6 +305,7 @@ def get_user_info():
                 "country": user[5],
                 "phone": user[6],
                 "dob": user[7],
+                "profile_pic": user[8]
                  
             }), 200
         # no user with that email
@@ -319,39 +321,48 @@ def get_user_info():
 @app.route('/update_profile', methods=['POST'])
 def update_profile():
     
-    # get data from body
-    data = request.get_json()
-    print("Payload:", data)
-
-    # check id before updating the db
-    user_id = data.get('id')
-    if not user_id:
-        return jsonify({"error": "User ID is required."}), 400
-
-    # get fields that were passed in
-    name = data.get('name')
-    new_email = data.get('email')
+   # Get text fields from the form data
+    user_id = request.form.get('id')
+    name = request.form.get('name')
+    email = request.form.get('email')
+    occupation = request.form.get('occupation')
+    phone = request.form.get('phone') or ""
+    dob = request.form.get('dob') or ""
+    country = request.form.get('country') or ""
+    bio = request.form.get('bio') or ""
     
-    # optional fields 
-    occupation = data.get('occupation') or ""
-    phone = data.get('phone') or ""
-    dob = data.get('dob') or ""
-    country = data.get('country') or ""
-    bio = data.get('bio') or ""
+    # set pfp if selected from frontend
+    profile_pic_filename = None
+    print("files: ", request.files)
+    if 'profile_pic' in request.files:
+        file = request.files['profile_pic']
+        if file.filename:
+            
+            # secure file name and set/save path of current file
+            profile_pic_filename = secure_filename(file.filename)
+            upload_path = os.path.join(app.config['UPLOAD_FOLDER'], profile_pic_filename)
+            file.save(upload_path)
 
     # update db based on the passed in data
     try:
         conn = get_db_connection()
         cur = conn.cursor()
         
+        # if no new file is provided, first fetch the current profile_pic value
+        if profile_pic_filename is None:
+            cur.execute("SELECT profile_pic FROM users WHERE id = %s", (user_id,))
+            row = cur.fetchone()
+            if row:
+                profile_pic_filename = row[0]  # keep existing filename
+        
         # sql query for update 
         update_query = """
             UPDATE users 
-            SET name=%s, email=%s, occupation=%s, bio=%s, dob=%s, country=%s, phone=%s
+            SET name=%s, email=%s, occupation=%s, bio=%s, dob=%s, country=%s, phone=%s, profile_pic=%s
             WHERE id=%s
         """
         # run that sql query
-        cur.execute(update_query, (name, new_email, occupation, bio, dob, country, phone, user_id))
+        cur.execute(update_query, (name, email, occupation, bio, dob, country, phone, profile_pic_filename, user_id))
         
         # save and close db
         conn.commit()
