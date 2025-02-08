@@ -5,6 +5,9 @@ import Login from './components/Login';
 import Home from './components/Home'
 import Help from './components/Help';
 import Profile from './components/Profile';
+import UsersList from './components/UserList';
+
+
 function App() {
   return (
     <Router>
@@ -14,6 +17,7 @@ function App() {
         <Route path="/home" element={<Home/>} />
         <Route path="/help" element={<Help/>} />
         <Route path="/profile" element={<Profile/>} />
+        <Route path="/userlist" element={<UsersList/>} />
       </Routes>
     </Router>
   );

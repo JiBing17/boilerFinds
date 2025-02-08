@@ -194,15 +194,15 @@ const Profile = () => {
               <img
                 alt="Profile Avatar"
                 src={profilePicPreview || avatar}
-                style={{ height: "150px", width: "150px", borderRadius: "50%", objectFit: "cover", border: "3px solid black" }}
+                style={{ height: "150px", width: "150px", borderRadius: "50%", objectFit: "cover", border: "3px solid #101010" }}
               />
               <button
                 type="button"
                 onClick={handleButtonClick}
-                className="btn btn-sm btn-primary"
-                style={{ position: 'absolute', top: 0, right: 0, borderRadius: "50%", width: "40px", height: "40px"}}
+                className="btn btn-sm "
+                style={{ position: 'absolute', top: 0, right: 0, borderRadius: "50%", width: "40px", height: "40px", backgroundColor: "#101010"}}
               >
-                <FontAwesomeIcon icon={faEdit} />
+                <FontAwesomeIcon icon={faEdit} className='text-white'/>
               </button>
             </div>
             {/* Hidden file input */}

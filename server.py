@@ -24,8 +24,6 @@ app.config['MAIL_USE_SSL'] = os.getenv('MAIL_USE_SSL') == 'True'
 
 mail = Mail(app)
 
-
-
 # build the path to the uploads folder inside the src folder
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'src', 'uploads')
 
@@ -98,7 +96,7 @@ def create_users_table():
             country VARCHAR(100),
             phone VARCHAR(20),
             dob VARCHAR(20),
-            occupation VARCHAR(20),
+            occupation VARCHAR(100),
             profile_pic TEXT
         );
         """
@@ -397,6 +395,35 @@ def send_help_email():
     except Exception as e:
         print(f"Error sending email: {e}")
         return jsonify({"error": "An error occurred while sending email."}), 500
+
+# route for returning an array of ALL users except current user
+@app.route('/all_users', methods=['GET'])
+def get_all_users():
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # get the logged-in user's email from query params
+        current_user_email = request.args.get("email")
+
+        # fetch all users except the logged-in user
+        cur.execute("SELECT id, name, email, profile_pic FROM users WHERE email != %s", (current_user_email,))
+        users = cur.fetchall()
+
+        cur.close()
+        conn.close()
+
+        # format response
+        user_list = [
+            {"id": user[0], "name": user[1], "email": user[2], "profile_pic": user[3] or ""}
+            for user in users
+        ]
+        return jsonify(user_list), 200
+
+    except Exception as e:
+        print(f"⚠️ Error fetching users: {e}")
+        return jsonify({"error": "Failed to fetch users"}), 500
+
 
 # run server
 if __name__ == '__main__':

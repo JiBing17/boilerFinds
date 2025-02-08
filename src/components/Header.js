@@ -5,6 +5,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
+import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 
 const Header = () => {
 
@@ -56,9 +57,11 @@ const handleLogout = () => {
               }}
             >   
             <div className='d-flex align-items-center justify-content-center gap-3'>
+                <FontAwesomeIcon icon={faUserPlus} style={{fontSize: "1.3rem", cursor: "pointer"}} onClick={ ()=> navigate('/userlist')}/>
                 <FontAwesomeIcon icon={faCircleQuestion} style={{ fontSize: "1.3rem", cursor: "pointer" }} onClick={ ()=> navigate('/help')} />
                 <FontAwesomeIcon icon={faUser} style={{fontSize: "1.3rem", cursor: "pointer"}}  onClick={ ()=> navigate('/profile')}/>
                 <FontAwesomeIcon icon={faRightFromBracket} style={{fontSize: "1.3rem", cursor: "pointer"}} onClick={handleLogout}/>
+
             </div>
                 
             </div>
