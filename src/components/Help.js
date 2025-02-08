@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import Header from './Header';
-
+import contact from '../pictures/contact.jpg'
 const Help = () => {
 
     const [title, setTitle] = useState('');
@@ -117,14 +117,26 @@ const Help = () => {
           Use the form below to submit your inquiry, and we’ll do our best to respond as soon as possible. 
           The more details you provide, the faster we can assist you.
         </p>
-        <ul style={{color:"white", listStylePosition: "inside", padding: "0"}}>
-          <li>🐞 Bug reports & technical issues</li>
-          <li>💡 Feature suggestions</li>
-          <li>📌 Account & usability questions</li>
-          <li>🚀 Any other concerns or feedback</li>
-        </ul>
-      </div>
-          
+
+        <div className='d-flex align-items-start justify-content-center'>
+
+        <div className='d-flex align-items-start justify-content-start'>
+            <img src={contact} style={{
+                width: "70%",
+                height: "auto",
+                borderRadius: "10px",
+                boxShadow: "0px 4px 8px rgba(255, 255, 255, 0.2)"
+            }}/>
+          </div>
+
+          <ul style={{color:"white", listStylePosition: "inside", padding: "0", width: "100%" }}>
+            <li>🐞 Bug reports & technical issues</li>
+            <li>💡 Feature suggestions</li>
+            <li>📌 Account & usability questions</li>
+            <li>🚀 Any other concerns or feedback</li>
+          </ul>
+        </div>
+      </div> 
       </div>
     </>
     
