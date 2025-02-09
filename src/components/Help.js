@@ -120,16 +120,16 @@ const Help = () => {
 
         <div className='d-flex align-items-start justify-content-center'>
 
-        <div className='d-flex align-items-start justify-content-start'>
+        <div className='d-flex align-items-start justify-content-start' style={{width: "80%"}}>
             <img src={contact} style={{
-                width: "70%",
+                width: "100%",
                 height: "auto",
                 borderRadius: "10px",
                 boxShadow: "0px 4px 8px rgba(255, 255, 255, 0.2)"
             }}/>
-          </div>
+        </div>
 
-          <ul style={{color:"white", listStylePosition: "inside", padding: "0", width: "100%" }}>
+          <ul style={{color:"white", listStylePosition: "inside", padding: "2rem", width: "100%" }}>
             <li>🐞 Bug reports & technical issues</li>
             <li>💡 Feature suggestions</li>
             <li>📌 Account & usability questions</li>

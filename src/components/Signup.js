@@ -30,9 +30,29 @@ function Signup() {
   }
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100" style={{ backgroundColor: "#CFB991" }}>
-      <div className="card shadow-lg p-4 py-5 px-3 rounded-4" style={{ width: "400px", color: "#CFB991", border: "3px solid #000000" }}>
-        <h2 className="text-center mb-4" style={{ color: "#000000" }}>Sign Up</h2>
+    <div className="d-flex vh-100 w-100">
+
+      <div 
+        className="d-flex flex-column justify-content-center align-items-center text-center" 
+        style={{
+          width: "50vw",
+          background: "linear-gradient(135deg, #101010, #CFB991)",
+          padding: "20px"
+        }}
+      >
+        <h1 
+          className="fw-bold" 
+          style={{
+            color: "white",
+            textShadow: "2px 2px 4px rgba(0,0,0,0.7)"
+          }}
+        >
+          Create an Account
+        </h1>
+      </div>
+
+      <div className="d-flex flex-column justify-content-evenly" style={{width: "50vw", padding: "4rem"}}>
+        <h2 className="text-center" style={{ color: "#000000" }}>Sign Up</h2>
         {message && <div className="alert alert-danger">{message}</div>}
         <form onSubmit={handleSignup}>
           <div className="mb-3">
@@ -83,7 +103,7 @@ function Signup() {
             Sign Up
           </button>
         </form>
-        <p className="mt-3 text-black">
+        <p className="text-black">
           Already have an account? <a onClick={switchToLogin} style={{ color: "#CFB991", cursor: "pointer" }}>Login here</a>
         </p>
       </div>

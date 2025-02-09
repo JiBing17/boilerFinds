@@ -97,7 +97,7 @@ const SubmitItem = () => {
       {/* Left - Text */}
       <div className='d-flex flex-column align-items-center justify-content-center w-50'>
         <h1 className='text-white'>Want to sell an item?</h1>
-        <p className='text-center text-white'>BolerFINDS is your go-to marketplace for buying and selling items within the community. Simply fill out the form, list your item, and wait for interested buyers to reach out. It’s fast, easy, and completely hassle-free!</p>
+        <p className='text-center text-white w-75'>BolerFINDS is your go-to marketplace for buying and selling items within the community. Simply fill out the form, list your item, and wait for interested buyers to reach out. It’s fast, easy, and completely hassle-free!</p>
         <div className='d-flex align-items-center justify-content-center'>
           <img src={eMarket} style={{
               width: "80%",
