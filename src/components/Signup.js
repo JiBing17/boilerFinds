@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 function Signup() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -31,12 +32,12 @@ function Signup() {
 
   return (
     <div className="d-flex vh-100 w-100">
-
+      
       <div 
         className="d-flex flex-column justify-content-center align-items-center text-center" 
         style={{
           width: "50vw",
-          background: "linear-gradient(135deg, #101010, #CFB991)",
+          background: "linear-gradient(135deg, #101010 20%, #3b2e1c 65%, #CFB991 100%)",
           padding: "20px"
         }}
       >
@@ -52,6 +53,10 @@ function Signup() {
       </div>
 
       <div className="d-flex flex-column justify-content-evenly" style={{width: "50vw", padding: "4rem"}}>
+        <div className='bg-black d-flex align-items-center justify-content-center gap-2 rounded-4 p-1'>
+          <h1 style={{ margin: 0, color: "#CFB991"}} onClick={()=>{navigate("/home")}}>Boiler<span className='text-white fw-bold fst-italic'>FINDS</span></h1>
+          <FontAwesomeIcon icon={faMagnifyingGlass} style={{fontSize: "2rem", color: "#CFB991"}} onClick={()=>{navigate("/home")}} />
+        </div>
         <h2 className="text-center" style={{ color: "#000000" }}>Sign Up</h2>
         {message && <div className="alert alert-danger">{message}</div>}
         <form onSubmit={handleSignup}>

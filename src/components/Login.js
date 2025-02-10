@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
-
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -45,7 +45,7 @@ function Login() {
         className="d-flex flex-column justify-content-center align-items-center text-center" 
         style={{
           width: "50vw",
-          background: "linear-gradient(135deg, #101010, #CFB991)",
+          background: "linear-gradient(135deg, #101010 20%, #3b2e1c 65%, #CFB991 100%)",
           padding: "20px"
         }}
       >
@@ -62,6 +62,10 @@ function Login() {
 
 
       <div className="d-flex flex-column justify-content-evenly bg-white" style={{width: "50vw", color: "#CFB991", padding: "4rem"}}>
+        <div className='bg-black d-flex align-items-center justify-content-center gap-2 rounded-4 p-1'>
+          <h1 style={{ margin: 0 }} onClick={()=>{navigate("/home")}}>Boiler<span className='text-white fw-bold fst-italic'>FINDS</span></h1>
+          <FontAwesomeIcon icon={faMagnifyingGlass} style={{fontSize: "2rem"}} onClick={()=>{navigate("/home")}} />
+        </div>
         <h2 className="text-center" style={{ color: "#000000" }} >Login</h2>
           {message && <div className="alert alert-danger" >{message}</div>}
           <form onSubmit={handleLogin}>
