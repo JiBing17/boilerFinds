@@ -51,7 +51,7 @@ function Login() {
         }}
       >
         <div
-          className="d-flex flex-column justify-content-center align-items-start gap-2" 
+          className="d-flex flex-column justify-content-center align-items-start gap-2 p-4" 
         >
           <h1 
           className="fw-bold" 
@@ -64,7 +64,7 @@ function Login() {
             Welcome Back!
           </h1>
 
-          <ul className='list-unstyled text-white d-flex flex-column align-items-start justify-content-center' style={{fontSize: "1.1rem"}}>
+          <ul className='list-unstyled text-white d-flex flex-column align-items-start justify-content-center' style={{fontSize: "1rem"}}>
               <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>Personalized Experience – Your chats, contacts, and settings just the way you like them</li>
               <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>Real-Time Messaging – Instantly connect with friends, family, and communities</li>
               <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>Fast & Secure Access – Log in with one tap and get back to what matters</li>
@@ -76,7 +76,7 @@ function Login() {
 
 
       <div className="d-flex flex-column justify-content-center bg-white gap-3" style={{width: "50vw", color: "#CFB991", padding: "4rem"}}>
-        <div className='bg-black d-flex align-items-center justify-content-center gap-2 rounded-4 p-1 w-50 mx-auto'>
+        <div className='bg-black d-flex align-items-center justify-content-center gap-2 rounded-4 p-2 mx-auto'>
           <h1 style={{ margin: 0 }} onClick={()=>{navigate("/home")}}>Boiler<span className='text-white fw-bold fst-italic'>FINDS</span></h1>
           <FontAwesomeIcon icon={faMagnifyingGlass} style={{fontSize: "2rem"}} onClick={()=>{navigate("/home")}} />
         </div>

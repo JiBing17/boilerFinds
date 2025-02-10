@@ -42,7 +42,7 @@ function Signup() {
           padding: "20px"
         }}
       >
-        <div className='d-flex flex-column align-items-start justify-content-center gap-2'>
+        <div className='d-flex flex-column align-items-start justify-content-center gap-2 p-4'>
           <h1 
             className="fw-bold" 
             style={{
@@ -54,7 +54,7 @@ function Signup() {
             Create an Account!
           </h1>
 
-          <ul className='list-unstyled text-white d-flex flex-column align-items-start justify-content-center' style={{fontSize: "1.1rem"}}>
+          <ul className='list-unstyled text-white d-flex flex-column align-items-start justify-content-center' style={{fontSize: "1rem"}}>
               <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>All-in-One Super App – Messaging, voice & video calls, and more in one place</li>
               <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>Instant Sign-Up – Create an account in seconds with just your email</li>
               <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>Your Data, Your Control – No ads, no tracking – just secure and private conversations</li>
@@ -64,7 +64,7 @@ function Signup() {
       </div>
 
       <div className="d-flex flex-column justify-content-center gap-3" style={{width: "50vw", padding: "4rem"}}>
-        <div className='bg-black d-flex align-items-center justify-content-center gap-2 rounded-4 p-1 w-50 mx-auto'>
+        <div className='bg-black d-flex align-items-center justify-content-center gap-2 rounded-4 p-2 mx-auto'>
           <h1 style={{ margin: 0, color: "#CFB991"}} onClick={()=>{navigate("/home")}}>Boiler<span className='text-white fw-bold fst-italic'>FINDS</span></h1>
           <FontAwesomeIcon icon={faMagnifyingGlass} style={{fontSize: "2rem", color: "#CFB991"}} onClick={()=>{navigate("/home")}} />
         </div>

@@ -85,47 +85,46 @@ const UsersList = () => {
                 </p>
             )}
 
-            <div className="row">
+            <div className="row bg-white p-4 w-75 mx-auto">
                 {users.map(user => (
-                <div key={user.id} className="col-md-4 mb-4">
+                <div key={user.id} className="col-md-3 mb-4 d-flex justify-content-center">
                     <div
-                    className="card h-100"
-                    style={{
-                        backgroundColor: "#CFB991",
-                        border: `4px solid #C8890E`,
-                        borderRadius: "0.5rem",
-                        transition: "transform 0.3s",
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.02)")}
-                    onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
+                        className="card h-100"
+                        style={{
+                            backgroundColor: "#CFB991",
+                            border: `4px solid #C8890E`,
+                            borderRadius: "0.5rem",
+                            transition: "transform 0.3s",
+                            minHeight: "300px",
+                        }}
+                        onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.02)")}
+                        onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
                     >
-                    <div className="card-body">
-                        <div className="d-flex align-items-center">
-                        <img
-                            src={
-                            user.profile_pic
-                                ? `http://127.0.0.1:5000/uploads/${user.profile_pic}`
-                                : avatarPlaceholder
-                            }
-                            alt={user.name}
-                            className="rounded-circle me-3"
-                            style={{
-                            width: "60px",
-                            height: "60px",
-                            objectFit: "cover",
-                            border: `2px solid #101010`
-                            }}
-                        />
-                        <div>
-                            <h5 className="mb-0" style={{ color: "#000000" }}>
-                            {user.name}
-                            </h5>
-                            <p className="mb-0" style={{ color: "#000000", fontSize: "0.9rem" }}>
-                            {user.email}
-                            </p>
+                    <div className="card-body d-flex flex-column align-items-center justify-content-center">
+                        <div className="d-flex align-items-center justify-content-center">
+                            <img
+                                src={
+                                user.profile_pic
+                                    ? `http://127.0.0.1:5000/uploads/${user.profile_pic}`
+                                    : avatarPlaceholder
+                                }
+                                alt={user.name}
+                                className="rounded-circle me-3"
+                                style={{
+                                width: "90px",
+                                height: "90px",
+                                objectFit: "cover",
+                                border: `2px solid #101010`
+                                }}
+                            />
                         </div>
-                        </div>
-                        <div className="mt-3">
+                        <h5 className="mb-0 text-center" style={{ color: "#000000" }}>
+                        {user.name}
+                        </h5>
+                        <p className="mb-0 text-center" style={{ color: "#000000", fontSize: "0.9rem" }}>
+                        {user.email}
+                        </p>
+                        <div className="mt-auto">
                         <button
                             className="btn w-100"
                             style={{
