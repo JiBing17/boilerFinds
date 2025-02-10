@@ -63,14 +63,14 @@ function Signup() {
         
       </div>
 
-      <div className="d-flex flex-column justify-content-evenly" style={{width: "50vw", padding: "4rem"}}>
+      <div className="d-flex flex-column justify-content-center gap-3" style={{width: "50vw", padding: "4rem"}}>
         <div className='bg-black d-flex align-items-center justify-content-center gap-2 rounded-4 p-1 w-50 mx-auto'>
           <h1 style={{ margin: 0, color: "#CFB991"}} onClick={()=>{navigate("/home")}}>Boiler<span className='text-white fw-bold fst-italic'>FINDS</span></h1>
           <FontAwesomeIcon icon={faMagnifyingGlass} style={{fontSize: "2rem", color: "#CFB991"}} onClick={()=>{navigate("/home")}} />
         </div>
         <h2 className="text-center" style={{ color: "#000000" }}>Sign Up</h2>
         {message && <div className="alert alert-danger">{message}</div>}
-        <form onSubmit={handleSignup}>
+        <form onSubmit={handleSignup} className='w-75 mx-auto'>
           <div className="mb-3">
             <label className="form-label" style={{ color: "#000000" }}>Name</label>
             <input
@@ -108,8 +108,8 @@ function Signup() {
             type="submit"
             className="btn btn-primary w-100 rounded-4"
             style={{
-              backgroundColor: "#CFB991",
-              border: "2px solid #000000",
+              backgroundColor: "#101010",
+              border: "2px solid #101010",
               color: "white",
               fontWeight: "bold",
               padding: "12px",
@@ -118,10 +118,11 @@ function Signup() {
           >
             Sign Up
           </button>
+          <p className="text-black mt-2">
+            Already have an account? <a onClick={switchToLogin} style={{color: "#CFB991", fontWeight: "bold", fontStyle: "italic", cursor: "pointer"}}>Login here</a>
+          </p>
         </form>
-        <p className="text-black">
-          Already have an account? <a onClick={switchToLogin} style={{ color: "#CFB991", cursor: "pointer" }}>Login here</a>
-        </p>
+
       </div>
     </div>
   );
