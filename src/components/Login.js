@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faCheckCircle, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -42,27 +43,40 @@ function Login() {
     <div className="d-flex vh-100 w-100">
 
       <div 
-        className="d-flex flex-column justify-content-center align-items-center text-center" 
+        className="d-flex flex-column justify-content-center align-items-center" 
         style={{
           width: "50vw",
           background: "linear-gradient(135deg, #101010 20%, #3b2e1c 65%, #CFB991 100%)",
           padding: "20px"
         }}
       >
-        <h1 
+        <div
+          className="d-flex flex-column justify-content-center align-items-start gap-2" 
+        >
+          <h1 
           className="fw-bold" 
           style={{
+            fontSize: "4rem",
             color: "white",
-            textShadow: "2px 2px 4px rgba(0,0,0,0.7)"
+            textShadow: "2px 2px 4px rgba(0,0,0,0.7)",
           }}
-        >
-          Welcome Back!
-        </h1>
+          >
+            Welcome Back!
+          </h1>
+
+          <ul className='list-unstyled text-white d-flex flex-column align-items-start justify-content-center' style={{fontSize: "1.1rem"}}>
+              <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>Personalized Experience – Your chats, contacts, and settings just the way you like them</li>
+              <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>Real-Time Messaging – Instantly connect with friends, family, and communities</li>
+              <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>Fast & Secure Access – Log in with one tap and get back to what matters</li>
+          </ul>
+        </div>
+        
+
       </div>
 
 
       <div className="d-flex flex-column justify-content-evenly bg-white" style={{width: "50vw", color: "#CFB991", padding: "4rem"}}>
-        <div className='bg-black d-flex align-items-center justify-content-center gap-2 rounded-4 p-1'>
+        <div className='bg-black d-flex align-items-center justify-content-center gap-2 rounded-4 p-1 w-50 mx-auto'>
           <h1 style={{ margin: 0 }} onClick={()=>{navigate("/home")}}>Boiler<span className='text-white fw-bold fst-italic'>FINDS</span></h1>
           <FontAwesomeIcon icon={faMagnifyingGlass} style={{fontSize: "2rem"}} onClick={()=>{navigate("/home")}} />
         </div>
