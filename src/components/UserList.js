@@ -11,7 +11,7 @@ const UsersList = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
+  const [selected, setSelected] = useState('Discover');
   // retrieve the currently logged in user's email from localStorage
   const storedUser = JSON.parse(localStorage.getItem('user'));
   const currentUserEmail = storedUser?.email;
@@ -47,7 +47,7 @@ const UsersList = () => {
     <>
         <Header/>
         <div
-            className=" mt-5 p-4"
+            className="mt-5"
             style={{
                 backgroundColor: "#101010",
             }}
@@ -85,23 +85,36 @@ const UsersList = () => {
                 </p>
             )}
 
-            <div className="row bg-white p-4 w-75 mx-auto">
+            <div className='d-flex align-items-center'>
+                <button className='w-100 px-4 py-2 text-white fw-bold' style={{backgroundColor: "#C8890E", fontSize: "1.2rem",  border: `${selected === "Discover" ? "2px solid white": "2px solid black"}`}} onClick={()=> {setSelected("Discover")}}>Discover</button>
+                <button className='w-100 px-4 py-2 text-white fw-bold' style={{backgroundColor: "#C8890E", fontSize: "1.2rem",  border: `${selected === "My Friends" ? "2px solid white": "2px solid black"}`}} onClick={()=> {setSelected("My Friends")}}>My Friends</button>
+                <button className='w-100 px-4 py-2 text-white fw-bold' style={{backgroundColor: "#C8890E", fontSize: "1.2rem",  border: `${selected === "Requests" ? "2px solid white": "2px solid black"}`}} onClick={()=> {setSelected("Requests")}}>Requests</button>
+            </div>
+            <div className="row p-4" style={{backgroundColor: "#CFB991"}}>
+
+                <div className='d-flex align-items-center justify-content-center p-4 w-100'>
+                    <form class="form-inline my-2 my-lg-0 d-flex gap-2">
+                        <input class="form-control mr-sm-2 w-100" type="search" placeholder="Search" aria-label="Search"/>
+                        <button class="btn my-2 my-sm-0 px-4 text-white fw-bold" style={{backgroundColor: "#C8890E", boxShadow:"rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px"}} type="submit">Search</button>
+                    </form>
+                </div>
+
                 {users.map(user => (
-                <div key={user.id} className="col-md-3 mb-4 d-flex justify-content-center">
+                <div key={user.id} className="col-md-2 mb-4 d-flex justify-content-center">
                     <div
-                        className="card h-100"
+                        className="card h-100 w-100"
                         style={{
-                            backgroundColor: "#CFB991",
-                            border: `4px solid #C8890E`,
+                            backgroundColor: "white",
+                            boxShadow: "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
                             borderRadius: "0.5rem",
                             transition: "transform 0.3s",
-                            minHeight: "300px",
+                            minHeight: "320px",
                         }}
                         onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.02)")}
                         onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
                     >
-                    <div className="card-body d-flex flex-column align-items-center justify-content-center">
-                        <div className="d-flex align-items-center justify-content-center">
+                    <div className="card-body d-flex flex-column align-items-center justify-content-center gap-2">
+                        <div className="d-flex align-items-center justify-content-center ">
                             <img
                                 src={
                                 user.profile_pic
@@ -114,14 +127,14 @@ const UsersList = () => {
                                 width: "90px",
                                 height: "90px",
                                 objectFit: "cover",
-                                border: `2px solid #101010`
+                                border: `4px solid #CFB991`
                                 }}
                             />
                         </div>
-                        <h5 className="mb-0 text-center" style={{ color: "#000000" }}>
+                        <h5 className="mb-0 text-center text-truncate w-100" style={{ color: "#000000" }}>
                         {user.name}
                         </h5>
-                        <p className="mb-0 text-center" style={{ color: "#000000", fontSize: "0.9rem" }}>
+                        <p className="mb-0 text-center text-truncate w-100" style={{ color: "#000000", fontSize: "0.9rem" }}>
                         {user.email}
                         </p>
                         <div className="mt-auto">
