@@ -52,16 +52,18 @@ const UsersList = () => {
                 backgroundColor: "#101010",
             }}
         >   
-            <div className='d-flex align-items-center justify-content-center p-4'>
-                <div>
+            <div className='d-flex flex-column flex-md-row align-items-center justify-content-center p-4'>
+
+                <div className='d-flex flex-column align-items-center'>
                     <h2 className="text-center" style={{ color: "#ffffff" }}>
-                        Find and Add Friends
+                        <span style={{color: "#CFB991", fontWeight: "bold"}}>Find</span> and <span style={{color: "#CFB991", fontWeight: "bold"}}>Add</span> Friends
                     </h2>
-                    <p className="text-center text-white mx-auto">
+                    <p className="text-center text-white mx-auto fst-italic">
                         Connect with people you know and expand your network. Easily find and add friends to stay updated with their latest activities.  
                         Search for users, send friend requests, and build meaningful connections effortlessly.
                     </p>
                 </div>
+
                 <div className='d-flex align-items-center justify-content-center'>
                     <img src={findFriendsPic} style={{
                         width: "60%",
@@ -87,10 +89,10 @@ const UsersList = () => {
 
             <div className='d-flex align-items-center'>
                 <button className='w-100 px-4 py-2 text-white fw-bold' style={{backgroundColor: "#C8890E", fontSize: "1.2rem",  border: `${selected === "Discover" ? "2px solid white": "2px solid black"}`}} onClick={()=> {setSelected("Discover")}}>Discover</button>
-                <button className='w-100 px-4 py-2 text-white fw-bold' style={{backgroundColor: "#C8890E", fontSize: "1.2rem",  border: `${selected === "My Friends" ? "2px solid white": "2px solid black"}`}} onClick={()=> {setSelected("My Friends")}}>My Friends</button>
+                <button className='w-100 px-4 py-2 text-white fw-bold' style={{backgroundColor: "#C8890E", fontSize: "1.2rem",  border: `${selected === "My Friends" ? "2px solid white": "2px solid black"}`}} onClick={()=> {setSelected("Friends")}}>Friends</button>
                 <button className='w-100 px-4 py-2 text-white fw-bold' style={{backgroundColor: "#C8890E", fontSize: "1.2rem",  border: `${selected === "Requests" ? "2px solid white": "2px solid black"}`}} onClick={()=> {setSelected("Requests")}}>Requests</button>
             </div>
-            <div className="row p-4" style={{backgroundColor: "#CFB991"}}>
+            {selected== "Discover" && (<div className="row p-4" style={{backgroundColor: "#CFB991"}}>
 
                 <div className='d-flex align-items-center justify-content-center p-4 w-100'>
                     <form class="form-inline my-2 my-lg-0 d-flex gap-2">
@@ -156,7 +158,70 @@ const UsersList = () => {
                     </div>
                 </div>
                 ))}
-            </div>
+
+            </div>)}
+            {selected == "Friends" && (
+                <div className='d-flex flex-column bg-white'>
+                    
+                    <div className='w-75 mx-auto'>
+                        <div className='d-flex align-items-center gap-3 px-3 py-2' style={{borderBottom: "1px solid black"}}>
+                            <img src={avatarPlaceholder} style={{width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover"}}/>
+                            <div className='d-flex flex-column justify-content-center w-100'>
+                                <h4 className="mb-1"style={{textAlign: "left", fontSize: "1.1rem"}}>Name</h4>
+                                <p className="mb-0 text-muted"style={{textAlign: "left", fontSize: ".9rem"}}>email</p>
+                            </div>
+                            <button className='px-2 py-1 rounded text-white' style={{backgroundColor: "blue", border:"None", boxShadow:"rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px"}}>Message</button>
+                        </div>
+                        <div className='d-flex align-items-center gap-3 px-3 py-2' style={{borderBottom: "1px solid black"}}>
+                            <img src={avatarPlaceholder} style={{width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover"}}/>
+                            <div className='d-flex flex-column justify-content-center w-100'>
+                                <h4 className="mb-1"style={{textAlign: "left", fontSize: "1.1rem"}}>Name</h4>
+                                <p className="mb-0 text-muted"style={{textAlign: "left", fontSize: ".9rem"}}>email</p>
+                            </div>
+                            <button className='px-2 py-1 rounded text-white' style={{backgroundColor: "blue", border:"None", boxShadow:"rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px"}}>Message</button>
+                        </div>
+                        <div className='d-flex align-items-center gap-3 px-3 py-2' style={{borderBottom: "1px solid black"}}>
+                            <img src={avatarPlaceholder} style={{width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover"}}/>
+                            <div className='d-flex flex-column justify-content-center w-100'>
+                                <h4 className="mb-1"style={{textAlign: "left", fontSize: "1.1rem"}}>Name</h4>
+                                <p className="mb-0 text-muted"style={{textAlign: "left", fontSize: ".9rem"}}>email</p>
+                            </div>
+                            <button className='px-2 py-1 rounded text-white' style={{backgroundColor: "blue", border:"None", boxShadow:"rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px"}}>Message</button>
+                        </div>
+                        <div className='d-flex align-items-center gap-3 px-3 py-2' style={{borderBottom: "1px solid black"}}>
+                            <img src={avatarPlaceholder} style={{width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover"}}/>
+                            <div className='d-flex flex-column justify-content-center w-100'>
+                                <h4 className="mb-1"style={{textAlign: "left", fontSize: "1.1rem"}}>Name</h4>
+                                <p className="mb-0 text-muted"style={{textAlign: "left", fontSize: ".9rem"}}>email</p>
+                            </div>
+                            <button className='px-2 py-1 rounded text-white' style={{backgroundColor: "blue", border:"None", boxShadow:"rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px"}}>Message</button>
+                        </div>
+                        <div className='d-flex align-items-center gap-3 px-3 py-2' style={{borderBottom: "1px solid black"}}>
+                            <img src={avatarPlaceholder} style={{width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover"}}/>
+                            <div className='d-flex flex-column justify-content-center w-100'>
+                                <h4 className="mb-1"style={{textAlign: "left", fontSize: "1.1rem"}}>Name</h4>
+                                <p className="mb-0 text-muted"style={{textAlign: "left", fontSize: ".9rem"}}>email</p>
+                            </div>
+                            <button className='px-2 py-1 rounded text-white' style={{backgroundColor: "blue", border:"None", boxShadow:"rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px"}}>Message</button>
+                        </div>
+                        <div className='d-flex align-items-center gap-3 px-3 py-2' style={{borderBottom: "1px solid black"}}>
+                            <img src={avatarPlaceholder} style={{width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover"}}/>
+                            <div className='d-flex flex-column justify-content-center w-100'>
+                                <h4 className="mb-1"style={{textAlign: "left", fontSize: "1.1rem"}}>Name</h4>
+                                <p className="mb-0 text-muted"style={{textAlign: "left", fontSize: ".9rem"}}>email</p>
+                            </div>
+                            <button className='px-2 py-1 rounded text-white' style={{backgroundColor: "blue", border:"None", boxShadow:"rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px"}}>Message</button>
+                        </div>
+
+                    </div>
+                    
+
+
+                </div>
+            )}
+            {selected == "Requests" && (
+                <div>Req</div>
+            )}
         </div>
     </>
     
