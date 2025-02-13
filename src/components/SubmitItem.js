@@ -113,12 +113,14 @@ const SubmitItem = () => {
       <div className="d-flex flex-column align-items-center justify-content-center w-50">
         <form 
           onSubmit={handleSubmit} 
-          className="p-4 rounded-4 shadow-lg"
+          className="p-4 rounded-4"
           style={{
             backgroundColor: "#ffffff", 
             border: "6px solid #CFB991",
             width: "100%",
-            maxWidth: "500px"
+            maxWidth: "500px",
+            boxShadow: "0 0 20px rgba(255, 255, 255, 0.5)"
+
           }}
         >
           <div className="mb-3">

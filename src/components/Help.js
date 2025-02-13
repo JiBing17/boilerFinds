@@ -3,37 +3,6 @@ import Header from './Header';
 import contact from '../pictures/contact.jpg'
 const Help = () => {
 
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [message, setMessage] = useState('');
-
-    // Handle form submission
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      const payload = { title, description };
-      
-      fetch('http://127.0.0.1:5000/send_help_email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.error) {
-            setMessage(data.error);
-          } else {
-            setMessage(data.message);
-            // Optionally, clear the form fields on success:
-            setTitle('');
-            setDescription('');
-          }
-        })
-        .catch((error) => {
-          console.error("Error sending email:", error);
-          setMessage("Error sending email.");
-        });
-    };
-
   return (
     <>
       <Header/>
@@ -41,8 +10,9 @@ const Help = () => {
       {/* Left - FORM */}
       <div className="d-flex flex-column align-items-center justify-content-center w-50">
         <form 
-          onSubmit={handleSubmit}
-          className="p-4 rounded-4 shadow-lg"
+          action="https://formspree.io/f/mbldapgv" 
+          method="POST"
+          className="p-4 rounded-4"
           style={{
             backgroundColor: "#ffffff", 
             border: "6px solid #CFB991",
@@ -52,14 +22,16 @@ const Help = () => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-evenly",
+            boxShadow: "0 0 20px rgba(255, 255, 255, 0.5)"
+
           }}
         >
+          {/* Email Field */}
           <div className="mb-3">
-            <label className="form-label" style={{ color: "#CFB991" }}>Title:</label>
+            <label className="form-label" style={{ color: "#CFB991" }}>Your Email:</label>
             <input 
-              type="text" 
-              value={title} 
-              onChange={(e) => setTitle(e.target.value)} 
+              type="email" 
+              name="userEmail"
               required 
               className="form-control"
               style={{
@@ -71,12 +43,28 @@ const Help = () => {
             />
           </div>
 
-          
+          {/* Title Field */}
+          <div className="mb-3">
+            <label className="form-label" style={{ color: "#CFB991" }}>Title:</label>
+            <input 
+              type="text" 
+              name="title"
+              required 
+              className="form-control"
+              style={{
+                borderRadius: "50px",
+                padding: "12px",
+                border: "1px solid #CFB991",
+                color: "#CFB991"
+              }}
+            />
+          </div>
+
+          {/* Description Field */}
           <div className="mb-3">
             <label className="form-label" style={{ color: "#CFB991" }}>Description:</label>
             <textarea 
-              value={description} 
-              onChange={(e) => setDescription(e.target.value)} 
+              name="description"
               required 
               className="form-control"
               rows="3"
@@ -89,6 +77,7 @@ const Help = () => {
             />
           </div>
 
+          {/* Submit Button */}
           <button 
             type="submit" 
             className="btn w-100 rounded-4"
@@ -104,9 +93,6 @@ const Help = () => {
             Submit
           </button>
         </form>
-
-        {/* Show success or error message */}
-        {message && <p className="mt-3 text-black">{message}</p>}
       </div>
 
       {/* Right - Text */}

@@ -165,7 +165,7 @@ const UsersList = () => {
             {selected == "Friends" && (
                 <div className='d-flex flex-column bg-white'>
                     
-                    <div className='mx-auto p-4' style={{width: "90%"}}>
+                    <div className=' p-4 w-100'>
                         <div className='d-flex align-items-center gap-3 py-4 border-bottom'>
                             <img src={avatarPlaceholder} style={{width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover"}}/>
                             <div className='d-flex flex-column justify-content-center w-100'>
@@ -248,7 +248,7 @@ const UsersList = () => {
                         </h5>
                     </div>
 
-                    <div className='d-flex flex-column w-100'>
+                    <div className='d-flex flex-column w-100 '>
 
                         <div className='d-flex align-items-center gap-3 p-4'>
                             

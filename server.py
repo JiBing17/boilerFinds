@@ -375,27 +375,6 @@ def update_profile():
         print(f"Error updating profile: {e}")
         return jsonify({"error": "An error occurred while updating the profile."}), 500
 
-@app.route('/send_help_email', methods=['POST'])
-def send_help_email():
-    data = request.get_json()
-    title = data.get('title')
-    description = data.get('description')
-
-    if not title or not description:
-        return jsonify({"error": "Title and description are required."}), 400
-
-    try:
-        # Send the email to your own address
-        msg = Message(subject=title,
-                      sender=app.config['MAIL_USERNAME'],
-                      recipients=[app.config['MAIL_USERNAME']])
-        msg.body = description
-        mail.send(msg)
-        return jsonify({"message": "Email sent successfully!"}), 200
-    except Exception as e:
-        print(f"Error sending email: {e}")
-        return jsonify({"error": "An error occurred while sending email."}), 500
-
 # route for returning an array of ALL users except current user
 @app.route('/all_users', methods=['GET'])
 def get_all_users():
