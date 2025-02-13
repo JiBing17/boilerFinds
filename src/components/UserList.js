@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faUserPlus, faCheck, faXmark} from '@fortawesome/free-solid-svg-icons';
 import avatarPlaceholder from '../pictures/avatarPFP.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from './Header';
@@ -15,6 +15,8 @@ const UsersList = () => {
   // retrieve the currently logged in user's email from localStorage
   const storedUser = JSON.parse(localStorage.getItem('user'));
   const currentUserEmail = storedUser?.email;
+
+
 
   useEffect(() => {
     if (!currentUserEmail) {
@@ -88,9 +90,9 @@ const UsersList = () => {
             )}
 
             <div className='d-flex align-items-center'>
-                <button className='w-100 px-4 py-2 text-white fw-bold' style={{backgroundColor: "#C8890E", fontSize: "1.2rem",  border: `${selected === "Discover" ? "2px solid white": "2px solid black"}`}} onClick={()=> {setSelected("Discover")}}>Discover</button>
-                <button className='w-100 px-4 py-2 text-white fw-bold' style={{backgroundColor: "#C8890E", fontSize: "1.2rem",  border: `${selected === "My Friends" ? "2px solid white": "2px solid black"}`}} onClick={()=> {setSelected("Friends")}}>Friends</button>
-                <button className='w-100 px-4 py-2 text-white fw-bold' style={{backgroundColor: "#C8890E", fontSize: "1.2rem",  border: `${selected === "Requests" ? "2px solid white": "2px solid black"}`}} onClick={()=> {setSelected("Requests")}}>Requests</button>
+                <button className='w-100 px-4 py-2 text-white fw-bold' style={{backgroundColor: "#C8890E", fontSize: "1.2rem",  border: `${selected === "Discover" ? "2px solid #CFB991": "2px solid black"}`}} onClick={()=> {setSelected("Discover")}}>Discover</button>
+                <button className='w-100 px-4 py-2 text-white fw-bold' style={{backgroundColor: "#C8890E", fontSize: "1.2rem",  border: `${selected === "My Friends" ? "2px solid #CFB991": "2px solid black"}`}} onClick={()=> {setSelected("Friends")}}>Friends</button>
+                <button className='w-100 px-4 py-2 text-white fw-bold' style={{backgroundColor: "#C8890E", fontSize: "1.2rem",  border: `${selected === "Requests" ? "2px solid #CFB991": "2px solid black"}`}} onClick={()=> {setSelected("Requests")}}>Requests</button>
             </div>
             {selected== "Discover" && (<div className="row p-4" style={{backgroundColor: "#CFB991"}}>
 
@@ -163,64 +165,176 @@ const UsersList = () => {
             {selected == "Friends" && (
                 <div className='d-flex flex-column bg-white'>
                     
-                    <div className='w-75 mx-auto'>
-                        <div className='d-flex align-items-center gap-3 px-3 py-2' style={{borderBottom: "1px solid black"}}>
+                    <div className='mx-auto p-4' style={{width: "90%"}}>
+                        <div className='d-flex align-items-center gap-3 py-4 border-bottom'>
                             <img src={avatarPlaceholder} style={{width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover"}}/>
                             <div className='d-flex flex-column justify-content-center w-100'>
-                                <h4 className="mb-1"style={{textAlign: "left", fontSize: "1.1rem"}}>Name</h4>
+                                <h4 className="mb-1 fw-bold"style={{textAlign: "left", fontSize: "1.1rem"}}>Name</h4>
                                 <p className="mb-0 text-muted"style={{textAlign: "left", fontSize: ".9rem"}}>email</p>
                             </div>
-                            <button className='px-2 py-1 rounded text-white' style={{backgroundColor: "blue", border:"None", boxShadow:"rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px"}}>Message</button>
+                            <button className='px-2 py-1 rounded text-white fw-bold' 
+                            style={{
+                                backgroundColor: "#CFB991", 
+                                border:"None", 
+                                boxShadow:"rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+                                transition: "all 0.3s ease-in-out",
+                            }} 
+                            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+                            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                            >Message</button>
                         </div>
-                        <div className='d-flex align-items-center gap-3 px-3 py-2' style={{borderBottom: "1px solid black"}}>
+                        <div className='d-flex align-items-center gap-3 py-4 border-bottom'>
                             <img src={avatarPlaceholder} style={{width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover"}}/>
                             <div className='d-flex flex-column justify-content-center w-100'>
-                                <h4 className="mb-1"style={{textAlign: "left", fontSize: "1.1rem"}}>Name</h4>
+                                <h4 className="mb-1 fw-bold"style={{textAlign: "left", fontSize: "1.1rem"}}>Name</h4>
                                 <p className="mb-0 text-muted"style={{textAlign: "left", fontSize: ".9rem"}}>email</p>
                             </div>
-                            <button className='px-2 py-1 rounded text-white' style={{backgroundColor: "blue", border:"None", boxShadow:"rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px"}}>Message</button>
+                            <button className='px-2 py-1 rounded text-white fw-bold' 
+                            style={{
+                                backgroundColor: "#CFB991", 
+                                border:"None", 
+                                boxShadow:"rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+                                transition: "all 0.3s ease-in-out",
+                            }} 
+                            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+                            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                            >Message</button>
                         </div>
-                        <div className='d-flex align-items-center gap-3 px-3 py-2' style={{borderBottom: "1px solid black"}}>
+                        <div className='d-flex align-items-center gap-3 py-4 border-bottom'>
                             <img src={avatarPlaceholder} style={{width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover"}}/>
                             <div className='d-flex flex-column justify-content-center w-100'>
-                                <h4 className="mb-1"style={{textAlign: "left", fontSize: "1.1rem"}}>Name</h4>
+                                <h4 className="mb-1 fw-bold"style={{textAlign: "left", fontSize: "1.1rem"}}>Name</h4>
                                 <p className="mb-0 text-muted"style={{textAlign: "left", fontSize: ".9rem"}}>email</p>
                             </div>
-                            <button className='px-2 py-1 rounded text-white' style={{backgroundColor: "blue", border:"None", boxShadow:"rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px"}}>Message</button>
+                            <button className='px-2 py-1 rounded text-white fw-bold' 
+                            style={{
+                                backgroundColor: "#CFB991", 
+                                border:"None", 
+                                boxShadow:"rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+                                transition: "all 0.3s ease-in-out",
+                            }} 
+                            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+                            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                            >Message</button>
                         </div>
-                        <div className='d-flex align-items-center gap-3 px-3 py-2' style={{borderBottom: "1px solid black"}}>
+                        <div className='d-flex align-items-center gap-3 py-4 border-bottom'>
                             <img src={avatarPlaceholder} style={{width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover"}}/>
                             <div className='d-flex flex-column justify-content-center w-100'>
-                                <h4 className="mb-1"style={{textAlign: "left", fontSize: "1.1rem"}}>Name</h4>
+                                <h4 className="mb-1 fw-bold"style={{textAlign: "left", fontSize: "1.1rem"}}>Name</h4>
                                 <p className="mb-0 text-muted"style={{textAlign: "left", fontSize: ".9rem"}}>email</p>
                             </div>
-                            <button className='px-2 py-1 rounded text-white' style={{backgroundColor: "blue", border:"None", boxShadow:"rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px"}}>Message</button>
+                            <button className='px-2 py-1 rounded text-white fw-bold' 
+                            style={{
+                                backgroundColor: "#CFB991", 
+                                border:"None", 
+                                boxShadow:"rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+                                transition: "all 0.3s ease-in-out",
+                            }} 
+                            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+                            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                            >Message</button>
                         </div>
-                        <div className='d-flex align-items-center gap-3 px-3 py-2' style={{borderBottom: "1px solid black"}}>
-                            <img src={avatarPlaceholder} style={{width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover"}}/>
-                            <div className='d-flex flex-column justify-content-center w-100'>
-                                <h4 className="mb-1"style={{textAlign: "left", fontSize: "1.1rem"}}>Name</h4>
-                                <p className="mb-0 text-muted"style={{textAlign: "left", fontSize: ".9rem"}}>email</p>
-                            </div>
-                            <button className='px-2 py-1 rounded text-white' style={{backgroundColor: "blue", border:"None", boxShadow:"rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px"}}>Message</button>
-                        </div>
-                        <div className='d-flex align-items-center gap-3 px-3 py-2' style={{borderBottom: "1px solid black"}}>
-                            <img src={avatarPlaceholder} style={{width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover"}}/>
-                            <div className='d-flex flex-column justify-content-center w-100'>
-                                <h4 className="mb-1"style={{textAlign: "left", fontSize: "1.1rem"}}>Name</h4>
-                                <p className="mb-0 text-muted"style={{textAlign: "left", fontSize: ".9rem"}}>email</p>
-                            </div>
-                            <button className='px-2 py-1 rounded text-white' style={{backgroundColor: "blue", border:"None", boxShadow:"rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px"}}>Message</button>
-                        </div>
-
+                        
                     </div>
                     
-
-
                 </div>
             )}
             {selected == "Requests" && (
-                <div>Req</div>
+                <div className='d-flex flex-column justify-content-center align-items-center' style={{backgroundColor: "white"}}>
+                    <div className='d-flex align-items-start w-100 border-bottom'>
+
+                        <h5 className='border-white p-3' style={{color: "#CFB991"}}>                    
+                            Friend Requests
+                        </h5>
+                    </div>
+
+                    <div className='d-flex flex-column w-100'>
+
+                        <div className='d-flex align-items-center gap-3 p-4'>
+                            
+                            <img src={avatarPlaceholder} style={{width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover"}}/>
+                            <div className='d-flex flex-column justify-content-center w-100'>
+                                <h4 className="mb-1 fw-bold"style={{textAlign: "left", fontSize: "1.1rem"}}>Name</h4>
+                                <p className="mb-0 text-muted"style={{textAlign: "left", fontSize: ".9rem"}}>email</p>
+                            </div>
+
+                            <button className='rounded-circle fw-bold' style={{backgroundColor: "white", border: "none", boxShadow: "0px 4px 8px rgba(100, 100, 100, 0.2)", transition: "all .3s ease-in-out", width: "50px", height: "50px"}}    
+                                onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+                                onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}>
+                                <FontAwesomeIcon icon={faCheck} style={{color:"green"}} size='lg'/>
+                            </button>
+                            <button className='rounded-circle fw-bold' style={{backgroundColor: "white", border: "none", boxShadow: "0px 4px 8px rgba(100, 100, 100, 0.2)", transition: "all .3s ease-in-out", width: "50px", height: "50px"}} 
+                                onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+                                onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}>
+                                <FontAwesomeIcon icon={faXmark} style={{color:"red"}} size='lg'/>
+                            </button>
+
+                        </div>
+                        <div className='d-flex align-items-center gap-3 p-4'>
+                            
+                            <img src={avatarPlaceholder} style={{width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover"}}/>
+                            <div className='d-flex flex-column justify-content-center w-100'>
+                                <h4 className="mb-1 fw-bold"style={{textAlign: "left", fontSize: "1.1rem"}}>Name</h4>
+                                <p className="mb-0 text-muted"style={{textAlign: "left", fontSize: ".9rem"}}>email</p>
+                            </div>
+
+                            <button className='rounded-circle fw-bold' style={{backgroundColor: "white", border: "none", boxShadow: "0px 4px 8px rgba(100, 100, 100, 0.2)", transition: "all .3s ease-in-out", width: "50px", height: "50px"}}    
+                                onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+                                onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}>
+                                <FontAwesomeIcon icon={faCheck} style={{color:"green"}} size='lg'/>
+                            </button>
+                            <button className='rounded-circle fw-bold' style={{backgroundColor: "white", border: "none", boxShadow: "0px 4px 8px rgba(100, 100, 100, 0.2)", transition: "all .3s ease-in-out", width: "50px", height: "50px"}} 
+                                onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+                                onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}>
+                                <FontAwesomeIcon icon={faXmark} style={{color:"red"}} size='lg'/>
+                            </button>
+
+                        </div>
+                        <div className='d-flex align-items-center gap-3 p-4'>
+                            
+                            <img src={avatarPlaceholder} style={{width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover"}}/>
+                            <div className='d-flex flex-column justify-content-center w-100'>
+                                <h4 className="mb-1 fw-bold"style={{textAlign: "left", fontSize: "1.1rem"}}>Name</h4>
+                                <p className="mb-0 text-muted"style={{textAlign: "left", fontSize: ".9rem"}}>email</p>
+                            </div>
+
+                            <button className='rounded-circle fw-bold' style={{backgroundColor: "white", border: "none", boxShadow: "0px 4px 8px rgba(100, 100, 100, 0.2)", transition: "all .3s ease-in-out", width: "50px", height: "50px"}}    
+                                onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+                                onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}>
+                                <FontAwesomeIcon icon={faCheck} style={{color:"green"}} size='lg'/>
+                            </button>
+                            <button className='rounded-circle fw-bold' style={{backgroundColor: "white", border: "none", boxShadow: "0px 4px 8px rgba(100, 100, 100, 0.2)", transition: "all .3s ease-in-out", width: "50px", height: "50px"}} 
+                                onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+                                onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}>
+                                <FontAwesomeIcon icon={faXmark} style={{color:"red"}} size='lg'/>
+                            </button>
+
+                        </div>
+                        <div className='d-flex align-items-center gap-3 p-4'>
+                            
+                            <img src={avatarPlaceholder} style={{width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover"}}/>
+                            <div className='d-flex flex-column justify-content-center w-100'>
+                                <h4 className="mb-1 fw-bold"style={{textAlign: "left", fontSize: "1.1rem"}}>Name</h4>
+                                <p className="mb-0 text-muted"style={{textAlign: "left", fontSize: ".9rem"}}>email</p>
+                            </div>
+
+                            <button className='rounded-circle fw-bold' style={{backgroundColor: "white", border: "none", boxShadow: "0px 4px 8px rgba(100, 100, 100, 0.2)", transition: "all .3s ease-in-out", width: "50px", height: "50px"}}    
+                                onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+                                onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}>
+                                <FontAwesomeIcon icon={faCheck} style={{color:"green"}} size='lg'/>
+                            </button>
+                            <button className='rounded-circle fw-bold' style={{backgroundColor: "white", border: "none", boxShadow: "0px 4px 8px rgba(100, 100, 100, 0.2)", transition: "all .3s ease-in-out", width: "50px", height: "50px"}} 
+                                onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+                                onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}>
+                                <FontAwesomeIcon icon={faXmark} style={{color:"red"}} size='lg'/>
+                            </button>
+
+                        </div>
+
+                        
+                    </div>
+
+                </div>
             )}
         </div>
     </>
