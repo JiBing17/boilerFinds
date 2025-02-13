@@ -1,11 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
-import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faRightFromBracket, faUser, faCircleQuestion, faUserGroup } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
 
@@ -16,20 +12,19 @@ const handleLogout = () => {
     navigate('/'); // Redirect to login
 };
 
-
     return (
-        <div className="position-relative" style={{ width: "100%" }}>
+        <div className="position-relative p-1" style={{ width: "100%" }}>
           <div
             className="position-fixed"
             style={{
-              padding: "1rem 2rem",
               backgroundColor: "#CFB991",
               top: "0",
               left: "0",
               right: "0",
               height: "60px",
               zIndex: "100",
-              borderBottom: "4px solid #101010"
+              boxShadow: "0 0 20px rgba(255, 255, 255, 0.5)"
+
             }}
           >
             <div
@@ -56,14 +51,12 @@ const handleLogout = () => {
 
               }}
             >   
-            <div className='d-flex align-items-center justify-content-center gap-3'>
-                <FontAwesomeIcon icon={faUserPlus} style={{fontSize: "1.3rem", cursor: "pointer"}} onClick={ ()=> navigate('/userlist')}/>
-                <FontAwesomeIcon icon={faCircleQuestion} style={{ fontSize: "1.3rem", cursor: "pointer" }} onClick={ ()=> navigate('/help')} />
-                <FontAwesomeIcon icon={faUser} style={{fontSize: "1.3rem", cursor: "pointer"}}  onClick={ ()=> navigate('/profile')}/>
-                <FontAwesomeIcon icon={faRightFromBracket} style={{fontSize: "1.3rem", cursor: "pointer"}} onClick={handleLogout}/>
-
-            </div>
-                
+            <div className='d-flex align-items-center justify-content-evenly gap-3 w-100'>
+                <FontAwesomeIcon icon={faUserGroup} style={{fontSize: "1.6rem", cursor: "pointer"}} onClick={ ()=> navigate('/userlist')}/>
+                <FontAwesomeIcon icon={faCircleQuestion} style={{ fontSize: "1.6rem", cursor: "pointer" }} onClick={ ()=> navigate('/help')} />
+                <FontAwesomeIcon icon={faUser} style={{fontSize: "1.6rem", cursor: "pointer"}}  onClick={ ()=> navigate('/profile')}/>
+                <FontAwesomeIcon icon={faRightFromBracket} style={{fontSize: "1.6rem", cursor: "pointer"}} onClick={handleLogout}/>
+            </div>     
             </div>
           </div>
         </div>

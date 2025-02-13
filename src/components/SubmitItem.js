@@ -92,7 +92,7 @@ const SubmitItem = () => {
   return (
 
     <>
-    <div className='d-flex align-items-center justify-content-center p-5 vh-100' style={{backgroundColor: "#101010", marginTop: "3rem"}}>
+    <div className='d-flex flex-column flex-md-row align-items-center justify-content-center p-5 vh-100' style={{backgroundColor: "#101010", marginTop: "3rem"}}>
 
       {/* Left - Text */}
       <div className='d-flex flex-column align-items-center justify-content-center w-50'>
