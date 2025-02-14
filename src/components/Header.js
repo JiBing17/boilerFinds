@@ -66,7 +66,7 @@ const handleLogout = () => {
               className="position-absolute d-flex d-md-none"
               style={{
                 top: "50%",
-                right: "20px",
+                right: "0",
                 transform: "translateY(-50%)"
               }}
             >
@@ -97,7 +97,7 @@ const handleLogout = () => {
                 }}
               >
                 <button 
-                  className="dropdown-item" 
+                  className="dropdown-item" s
                   style={{
                     cursor: "pointer",
                     backgroundColor: "transparent",
