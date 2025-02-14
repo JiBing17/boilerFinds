@@ -82,82 +82,85 @@ const handleLogout = () => {
           </div>
 
           {/* Dropdown menu for small devices */}
-          {menuOpen && (
-              <div 
-                className="d-md-none"
-                style={{
-                  position: "fixed",
-                  top: "0",
-                  left: "0",
-                  bottom: "0",
-                  backgroundColor: "#CFB991",
-                  boxShadow: "0 0 10px rgba(0,0,0,0.1)",
-                  minWidth: "150px",
-                  padding: "0.5rem 0"
-                }}
-              >
-                <button 
-                  className="dropdown-item" s
-                  style={{
-                    cursor: "pointer",
-                    backgroundColor: "transparent",
-                    border: "none",
-                    color: "#000",
-                    textAlign: "left",
-                    width: "100%",
-                    padding: "0.5rem 1rem"
-                  }}
-                  onClick={() => { navigate('/userlist'); setMenuOpen(false); }}
-                >
-                  <FontAwesomeIcon icon={faUserGroup} style={{ marginRight: "8px" }} /> Users
-                </button>
-                <button 
-                  className="dropdown-item" 
-                  style={{
-                    cursor: "pointer",
-                    backgroundColor: "transparent",
-                    border: "none",
-                    color: "#000",
-                    textAlign: "left",
-                    width: "100%",
-                    padding: "0.5rem 1rem"
-                  }}
-                  onClick={() => { navigate('/help'); setMenuOpen(false); }}
-                >
-                  <FontAwesomeIcon icon={faCircleQuestion} style={{ marginRight: "8px" }} /> Help
-                </button>
-                <button 
-                  className="dropdown-item" 
-                  style={{
-                    cursor: "pointer",
-                    backgroundColor: "transparent",
-                    border: "none",
-                    color: "#000",
-                    textAlign: "left",
-                    width: "100%",
-                    padding: "0.5rem 1rem"
-                  }}
-                  onClick={() => { navigate('/profile'); setMenuOpen(false); }}
-                >
-                  <FontAwesomeIcon icon={faUser} style={{ marginRight: "8px" }} /> Profile
-                </button>
-                <button 
-                  className="dropdown-item" 
-                  style={{
-                    cursor: "pointer",
-                    backgroundColor: "transparent",
-                    border: "none",
-                    color: "#000",
-                    textAlign: "left",
-                    width: "100%",
-                    padding: "0.5rem 1rem"
-                  }}
-                  onClick={() => { handleLogout(); setMenuOpen(false); }}
-                >
-                  <FontAwesomeIcon icon={faRightFromBracket} style={{ marginRight: "8px" }} /> Logout
-                </button>
-              </div>
-            )}
+          
+          <div 
+            className="d-md-none"
+            style={{
+              position: "fixed",
+              top: "60px",
+              left: "0",
+              bottom: "0",
+              backgroundColor: "#CFB991",
+              boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+              minWidth: "150px",
+              padding: "0.5rem 0",
+              transition: "transform 0.3s ease-in-out, opacity 0.7s ease-in-out",
+              transform: menuOpen ? "translateX(0)" : "translateX(-220px)",
+              opacity: menuOpen ? "1" : ".6",
+            }}
+          >
+            <button 
+              className="dropdown-item"
+              style={{
+                cursor: "pointer",
+                backgroundColor: "transparent",
+                border: "none",
+                color: "#000",
+                textAlign: "left",
+                width: "100%",
+                padding: "0.5rem 1rem"
+              }}
+              onClick={() => { navigate('/userlist'); setMenuOpen(false); }}
+            >
+              <FontAwesomeIcon icon={faUserGroup} style={{ marginRight: "8px" }} /> Users
+            </button>
+            <button 
+              className="dropdown-item" 
+              style={{
+                cursor: "pointer",
+                backgroundColor: "transparent",
+                border: "none",
+                color: "#000",
+                textAlign: "left",
+                width: "100%",
+                padding: "0.5rem 1rem"
+              }}
+              onClick={() => { navigate('/help'); setMenuOpen(false); }}
+            >
+              <FontAwesomeIcon icon={faCircleQuestion} style={{ marginRight: "8px" }} /> Help
+            </button>
+            <button 
+              className="dropdown-item" 
+              style={{
+                cursor: "pointer",
+                backgroundColor: "transparent",
+                border: "none",
+                color: "#000",
+                textAlign: "left",
+                width: "100%",
+                padding: "0.5rem 1rem"
+              }}
+              onClick={() => { navigate('/profile'); setMenuOpen(false); }}
+            >
+              <FontAwesomeIcon icon={faUser} style={{ marginRight: "8px" }} /> Profile
+            </button>
+            <button 
+              className="dropdown-item" 
+              style={{
+                cursor: "pointer",
+                backgroundColor: "transparent",
+                border: "none",
+                color: "#000",
+                textAlign: "left",
+                width: "100%",
+                padding: "0.5rem 1rem"
+              }}
+              onClick={() => { handleLogout(); setMenuOpen(false); }}
+            >
+              <FontAwesomeIcon icon={faRightFromBracket} style={{ marginRight: "8px" }} /> Logout
+            </button>
+          </div>
+            
 
           </div>
         </div>
