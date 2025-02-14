@@ -92,15 +92,15 @@ const SubmitItem = () => {
   return (
 
     <>
-    <div className='d-flex flex-column flex-md-row align-items-center justify-content-center p-5 vh-100' style={{backgroundColor: "#101010", marginTop: "3rem"}}>
+    <div className='d-flex flex-column flex-md-row align-items-md-end justify-content-center p-5 gap-3' style={{backgroundColor: "#101010", marginTop: "3rem"}}>
 
       {/* Left - Text */}
-      <div className='d-flex flex-column align-items-center justify-content-center w-50'>
-        <h1 className='text-white'>Want to sell an item?</h1>
-        <p className='text-center text-white w-75'>BolerFINDS is your go-to marketplace for buying and selling items within the community. Simply fill out the form, list your item, and wait for interested buyers to reach out. It’s fast, easy, and completely hassle-free!</p>
+      <div className='d-flex flex-column align-items-center justify-content-center col-12 col-md-6'>
+        <h1 className='text-white text-md-start'>Want to sell an item?</h1>
+        <p className='text-center text-white'>BolerFINDS is your go-to marketplace for buying and selling items within the community. Simply fill out the form, list your item, and wait for interested buyers to reach out. It’s fast, easy, and completely hassle-free!</p>
         <div className='d-flex align-items-center justify-content-center'>
           <img src={eMarket} style={{
-              width: "80%",
+              width: "100%",
               height: "auto",
               borderRadius: "10px",
               boxShadow: "0px 4px 8px rgba(255, 255, 255, 0.2)"
@@ -110,7 +110,7 @@ const SubmitItem = () => {
 
 
       {/* Right - FORM */}
-      <div className="d-flex flex-column align-items-center justify-content-center w-50">
+      <div className="d-flex flex-column align-items-center justify-content-center col-12 col-md-6">
         <form 
           onSubmit={handleSubmit} 
           className="p-4 rounded-4"
