@@ -1,11 +1,12 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faRightFromBracket, faUser, faCircleQuestion, faUserGroup } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faRightFromBracket, faUser, faCircleQuestion, faUserGroup, faBars } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
 
 const navigate = useNavigate();
+const [menuOpen, setMenuOpen] = useState(false)
 
 const handleLogout = () => {
     localStorage.removeItem('user'); // Clear user session
@@ -51,13 +52,113 @@ const handleLogout = () => {
 
               }}
             >   
-            <div className='d-flex align-items-center justify-content-evenly gap-3 w-100'>
+
+
+            <div className='d-none d-md-flex align-items-center justify-content-evenly gap-3 w-100'>
                 <FontAwesomeIcon icon={faUserGroup} style={{fontSize: "1.6rem", cursor: "pointer"}} onClick={ ()=> navigate('/userlist')}/>
                 <FontAwesomeIcon icon={faCircleQuestion} style={{ fontSize: "1.6rem", cursor: "pointer" }} onClick={ ()=> navigate('/help')} />
                 <FontAwesomeIcon icon={faUser} style={{fontSize: "1.6rem", cursor: "pointer"}}  onClick={ ()=> navigate('/profile')}/>
                 <FontAwesomeIcon icon={faRightFromBracket} style={{fontSize: "1.6rem", cursor: "pointer"}} onClick={handleLogout}/>
-            </div>     
+            </div>    
+
+            {/* Hamburger menu for small devices */}
+            <div
+              className="position-absolute d-flex d-md-none"
+              style={{
+                top: "50%",
+                right: "20px",
+                transform: "translateY(-50%)"
+              }}
+            >
+              <FontAwesomeIcon 
+                icon={faBars} 
+                style={{ fontSize: "1.8rem", cursor: "pointer" }} 
+                onClick={() => setMenuOpen(!menuOpen)}
+              />
             </div>
+            
+            
+
+          </div>
+
+          {/* Dropdown menu for small devices */}
+          {menuOpen && (
+              <div 
+                className="d-md-none"
+                style={{
+                  position: "fixed",
+                  top: "0",
+                  left: "0",
+                  bottom: "0",
+                  backgroundColor: "#CFB991",
+                  boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+                  minWidth: "150px",
+                  padding: "0.5rem 0"
+                }}
+              >
+                <button 
+                  className="dropdown-item" 
+                  style={{
+                    cursor: "pointer",
+                    backgroundColor: "transparent",
+                    border: "none",
+                    color: "#000",
+                    textAlign: "left",
+                    width: "100%",
+                    padding: "0.5rem 1rem"
+                  }}
+                  onClick={() => { navigate('/userlist'); setMenuOpen(false); }}
+                >
+                  <FontAwesomeIcon icon={faUserGroup} style={{ marginRight: "8px" }} /> Users
+                </button>
+                <button 
+                  className="dropdown-item" 
+                  style={{
+                    cursor: "pointer",
+                    backgroundColor: "transparent",
+                    border: "none",
+                    color: "#000",
+                    textAlign: "left",
+                    width: "100%",
+                    padding: "0.5rem 1rem"
+                  }}
+                  onClick={() => { navigate('/help'); setMenuOpen(false); }}
+                >
+                  <FontAwesomeIcon icon={faCircleQuestion} style={{ marginRight: "8px" }} /> Help
+                </button>
+                <button 
+                  className="dropdown-item" 
+                  style={{
+                    cursor: "pointer",
+                    backgroundColor: "transparent",
+                    border: "none",
+                    color: "#000",
+                    textAlign: "left",
+                    width: "100%",
+                    padding: "0.5rem 1rem"
+                  }}
+                  onClick={() => { navigate('/profile'); setMenuOpen(false); }}
+                >
+                  <FontAwesomeIcon icon={faUser} style={{ marginRight: "8px" }} /> Profile
+                </button>
+                <button 
+                  className="dropdown-item" 
+                  style={{
+                    cursor: "pointer",
+                    backgroundColor: "transparent",
+                    border: "none",
+                    color: "#000",
+                    textAlign: "left",
+                    width: "100%",
+                    padding: "0.5rem 1rem"
+                  }}
+                  onClick={() => { handleLogout(); setMenuOpen(false); }}
+                >
+                  <FontAwesomeIcon icon={faRightFromBracket} style={{ marginRight: "8px" }} /> Logout
+                </button>
+              </div>
+            )}
+
           </div>
         </div>
       );
