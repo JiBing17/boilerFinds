@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import placeHolder from '../pictures/placeholder.jpg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileZipper, faHeart} from '@fortawesome/free-regular-svg-icons';
@@ -32,9 +32,24 @@ const BuyGrid = ({items}) => {
             "titleText": "🏆 Exclusive Feel:",
             "descriptionText": "Limited-time deals you won’t want to miss—start browsing now!",
             "picture": buyItems4
-        },
-
+        }
     ]
+
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    // Function to move to the previous item
+    const prevSlide = () => {
+        setCurrentIndex((prevIndex) =>
+            prevIndex === 0 ? picturesAndText.length - 1 : prevIndex - 1
+        );
+    };
+
+    // Function to move to the next item
+    const nextSlide = () => {
+        setCurrentIndex((prevIndex) =>
+            prevIndex === picturesAndText.length - 1 ? 0 : prevIndex + 1
+        );
+    };
 
     return (
         <>
@@ -44,17 +59,18 @@ const BuyGrid = ({items}) => {
                     Browse Here for Potential Deals!
                 </h3>
                 
-                <div className="position-relative" style={{ height: "500px" }}>
+                <div className="position-relative mb-4" style={{ height: "500px" }}>
 
                     {/* Carousel Image */}
                     <img 
-                        src={picturesAndText[0].picture} 
+                        src={picturesAndText[currentIndex].picture} 
                         alt="Buy Items"
                         style={{ 
                             width: "100%", 
                             maxHeight: "500px", 
                             objectFit: "cover", 
-                            display: "block" 
+                            display: "block", 
+                            borderRadius: "10px"
                         }} 
                     />
 
@@ -62,15 +78,15 @@ const BuyGrid = ({items}) => {
                     <div className="position-absolute d-flex align-items-center justify-content-center rounded-circle"
                         style={{ top: "50%", left: "25%", transform: "translate(-50%, -50%)"}}
                     >
-                        <div className="text-white text-center px-3 p-4">
-                            <h2 className='text-white fw-bold'>{picturesAndText[0].titleText}</h2>
-                            <p className='text-white fw-bold'>{picturesAndText[0].descriptionText}</p>
+                        <div className="text-white text-start px-3 p-4">
+                            <h2 className='text-white fw-bold' style={{textShadow: "2px 2px 8px rgba(0, 0, 0, 0.8)", fontSize: "3rem"}}>{picturesAndText[currentIndex].titleText}</h2>
+                            <p className='text-white fw-bold' style={{textShadow: "2px 2px 8px rgba(0, 0, 0, 0.8)", fontSize: "1.2rem"}}>{picturesAndText[currentIndex].descriptionText}</p>
                         </div>
                     </div>
 
                     {/* Carousel Arrows */}
-                    <FontAwesomeIcon icon={faChevronLeft} style={{fontSize: "2rem",color: "white", position: "absolute", top: "50%", left: "2%"}}/>
-                    <FontAwesomeIcon icon={faChevronRight} style={{fontSize: "2rem",color: "white", position: "absolute", top: "50%", right: "2%"}}/>
+                    <FontAwesomeIcon icon={faChevronLeft} style={{fontSize: "2rem",color: "white", position: "absolute", top: "50%", left: "2%"}} onClick={nextSlide}/>
+                    <FontAwesomeIcon icon={faChevronRight} style={{fontSize: "2rem",color: "white", position: "absolute", top: "50%", right: "2%"}} onClick={prevSlide}/>
                 </div>
 
                 
