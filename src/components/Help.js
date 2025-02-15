@@ -6,7 +6,8 @@ const Help = () => {
   return (
     <>
       <Header/>
-      <div className='d-flex flex-column flex-md-row align-items-center justify-content-center p-5 gap-3' style={{backgroundColor: "#101010", marginTop: "3rem"}}>
+      <div className='d-flex flex-column flex-md-row align-items-center justify-content-center p-5 gap-3' style={{backgroundColor: "#101010", marginTop: "3rem",     minHeight: "calc(100vh - 60px)", // Full screen minus header
+}}>
       {/* Left - FORM */}
       <div className="d-flex flex-column align-items-center justify-content-center w-100">
         <form 

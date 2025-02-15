@@ -54,21 +54,21 @@ const UsersList = () => {
                 backgroundColor: "#101010",
             }}
         >   
-            <div className='d-flex flex-column flex-md-row align-items-center justify-content-center p-4'>
+            <div className='d-flex flex-column flex-md-row align-items-center justify-content-center p-4 gap-3 w-100'>
 
-                <div className='d-flex flex-column align-items-center'>
+                <div className='d-flex flex-column align-items-center w-100'>
                     <h2 className="text-center" style={{ color: "#ffffff" }}>
                         <span style={{color: "#CFB991", fontWeight: "bold"}}>Find</span> and <span style={{color: "#CFB991", fontWeight: "bold"}}>Add</span> Friends
                     </h2>
-                    <p className="text-center text-white mx-auto fst-italic">
+                    <p className="text-center text-white mx-auto fst-italic w-75">
                         Connect with people you know and expand your network. Easily find and add friends to stay updated with their latest activities.  
                         Search for users, send friend requests, and build meaningful connections effortlessly.
                     </p>
                 </div>
 
-                <div className='d-flex align-items-center justify-content-center'>
+                <div className='d-flex align-items-center justify-content-center w-100'>
                     <img src={findFriendsPic} style={{
-                        width: "60%",
+                        width: "100%",
                         height: "auto",
                         borderRadius: "10px",
                         boxShadow: "0px 4px 8px rgba(255, 255, 255, 0.2)"
@@ -90,9 +90,9 @@ const UsersList = () => {
             )}
 
             <div className='d-flex align-items-center'>
-                <button className='w-100 px-4 py-2 text-white fw-bold' style={{backgroundColor: "#C8890E", fontSize: "1.2rem",  border: `${selected === "Discover" ? "2px solid #CFB991": "2px solid black"}`}} onClick={()=> {setSelected("Discover")}}>Discover</button>
-                <button className='w-100 px-4 py-2 text-white fw-bold' style={{backgroundColor: "#C8890E", fontSize: "1.2rem",  border: `${selected === "My Friends" ? "2px solid #CFB991": "2px solid black"}`}} onClick={()=> {setSelected("Friends")}}>Friends</button>
-                <button className='w-100 px-4 py-2 text-white fw-bold' style={{backgroundColor: "#C8890E", fontSize: "1.2rem",  border: `${selected === "Requests" ? "2px solid #CFB991": "2px solid black"}`}} onClick={()=> {setSelected("Requests")}}>Requests</button>
+                <button className='w-100 px-4 py-2 text-white fw-bold' style={{fontSize: "1.2rem",  backgroundColor: `${selected === "Discover" ? "#9E6E0B": "#C8890E"}` }} onClick={()=> {setSelected("Discover")}}>Discover</button>
+                <button className='w-100 px-4 py-2 text-white fw-bold' style={{fontSize: "1.2rem",  backgroundColor: `${selected === "Friends" ? "#9E6E0B": "#C8890E"}`}} onClick={()=> {setSelected("Friends")}}>Friends</button>
+                <button className='w-100 px-4 py-2 text-white fw-bold' style={{fontSize: "1.2rem",  backgroundColor: `${selected === "Requests" ? "#9E6E0B": "#C8890E"}`}} onClick={()=> {setSelected("Requests")}}>Requests</button>
             </div>
             {selected== "Discover" && (<div className="row p-4" style={{backgroundColor: "#CFB991"}}>
 
