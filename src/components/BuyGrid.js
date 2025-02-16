@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import placeHolder from '../pictures/placeholder.jpg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileZipper, faHeart} from '@fortawesome/free-regular-svg-icons';
-import { faChevronLeft, faChevronRight, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faChevronRight, faShoppingCart, faGlobe } from "@fortawesome/free-solid-svg-icons";
 
 import buyItems from '../pictures/buy_items.jpg'
 import buyItems2 from '../pictures/buy_items_2.jpg'
@@ -55,8 +55,10 @@ const BuyGrid = ({items}) => {
         <>
             {/* Grid for displaying items being sold from ALL users */}
             <div className="p-5 container-fluid" style={{backgroundColor: "#CFB991"}}>
+
                 <h1 className="text-center mb-4 fw-bold" style={{ color: "#101010" }}>
-                    Browse Here for Potential Deals!
+                <FontAwesomeIcon icon={faGlobe} className='me-2'/>
+                Browse Here for Potential Deals!
                 </h1>
                 
                 <div className="position-relative mb-4" style={{ height: "500px" }}>

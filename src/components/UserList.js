@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserPlus, faCheck, faXmark} from '@fortawesome/free-solid-svg-icons';
+import { faUserPlus, faCheck, faXmark, faHandshake } from '@fortawesome/free-solid-svg-icons';
 import avatarPlaceholder from '../pictures/avatarPFP.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from './Header';
@@ -58,6 +58,8 @@ const UsersList = () => {
 
                 <div className='d-flex flex-column align-items-center w-100'>
                     <h2 className="text-center" style={{ color: "#ffffff" }}>
+                        <FontAwesomeIcon icon={faHandshake} className='me-2' />
+
                         <span style={{color: "#CFB991", fontWeight: "bold"}}>Find</span> and <span style={{color: "#CFB991", fontWeight: "bold"}}>Add</span> Friends
                     </h2>
                     <p className="text-center text-white mx-auto fst-italic w-75">
