@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import placeHolder from '../pictures/placeholder.jpg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileZipper, faHeart} from '@fortawesome/free-regular-svg-icons';
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faChevronRight, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 import buyItems from '../pictures/buy_items.jpg'
 import buyItems2 from '../pictures/buy_items_2.jpg'
@@ -55,9 +55,9 @@ const BuyGrid = ({items}) => {
         <>
             {/* Grid for displaying items being sold from ALL users */}
             <div className="p-5" style={{backgroundColor: "#CFB991"}}>
-                <h3 className="text-center mb-4 fw-bold" style={{ color: "#101010" }}>
+                <h1 className="text-center mb-4 fw-bold" style={{ color: "#101010" }}>
                     Browse Here for Potential Deals!
-                </h3>
+                </h1>
                 
                 <div className="position-relative mb-4" style={{ height: "500px" }}>
 
@@ -76,10 +76,10 @@ const BuyGrid = ({items}) => {
 
                     {/* Overlay text */}
                     <div className="position-absolute d-flex align-items-center justify-content-center rounded-circle"
-                        style={{ top: "50%", left: "25%", transform: "translate(-50%, -50%)"}}
+                        style={{ top: "50%", left: "26%", transform: "translate(-50%, -50%)"}}
                     >
                         <div className="text-white text-start px-3 p-4">
-                            <h2 className='text-white fw-bold' style={{textShadow: "2px 2px 8px rgba(0, 0, 0, 0.8)", fontSize: "3rem"}}>{picturesAndText[currentIndex].titleText}</h2>
+                            <h1 className='text-white fw-bold' style={{textShadow: "2px 2px 8px rgba(0, 0, 0, 0.8)", fontSize: "3rem"}}>{picturesAndText[currentIndex].titleText}</h1>
                             <p className='text-white fw-bold' style={{textShadow: "2px 2px 8px rgba(0, 0, 0, 0.8)", fontSize: "1.2rem"}}>{picturesAndText[currentIndex].descriptionText}</p>
                         </div>
                     </div>
@@ -91,7 +91,8 @@ const BuyGrid = ({items}) => {
 
                 
         
-                
+                <h1 className='border-bottom border-black mb-4'>Products on feature</h1>
+
                 <div className="row">
                 {items.map((itm) => (
                     <div className="col-md-3 mb-4" key={itm.id}>
@@ -125,13 +126,27 @@ const BuyGrid = ({items}) => {
 
                         <div className="card-body">
                             <h5 className="card-title" style={{ color: "#FFFFFF" }}>
-                                <h5 style={{ color: "#CFB991", display: "inline"}} >{itm.item}</h5>
+                                <span style={{ color: "#CFB991" }}>{itm.item}</span>
                             </h5>
-                            <h6 className="card-subtitle mb-2" style={{ color: "#FFFFFF" }}>
-                                <h6 style={{ color: "#CFB991", display: "inline"}} >${itm.price}</h6>
-                            </h6>
-                        
+
+                            <div className='d-flex align-items-center justify-content-between mt-2'>
+                                <h5 className="card-subtitle" style={{ color: "#FFFFFF" }}>
+                                    <span style={{ color: "#CFB991" }}>${itm.price}</span>
+                                </h5>
+                                <button className='text-white fw-bold rounded px-2 py-1' 
+                                    style={{backgroundColor: "#CFB991", border: "none"}}
+                                    onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
+                                    onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                                >
+                                    <FontAwesomeIcon size='lg' icon={faShoppingCart}/>
+                                </button>
+                            </div>
+                            
+
                         </div>
+
+                        
+
                     </div>
                     </div>
                 ))}
