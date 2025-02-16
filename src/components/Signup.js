@@ -32,29 +32,28 @@ function Signup() {
   }
 
   return (
-    <div className="d-flex vh-100 w-100">
+    <div className="d-flex flex-column flex-md-row w-100">
       
       <div 
-        className="d-flex flex-column justify-content-center align-items-center text-center" 
+        className="d-flex flex-column justify-content-center align-items-center text-center col-md-6 col-12" 
         style={{
-          width: "50vw",
           background: "linear-gradient(135deg, #101010 20%, #3b2e1c 65%, #CFB991 100%)",
           padding: "20px"
         }}
       >
-        <div className='d-flex flex-column align-items-start justify-content-center gap-2 p-4'>
+        <div className='d-flex flex-column gap-2 p-4'>
           <h1 
-            className="fw-bold" 
+            className="fw-bold text-center text-md-start" 
             style={{
               color: "white",
               textShadow: "2px 2px 4px rgba(0,0,0,0.7)",
-              fontSize: "4rem"
+              fontSize: "clamp(1.5rem, 5vw, 3rem)"
             }}
           >
             Create an Account!
           </h1>
 
-          <ul className='list-unstyled text-white d-flex flex-column align-items-start justify-content-center' style={{fontSize: "1rem"}}>
+          <ul className='list-unstyled text-white d-flex flex-column text-center text-md-start' style={{fontSize: "clamp(.8rem, 1vw, 1.1rem)"}}>
               <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>All-in-One Super App – Messaging, voice & video calls, and more in one place</li>
               <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>Instant Sign-Up – Create an account in seconds with just your email</li>
               <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>Your Data, Your Control – No ads, no tracking – just secure and private conversations</li>
@@ -63,7 +62,7 @@ function Signup() {
         
       </div>
 
-      <div className="d-flex flex-column justify-content-center gap-3" style={{width: "50vw", padding: "4rem"}}>
+      <div className="d-flex flex-column justify-content-center gap-3 col-md-6 col-12 p-2 p-md-4">
         <div className='bg-black d-flex align-items-center justify-content-center gap-2 rounded-4 p-2 mx-auto'>
           <h1 style={{ margin: 0, color: "#CFB991"}} onClick={()=>{navigate("/home")}}>Boiler<span className='text-white fw-bold fst-italic'>FINDS</span></h1>
           <FontAwesomeIcon icon={faMagnifyingGlass} style={{fontSize: "2rem", color: "#CFB991"}} onClick={()=>{navigate("/home")}} />
