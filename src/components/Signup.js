@@ -32,13 +32,14 @@ function Signup() {
   }
 
   return (
-    <div className="d-flex flex-column flex-md-row w-100">
+    <div className="d-flex flex-column flex-md-row w-100 vh-100">
       
       <div 
-        className="d-flex flex-column justify-content-center align-items-center text-center col-md-6 col-12" 
+        className="d-flex flex-column justify-content-center align-items-center text-center col-md-6 col-12 h-auto" 
         style={{
           background: "linear-gradient(135deg, #101010 20%, #3b2e1c 65%, #CFB991 100%)",
           padding: "20px"
+
         }}
       >
         <div className='d-flex flex-column gap-2 p-4'>
