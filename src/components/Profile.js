@@ -175,15 +175,15 @@ const Profile = () => {
         onClose={() => setNotification({ message: '', type: '' })}
       />
       <div 
-        className='d-flex align-items-start justify-content-start' 
+        className='d-flex flex-column flex-md-row align-items-start justify-content-start' 
         style={{ backgroundColor: "#101010", marginTop: "1rem", height: "100vh" }}
       >
 
 
         {/* Sidebar */}
         <div 
-          className='d-flex flex-column border border-black pt-5' 
-          style={{ width: "20%", height: "100%", backgroundColor: "#CFB991", borderRadius: "10px" }}
+          className='d-flex flex-column border border-black pt-5 col-md-3 col-12' 
+          style={{height: "100%", backgroundColor: "#CFB991", borderRadius: "10px" }}
         >
           {/* Profile Section */}
           <div 
@@ -230,13 +230,14 @@ const Profile = () => {
         {/* Content Section */}
         <div 
           className='p-4 pt-5' 
-          style={{ width: "80%", backgroundColor: "#1E1E1E", borderRadius: "10px", color: "white", minHeight: "100%" }}
+          style={{ width: "100%", backgroundColor: "#101010", color: "white", heght: "100%"}}
         >
           <div className='p-4'>
             <h2 className="mb-4" style={{ color: "#CFB991", textAlign: "center" }}>Edit Profile</h2>
             <form onSubmit={handleSubmit}>
               <div className='d-flex flex-column align-items-center'>
-                <div className='d-flex align-items-center justify-content-center' style={{width: "100%", gap: "1rem"}}>
+                <div className='d-flex flex-column flex-md-row align-items-center justify-content-center' style={{width: "100%", gap: "1rem"}}>
+
                   <div className='d-flex flex-column align-items-center' style={{width: "100%"}}>
                     {/* Name Field */}
                     <div className="mb-3 w-100">
