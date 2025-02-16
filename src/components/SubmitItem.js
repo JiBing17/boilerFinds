@@ -93,19 +93,45 @@ const SubmitItem = () => {
   return (
 
     <>
-    <div className='d-flex flex-column flex-md-row align-items-md-end justify-content-center p-5 gap-3' style={{backgroundColor: "#101010", marginTop: "3rem"}}>
+    <div className='d-flex flex-column flex-md-row align-items-md-center justify-content-center p-5 gap-3' style={{backgroundColor: "#101010", marginTop: "3rem"}}>
 
       {/* Left - Text */}
       <div className='d-flex flex-column align-items-center justify-content-center col-12 col-md-6'>
-        <h1 className='text-white text-md-start'>Want to sell an item?</h1>
-        <p className='text-center text-white'>Simply fill out the form, list your item, and wait for interested buyers to reach out. It’s fast, easy, and completely hassle-free!</p>
-        <div className='d-flex align-items-center justify-content-center'>
+        <div className='position-relative'>
           <img src={eMarket} style={{
               width: "100%",
               height: "auto",
               borderRadius: "10px",
               boxShadow: "0px 4px 8px rgba(255, 255, 255, 0.2)"
           }}/>
+
+          {/* Empty Overlay */}
+          <div 
+              className="position-absolute top-0 start-0 w-100 h-100"
+              style={{
+                  background: "rgba(0, 0, 0, 0.1)", 
+                  borderRadius: "10px"
+              }}
+          >
+          </div>
+
+          <div className='d-flex flex-column align-items-start justify-content-center position-absolute p-1 p-md-3 top-0 start-0'>
+            <h1 className='text-white' style={{textShadow: "2px 2px 8px rgba(0, 0, 0, 0.8)"}}>🔖Want to sell an item?</h1>
+            <ul 
+              className='text-white fw-light' 
+              style={{
+                textShadow: "2px 2px 8px rgba(0, 0, 0, 0.8)",
+                fontSize: "clamp(.9rem, 2vw, 1.2rem)",
+              }}
+            >
+              <li>📸 Upload an image of your item</li>
+              <li>💰 Set your price and details</li>
+              <li>📩 Get contacted by interested buyers</li>
+              <li>✅ Sell easily with a hassle-free process</li>
+            </ul>
+          </div>
+
+
         </div>
       </div>
 

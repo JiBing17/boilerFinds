@@ -54,7 +54,7 @@ const BuyGrid = ({items}) => {
     return (
         <>
             {/* Grid for displaying items being sold from ALL users */}
-            <div className="p-5" style={{backgroundColor: "#CFB991"}}>
+            <div className="p-5 container-fluid" style={{backgroundColor: "#CFB991"}}>
                 <h1 className="text-center mb-4 fw-bold" style={{ color: "#101010" }}>
                     Browse Here for Potential Deals!
                 </h1>
@@ -65,6 +65,7 @@ const BuyGrid = ({items}) => {
                     <img 
                         src={picturesAndText[currentIndex].picture} 
                         alt="Buy Items"
+                        className='img-fluid'
                         style={{ 
                             width: "100%", 
                             maxHeight: "500px", 
