@@ -3,6 +3,8 @@ import placeHolder from '../pictures/placeholder.jpg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileZipper, faHeart} from '@fortawesome/free-regular-svg-icons';
 import { faChevronLeft, faChevronRight, faShoppingCart, faGlobe } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from 'react-router-dom';
+
 
 import buyItems from '../pictures/buy_items.jpg'
 import buyItems2 from '../pictures/buy_items_2.jpg'
@@ -10,8 +12,11 @@ import buyItems3 from '../pictures/buy_items_3.jpg'
 import buyItems4 from '../pictures/buy_items_4.jpg'
 import market1 from '../pictures/market_1.jpg'
 import market2 from '../pictures/market_2.jpg'
+
 const BuyGrid = ({items}) => {
-    
+    console.log(items)
+
+    const navigate = useNavigate();
 
     const picturesAndText = [
         {
@@ -132,7 +137,8 @@ const BuyGrid = ({items}) => {
                             }}
                             onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
                             onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}                
-                            
+                            onClick={() => navigate(`/shop-item/${itm.id}`, { state: { item: itm } })}
+
                             >
                             <div>
                                 <FontAwesomeIcon icon={faHeart} style={{position: "absolute", top: "10px", right: "10px"}}/>

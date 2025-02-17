@@ -6,6 +6,7 @@ import Home from './components/Home'
 import Help from './components/Help';
 import Profile from './components/Profile';
 import UsersList from './components/UserList';
+import ShopItem from './components/ShopItem';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/help" element={<Help/>} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="/userlist" element={<UsersList/>} />
+        <Route path="/shop-item/:id" element={<ShopItem/>} />
       </Routes>
     </Router>
   );
