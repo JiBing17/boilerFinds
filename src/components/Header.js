@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faRightFromBracket, faUser, faCircleQuestion, faUserGroup, faBars } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faRightFromBracket, faUser, faCircleQuestion, faUserGroup, faBars, faUtensils} from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
 
@@ -55,9 +55,12 @@ const handleLogout = () => {
 
 
             <div className='d-none d-md-flex align-items-center justify-content-evenly gap-3 w-100'>
-                <FontAwesomeIcon icon={faUserGroup} style={{fontSize: "1.6rem", cursor: "pointer"}} onClick={ ()=> navigate('/userlist')}/>
                 <FontAwesomeIcon icon={faCircleQuestion} style={{ fontSize: "1.6rem", cursor: "pointer" }} onClick={ ()=> navigate('/help')} />
+
+                <FontAwesomeIcon icon={faUserGroup} style={{fontSize: "1.6rem", cursor: "pointer"}} onClick={ ()=> navigate('/userlist')}/>
                 <FontAwesomeIcon icon={faUser} style={{fontSize: "1.6rem", cursor: "pointer"}}  onClick={ ()=> navigate('/profile')}/>
+                <FontAwesomeIcon icon={faUtensils} style={{fontSize: "1.6rem", cursor: "pointer"}} onClick={ ()=> navigate('/foodInfo')}/>
+
                 <FontAwesomeIcon icon={faRightFromBracket} style={{fontSize: "1.6rem", cursor: "pointer"}} onClick={handleLogout}/>
             </div>    
 
@@ -143,6 +146,21 @@ const handleLogout = () => {
               onClick={() => { navigate('/profile'); setMenuOpen(false); }}
             >
               <FontAwesomeIcon icon={faUser} style={{ marginRight: "8px" }} /> Profile
+            </button>
+            <button 
+              className="dropdown-item" 
+              style={{
+                cursor: "pointer",
+                backgroundColor: "transparent",
+                border: "none",
+                color: "#000",
+                textAlign: "left",
+                width: "100%",
+                padding: "0.5rem 1rem"
+              }}
+              onClick={() => { navigate('/foodInfo'); setMenuOpen(false); }}
+            >
+              <FontAwesomeIcon icon={faUtensils} style={{ marginRight: "8px" }} /> Food Near Me
             </button>
             <button 
               className="dropdown-item" 

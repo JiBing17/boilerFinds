@@ -8,21 +8,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
 from flask_mail import Mail, Message
+import requests
 
 
 app = Flask(__name__)
 CORS(app)  # enable CORS so React can call the Flask API
 load_dotenv()  # load environment variables from .env file
 
-# configure Flask-Mail for sending emails
-app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
-app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT'))
-app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
-app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
-app.config['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS') == 'True'
-app.config['MAIL_USE_SSL'] = os.getenv('MAIL_USE_SSL') == 'True'
-
-mail = Mail(app)
 
 # build the path to the uploads folder inside the src folder
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'src', 'uploads')
@@ -36,6 +28,9 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+
+OVERPASS_URL = "https://overpass-api.de/api/interpreter"
 
 
 # function to connect to PostgreSQL
@@ -402,6 +397,86 @@ def get_all_users():
     except Exception as e:
         print(f"⚠️ Error fetching users: {e}")
         return jsonify({"error": "Failed to fetch users"}), 500
+    
+    
+# route for call Overpass API to obtain info on nearby food places
+@app.route('/api/food-info')
+def food_info():
+    
+    # retrieve lat and long passed in from call 
+    lat = request.args.get('lat')
+    lng = request.args.get('lng')
+    
+    # not enough info
+    if not lat or not lng:
+        return jsonify({'error': 'Latitude and Longitude are required.'}), 400
+
+    # convert values into float
+    try:
+        lat = float(lat)
+        lng = float(lng)
+        
+    except ValueError:
+        return jsonify({'error': 'Latitude and Longitude must be numbers.'}), 400
+
+    # Define search radius in meters 
+    radius = 1000
+
+    # build the Overpass QL query to find restaurants
+    query = f"""
+    [out:json];
+    (
+      node["amenity"="restaurant"](around:{radius},{lat},{lng});
+      way["amenity"="restaurant"](around:{radius},{lat},{lng});
+      relation["amenity"="restaurant"](around:{radius},{lat},{lng});
+    );
+    out center;
+    """
+
+    # Send the request to Overpass API
+    response = requests.post(OVERPASS_URL, data={'data': query})
+    
+    # fail case
+    if response.status_code != 200:
+        return jsonify({'error': 'Failed to fetch data from Overpass API'}), response.status_code
+
+    # obtain data from sucess call
+    data = response.json()
+    
+    # print(data)
+    
+    """ Sample : {'type': 'way', 
+         'id': 71497486, 
+         'center': {'lat': 40.4245646, 'lon': -86.907766}, 
+         'nodes': [1312604431, 850436980, 850436891, 1312604494, 1312604431], 
+         'tags': {'amenity': 'restaurant', 'building': 'yes', 'name': 'Rolling Bowl'}},  
+    """
+    
+    # process the elements returned by Overpass
+    restaurants = []
+    
+    for element in data.get('elements', []):
+        
+        tags = element.get('tags', {})
+        
+        restaurant = {
+            "id": element.get('id'),
+            "tags": tags,  
+        }
+        # Extract coordinates either from the element directly or from its center
+        if element.get('lat') and element.get('lon'):
+            restaurant["lat"] = element.get('lat')
+            restaurant["lon"] = element.get('lon')
+        elif element.get('center'):
+            restaurant["lat"] = element.get('center', {}).get('lat')
+            restaurant["lon"] = element.get('center', {}).get('lon')
+        restaurants.append(restaurant)    
+        
+        
+        # print("res: ", restaurants)
+    
+    return jsonify(restaurants)
+
 
 
 # run server
