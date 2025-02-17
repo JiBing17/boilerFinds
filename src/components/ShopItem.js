@@ -18,9 +18,19 @@ const ShopItem = () => {
        <>
        <Header/>
 
-
         <div className='' style={{marginTop: "3rem"}}>
-            <p className='p-4'><FontAwesomeIcon icon={faArrowLeft} className='me-2'/>Back to Results</p>
+            <a className='p-4 d-block ' style={{textDecoration: "none", color: "#101010"}} 
+                onClick={ ()=> {
+                    navigate('/home');  
+                    setTimeout(() => {
+                    const targetElement = document.getElementById('productDisplay');
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }, 500);} 
+                }
+            >
+            <FontAwesomeIcon icon={faArrowLeft} className='me-2' />Back to Results</a>
 
             <div className='d-flex px-4 w-100'>
                 <img src={item.image && item.image !== "" ? `http://127.0.0.1:5000/uploads/${item.image}` : placeHolder} className='h-auto d-block col-md-6' style={{maxWidth: "100%", maxHeight: "80vh", objectFit: "cover"}}/>
