@@ -64,7 +64,7 @@ function Signup() {
       </div>
 
       <div className="d-flex flex-column justify-content-center gap-3 col-md-6 col-12 p-2 p-md-4">
-        <div className='bg-black d-flex align-items-center justify-content-center gap-2 rounded-4 p-2 mx-auto'>
+        <div className='bg-black d-flex align-items-center justify-content-center gap-2 rounded p-2 mx-auto'>
           <h1 style={{ margin: 0, color: "#CFB991"}} onClick={()=>{navigate("/home")}}>Boiler<span className='text-white fw-bold fst-italic'>FINDS</span></h1>
           <FontAwesomeIcon icon={faMagnifyingGlass} style={{fontSize: "2rem", color: "#CFB991"}} onClick={()=>{navigate("/home")}} />
         </div>
