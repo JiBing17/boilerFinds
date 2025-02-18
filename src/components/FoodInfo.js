@@ -51,7 +51,7 @@ const FoodInfo = () => {
         "sandwich": "🥪",
         "sandwhich": "🥪", // covers common misspelling
         "steak_house": "🥩"
-      };
+    };
 
     // Example using require (assuming images are stored in ../pictures/cuisine/)
     // You can also use import statements if you prefer.
@@ -97,24 +97,21 @@ const FoodInfo = () => {
     };
 
       
-      // Helper function to get an emoji for a given cuisine.
-      // Falls back to a generic "🍽️" if the cuisine isn't in the mapping.
-      const getCuisineEmoji = (cuisine) => {
+    // Helper function to get an emoji for a given cuisine.
+    // Falls back to a generic "🍽️" if the cuisine isn't in the mapping.
+    const getCuisineEmoji = (cuisine) => {
         if (!cuisine) return "🍽️";
-        const key = cuisine.trim().toLowerCase();
+            const key = cuisine.trim().toLowerCase();
         return cuisineEmojiMapping[key] || "🍽️";
-      };
+    };
 
-      const getCuisineImage = (cuisine) => {
+    const getCuisineImage = (cuisine) => {
         if (!cuisine) return placeHolder; // Provide a default image if needed
-
         // Split the string by ';' and take the first item
-        const firstCuisine = cuisine.split(';')[0].trim().toLowerCase();
-        
+        const firstCuisine = cuisine.split(';')[0].trim().toLowerCase();     
         // Return the mapped image or the default image if not found
         return cuisineImageMapping[firstCuisine] || placeHolder;
-
-      };
+    };
       
     
     const [restaurants, setRestaurants] = useState([]);
@@ -188,8 +185,23 @@ const FoodInfo = () => {
     
     // filter restaurants based on selected cuisine
     const filteredRestaurants = selectedCuisine
-    ? restaurants.filter(r => (r.tags.cuisine || "").includes(selectedCuisine))
+    ? restaurants.filter(r => {
+        
+        console.log(selectedCuisine)
+        console.log(r.tags.cuisine)
+
+        // return all defined cuisines
+        if (selectedCuisine === "Unknown") {
+            // include restaurants with no defined cuisine
+            return !r.tags.cuisine;
+          }
+        // return cuisines that include the selected filter text
+        return (r.tags.cuisine || "").includes(selectedCuisine)
+    
+    })
     : restaurants;
+
+    
       
 
     // dummy display for info
@@ -237,6 +249,7 @@ const FoodInfo = () => {
             }
         `}
         </style>
+
         <Header/>
         <div style={{ padding: '20px', marginTop: "3rem", backgroundColor: "#101010"}}>
 
@@ -246,7 +259,7 @@ const FoodInfo = () => {
                     
                     <div className='d-flex flex-column align-items-start justify-content-center col-md-4 col-12'>
                         <h1 className='fw-bold fst-italic text-center text-md-start'>Delicious Food is Waiting for you</h1>
-                        <div className='text-center text-md-start'>
+                        <div className='text-center fst-italic text-md-start'>
                             <ul class="list-unstyled">
                                 <li class="mb-2">
                                 <span class="me-2">🍽️</span> From sizzling street eats to gourmet dining
@@ -290,7 +303,7 @@ const FoodInfo = () => {
                     </div>
                     <div className='d-flex flex-column align-items-start justify-content-center col-md-4 col-12'>
                         <h1 className='ms-md-4 ms-0 fw-bold fst-italic text-center text-md-start'>Sip & Savor the Perfect Drink</h1>
-                        <div className='ms-md-4 ms-0 text-center text-md-start'>
+                        <div className='ms-md-4 ms-0 fst-italic text-center text-md-start'>
                             <ul class="list-unstyled">
                                 <li class="mb-2"><span class="me-2">🍹</span> Refreshing cocktails crafted to perfection</li>
                                 <li class="mb-2"><span class="me-2">🍺</span> Local brews that delight every palate</li>
@@ -307,7 +320,7 @@ const FoodInfo = () => {
                     
                     <div className='d-flex flex-column align-items-start justify-content-center col-md-4 col-12'>
                         <h1 className='fw-bold fst-italic text-center text-md-start'>Indulge in Sweet Temptations</h1>
-                        <div className=' text-center text-md-start' >
+                        <div className=' text-center fst-italic text-md-start' >
                             <ul class="list-unstyled">
                                 <li class="mb-2"><span class="me-2">🍰</span> Decadent cakes and pastries that melt in your mouth</li>
                                 <li class="mb-2"><span class="me-2">🍦</span> Creamy, dreamy ice creams for every craving</li>
