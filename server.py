@@ -9,6 +9,7 @@ from werkzeug.utils import secure_filename
 from flask import send_from_directory
 from flask_mail import Mail, Message
 import requests
+from math import radians, sin, cos, sqrt, atan2
 
 
 app = Flask(__name__)
@@ -398,6 +399,18 @@ def get_all_users():
         print(f"⚠️ Error fetching users: {e}")
         return jsonify({"error": "Failed to fetch users"}), 500
     
+# Function to calculate the distance between two coordinates
+def haversine(lat1, lon1, lat2, lon2):
+    R = 6371  # Radius of the Earth in km
+    lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
+    
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+    return R * c  # Distance in km
+
+
     
 # route for call Overpass API to obtain info on nearby food places
 @app.route('/api/food-info')
@@ -454,16 +467,23 @@ def food_info():
     
     # process the elements returned by Overpass
     restaurants = []
-    
+    cuisines_set = set()  # To store unique cuisines
+
     for element in data.get('elements', []):
         
         tags = element.get('tags', {})
-        
+        cuisine = tags.get("cuisine", "Unknown")
+
+        # Handle multiple cuisines separated by `;`
+        cuisine_list = cuisine.split(";") if ";" in cuisine else [cuisine]
+        for c in cuisine_list:
+            cuisines_set.add(c.strip())  # Add each cuisine type
+            
         restaurant = {
             "id": element.get('id'),
             "tags": tags,  
         }
-        # Extract coordinates either from the element directly or from its center
+        # extract coordinates either from the element directly or from its center
         if element.get('lat') and element.get('lon'):
             restaurant["lat"] = element.get('lat')
             restaurant["lon"] = element.get('lon')
@@ -472,13 +492,17 @@ def food_info():
             restaurant["lon"] = element.get('center', {}).get('lon')
         restaurants.append(restaurant)    
         
+        # Calculate distance if coordinates exist
+        if "lat" in restaurant and "lon" in restaurant:
+            restaurant["distance_km"] = round(haversine(lat, lng, restaurant["lat"], restaurant["lon"]), 2)
+        
         
         # print("res: ", restaurants)
     
-    return jsonify(restaurants)
-
-
-
+    return jsonify({
+        "restaurants": restaurants,
+        "cuisines": sorted(cuisines_set)  # Convert to sorted list for UI
+    })
 # run server
 if __name__ == '__main__':
     app.run(debug=True)
