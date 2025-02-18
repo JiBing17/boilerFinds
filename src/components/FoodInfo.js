@@ -4,99 +4,16 @@ import placeHolder from '../pictures/placeholder.jpg'
 import food from '../pictures/food/food.jpg'
 import food2 from '../pictures/food/food_2.jpg'
 import food3 from '../pictures/food/food_3.jpg'
-
 import drink from '../pictures/food/drink.jpg'
 import drink_2 from '../pictures/food/drink_2.jpg'
+import { useNavigate } from 'react-router-dom';
+import { cuisineEmojiMapping, cuisineImageMapping } from "../mappings";
 
 
 const FoodInfo = () => {
 
-
-    const cuisineEmojiMapping = {
-        "italian": "🍕",
-        "pizza": "🍕",
-        "chinese": "🥡",
-        "japanese": "🍣",
-        "korean": "🍲",
-        "indian": "🍛",
-        "mexican": "🌮",
-        "american": "🍔",
-        "french": "🥐",
-        "thai": "🍜",
-        "greek": "🥙",
-        "spanish": "🥘",
-        "vietnamese": "🍜",
-        "burger": "🍔",
-        "sushi": "🍣",
-        "barbecue": "🍖",
-        "seafood": "🦞",
-        "steakhouse": "🥩",
-        "dessert": "🍰",
-        "vegetarian": "🥗",
-        "vegan": "🌱",
-        "turkish": "🍢",
-        "middle eastern": "🥙",
-        "arabic": "🥙",
-        "mediterranean": "🥙",
-        "ice_cream": "🍨",
-        "asian": "🥢",    
-        "breakfast": "🍳",
-        "cajun": "🌶️",
-        "cookie": "🍪",
-        "fish": "🐟",
-        "noodle": "🍜",
-        "pasta": "🍝",
-        "pub": "🍺",
-        "ramen": "🍜",
-        "sandwich": "🥪",
-        "sandwhich": "🥪", // covers common misspelling
-        "steak_house": "🥩"
-    };
-
-    // Example using require (assuming images are stored in ../pictures/cuisine/)
-    // You can also use import statements if you prefer.
-    const cuisineImageMapping = {
-        "italian": require('../pictures/cuisine/italian.jpg'),
-        "pizza": require('../pictures/cuisine/pizza.jpg'),
-        "chinese": require('../pictures/cuisine/chinese.jpg'),
-        "japanese": require('../pictures/cuisine/japanese.jpg'),
-        "korean": require('../pictures/cuisine/korean.jpg'),
-        "indian": require('../pictures/cuisine/indian.jpg'),
-        "mexican": require('../pictures/cuisine/mexican.jpg'),
-        "american": require('../pictures/cuisine/american.jpg'),
-        "french": require('../pictures/cuisine/french.jpg'),
-        "thai": require('../pictures/cuisine/thai.jpg'),
-        "greek": require('../pictures/cuisine/greek.jpg'),
-        "spanish": require('../pictures/cuisine/spanish.jpg'),
-        "vietnamese": require('../pictures/cuisine/vietnamese.jpg'),
-        "burger": require('../pictures/cuisine/burger.jpg'),
-        "sushi": require('../pictures/cuisine/sushi.jpg'),
-        "barbecue": require('../pictures/cuisine/barbecue.jpg'),
-        "seafood": require('../pictures/cuisine/seafood.jpg'),
-        "steakhouse": require('../pictures/cuisine/steakhouse.jpg'),
-        "dessert": require('../pictures/cuisine/dessert.jpg'),
-        "vegetarian": require('../pictures/cuisine/vegetarian.jpg'),
-        "vegan": require('../pictures/cuisine/vegetarian.jpg'),
-        "turkish": require('../pictures/cuisine/turkish.jpg'),
-        "middle eastern": require('../pictures/cuisine/middle_eastern.jpg'),
-        "arabic": require('../pictures/cuisine/arabic.jpg'),
-        "mediterranean": require('../pictures/cuisine/mediterranean.jpg'),
-        "ice_cream": require('../pictures/cuisine/ice_cream.jpg'),
-        "asian": require('../pictures/cuisine/asian.jpg'),
-        "breakfast": require('../pictures/cuisine/breakfast.jpg'),
-        "cajun": require('../pictures/cuisine/cajun.jpg'),
-        "cookie": require('../pictures/cuisine/cookie.jpg'),
-        "fish": require('../pictures/cuisine/fish.jpg'),
-        "noodle": require('../pictures/cuisine/noodle.jpg'),
-        "pasta": require('../pictures/cuisine/pasta.jpg'),
-        "pub": require('../pictures/cuisine/pub.jpg'),
-        "ramen": require('../pictures/cuisine/ramen.jpg'),
-        "sandwich": require('../pictures/cuisine/sandwhich.jpg'),
-        "sandwhich": require('../pictures/cuisine/sandwhich.jpg'), // covers common misspelling
-        "steak_house": require('../pictures/cuisine/steakhouse.jpg')
-    };
-
-      
+    const navigate = useNavigate();
+    
     // Helper function to get an emoji for a given cuisine.
     // Falls back to a generic "🍽️" if the cuisine isn't in the mapping.
     const getCuisineEmoji = (cuisine) => {
@@ -388,6 +305,7 @@ const FoodInfo = () => {
                         style={{ width: "100%", border: "6px solid #101010", boxShadow: "rgba(0, 0, 0, 0.4) 0px 3px 8px", transition: "all 0.3s ease-in-out"}}
                         onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.02)")}
                         onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
+                        onClick={()=>{navigate(`/restaurant/${restaurant.id}`, { state: { restaurant } })}}
                     >
                             
                     <img src={getCuisineImage(restaurant.tags.cuisine)} className="" alt="Restaurant" style={{height: "200px", objectFit: "cover"}} />
