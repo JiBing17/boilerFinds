@@ -116,8 +116,7 @@ const FoodInfo = () => {
 
       };
       
-      
-
+    
     const [restaurants, setRestaurants] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -210,7 +209,34 @@ const FoodInfo = () => {
     return (
         
         <>
-        
+        <style>
+        {`
+            /* For Firefox */
+            #nearby_restaurant {
+                scrollbar-width: thin;
+                scrollbar-color: #101010 transparent;
+            }
+
+            /* For WebKit-based browsers (Chrome, Edge, Safari) */
+            #nearby_restaurant::-webkit-scrollbar {
+                height: 8px; /* Height for horizontal scrollbar */
+            }
+
+            #nearby_restaurant::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            #nearby_restaurant::-webkit-scrollbar-thumb {
+                background-color: #888;
+                border-radius: 4px;
+                border: 2px solid transparent; /* Creates some padding around the thumb */
+            }
+
+            #nearby_restaurant::-webkit-scrollbar-thumb:hover {
+                background-color: #555;
+            }
+        `}
+        </style>
         <Header/>
         <div style={{ padding: '20px', marginTop: "3rem", backgroundColor: "#101010"}}>
 
@@ -302,7 +328,8 @@ const FoodInfo = () => {
 
         <div className="w-100" style={{backgroundColor: "#CFB991"}}>
 
-            <h1 className='fw-bold p-3'>Nearby Restaurants</h1>
+            <h1 className='fw-bold pt-3 ps-3'>Nearby Restaurants</h1>
+            
             <div 
                 id="nearby_restaurant"
                 style={{
@@ -315,7 +342,7 @@ const FoodInfo = () => {
             >
             <   div className="d-flex flex-nowrap gap-2">
                 <button
-                    className={`btn ${selectedCuisine === null ? "btn-light" : "btn-dark"}`}
+                    className={`btn ${selectedCuisine === null ? "btn-light" : "btn-dark"} px-4`}
                     onClick={() => setSelectedCuisine(null)}
                     style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
                 >
@@ -325,9 +352,9 @@ const FoodInfo = () => {
                 {cuisines.map((cuisine) => (
                 <button
                     key={cuisine}
-                    className={`btn ${selectedCuisine === cuisine ? "btn-light" : "btn-dark"}`}
+                    className={`btn ${selectedCuisine === cuisine ? "btn-light" : "btn-dark"} px-4 `}
                     onClick={() => setSelectedCuisine(cuisine)}
-                    style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+                    style={{ display: "flex", flexDirection: "column", alignItems: "center"}}
                 >
                     <span style={{ fontSize: "24px" }}>{getCuisineEmoji(cuisine)}</span>
                     <span style={{ fontSize: "14px", marginTop: "4px" }}>{cuisine}</span>
