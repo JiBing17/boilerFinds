@@ -160,11 +160,11 @@ const FoodInfo = () => {
 
             <div className='d-flex flex-column justify-content-center w-100 text-white gap-4 p-3'>
 
-                <div className='d-flex p-4 '>
+                <div className='d-flex flex-column flex-md-row p-4 gap-3'>
                     
-                    <div className='d-flex flex-column align-items-start justify-content-center col-4'>
-                        <h1>Delicious Food is Waiting for you</h1>
-                        <div >
+                    <div className='d-flex flex-column align-items-start justify-content-center col-md-4 col-12'>
+                        <h1 className='fw-bold fst-italic text-center text-md-start'>Delicious Food is Waiting for you</h1>
+                        <div className='text-center text-md-start'>
                             <ul class="list-unstyled">
                                 <li class="mb-2">
                                 <span class="me-2">🍽️</span> From sizzling street eats to gourmet dining
@@ -179,23 +179,25 @@ const FoodInfo = () => {
                                 <span class="me-2">📍</span> Find the perfect spot for your next bite!
                                 </li>
                             </ul>
+                            <button className='btn btn-primary d-flex w-100 align-items-center justify-content-center'>View More</button>
+
                         </div>
-                        <button className='btn btn-primary'>View More</button>
                     </div>
 
-                    <div className='d-flex col-8'>
+                    <div className='d-flex col-md-8 col-12'>
                         <img className="d-block w-100 rounded" style={{objectFit: "cover", height: "25rem", boxShadow: "0 0 15px rgba(255, 255, 255, 0.7)"}} src={food} alt="Food Picture"/>
                     </div>
                     
                 </div>
-                <div className='d-flex p-4 '>
+                
+                <div className='d-flex flex-column-reverse flex-md-row p-4 gap-3'>
 
-                    <div className='d-flex col-8'>
+                    <div className='d-flex col-12 col-md-8'>
                         <img className="d-block w-100 rounded" style={{objectFit: "cover", height: "25rem", boxShadow: "0 0 15px rgba(255, 255, 255, 0.7)"}} src={drink_2} alt="Food Picture"/>
                     </div>
-                    <div className='d-flex flex-column align-items-end justify-content-center col-4'>
-                        <h1 className='text-end'>Sip & Savor the Perfect Drink</h1>
-                        <div >
+                    <div className='d-flex flex-column align-items-start justify-content-center col-md-4 col-12'>
+                        <h1 className='ms-md-4 ms-0 fw-bold fst-italic text-center text-md-start'>Sip & Savor the Perfect Drink</h1>
+                        <div className='ms-md-4 ms-0 text-center text-md-start'>
                             <ul class="list-unstyled">
                                 <li class="mb-2"><span class="me-2">🍹</span> Refreshing cocktails crafted to perfection</li>
                                 <li class="mb-2"><span class="me-2">🍺</span> Local brews that delight every palate</li>
@@ -208,21 +210,21 @@ const FoodInfo = () => {
                     
                     
                 </div>
-                <div className='d-flex p-4 '>
+                <div className='d-flex flex-column flex-md-row p-4 gap-3'>
                     
-                    <div className='d-flex flex-column align-items-start justify-content-center col-4'>
-                        <h1>Indulge in Sweet Temptations</h1>
-                        <div >
-                        <ul class="list-unstyled">
-                            <li class="mb-2"><span class="me-2">🍰</span> Decadent cakes and pastries that melt in your mouth</li>
-                            <li class="mb-2"><span class="me-2">🍦</span> Creamy, dreamy ice creams for every craving</li>
-                            <li class="mb-2"><span class="me-2">🍮</span> Rich, velvety custards to sweeten your day</li>
-                            <li><span class="me-2">🍩</span> Irresistible treats that are too good to share</li>
-                        </ul>
+                    <div className='d-flex flex-column align-items-start justify-content-center col-md-4 col-12'>
+                        <h1 className='fw-bold fst-italic text-center text-md-start'>Indulge in Sweet Temptations</h1>
+                        <div className=' text-center text-md-start' >
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><span class="me-2">🍰</span> Decadent cakes and pastries that melt in your mouth</li>
+                                <li class="mb-2"><span class="me-2">🍦</span> Creamy, dreamy ice creams for every craving</li>
+                                <li class="mb-2"><span class="me-2">🍮</span> Rich, velvety custards to sweeten your day</li>
+                                <li><span class="me-2">🍩</span> Irresistible treats that are too good to share</li>
+                            </ul>
                         </div>
                     </div>
 
-                    <div className='d-flex col-8'>
+                    <div className='d-flex col-md-8 col-12'>
                         <img className="d-block w-100 rounded" style={{objectFit: "cover", height: "25rem", boxShadow: "0 0 15px rgba(255, 255, 255, 0.7)"}} src={food3} alt="Food Picture"/>
                     </div>
                     
