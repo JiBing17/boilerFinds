@@ -52,6 +52,50 @@ const FoodInfo = () => {
         "sandwhich": "🥪", // covers common misspelling
         "steak_house": "🥩"
       };
+
+    // Example using require (assuming images are stored in ../pictures/cuisine/)
+    // You can also use import statements if you prefer.
+    const cuisineImageMapping = {
+        "italian": require('../pictures/cuisine/italian.jpg'),
+        "pizza": require('../pictures/cuisine/pizza.jpg'),
+        "chinese": require('../pictures/cuisine/chinese.jpg'),
+        "japanese": require('../pictures/cuisine/japanese.jpg'),
+        "korean": require('../pictures/cuisine/korean.jpg'),
+        "indian": require('../pictures/cuisine/indian.jpg'),
+        "mexican": require('../pictures/cuisine/mexican.jpg'),
+        "american": require('../pictures/cuisine/american.jpg'),
+        "french": require('../pictures/cuisine/french.jpg'),
+        "thai": require('../pictures/cuisine/thai.jpg'),
+        "greek": require('../pictures/cuisine/greek.jpg'),
+        "spanish": require('../pictures/cuisine/spanish.jpg'),
+        "vietnamese": require('../pictures/cuisine/vietnamese.jpg'),
+        "burger": require('../pictures/cuisine/burger.jpg'),
+        "sushi": require('../pictures/cuisine/sushi.jpg'),
+        "barbecue": require('../pictures/cuisine/barbecue.jpg'),
+        "seafood": require('../pictures/cuisine/seafood.jpg'),
+        "steakhouse": require('../pictures/cuisine/steakhouse.jpg'),
+        "dessert": require('../pictures/cuisine/dessert.jpg'),
+        "vegetarian": require('../pictures/cuisine/vegetarian.jpg'),
+        "vegan": require('../pictures/cuisine/vegetarian.jpg'),
+        "turkish": require('../pictures/cuisine/turkish.jpg'),
+        "middle eastern": require('../pictures/cuisine/middle_eastern.jpg'),
+        "arabic": require('../pictures/cuisine/arabic.jpg'),
+        "mediterranean": require('../pictures/cuisine/mediterranean.jpg'),
+        "ice_cream": require('../pictures/cuisine/ice_cream.jpg'),
+        "asian": require('../pictures/cuisine/asian.jpg'),
+        "breakfast": require('../pictures/cuisine/breakfast.jpg'),
+        "cajun": require('../pictures/cuisine/cajun.jpg'),
+        "cookie": require('../pictures/cuisine/cookie.jpg'),
+        "fish": require('../pictures/cuisine/fish.jpg'),
+        "noodle": require('../pictures/cuisine/noodle.jpg'),
+        "pasta": require('../pictures/cuisine/pasta.jpg'),
+        "pub": require('../pictures/cuisine/pub.jpg'),
+        "ramen": require('../pictures/cuisine/ramen.jpg'),
+        "sandwich": require('../pictures/cuisine/sandwhich.jpg'),
+        "sandwhich": require('../pictures/cuisine/sandwhich.jpg'), // covers common misspelling
+        "steak_house": require('../pictures/cuisine/steakhouse.jpg')
+    };
+
       
       // Helper function to get an emoji for a given cuisine.
       // Falls back to a generic "🍽️" if the cuisine isn't in the mapping.
@@ -60,6 +104,18 @@ const FoodInfo = () => {
         const key = cuisine.trim().toLowerCase();
         return cuisineEmojiMapping[key] || "🍽️";
       };
+
+      const getCuisineImage = (cuisine) => {
+        if (!cuisine) return placeHolder; // Provide a default image if needed
+
+        // Split the string by ';' and take the first item
+        const firstCuisine = cuisine.split(';')[0].trim().toLowerCase();
+        
+        // Return the mapped image or the default image if not found
+        return cuisineImageMapping[firstCuisine] || placeHolder;
+
+      };
+      
       
 
     const [restaurants, setRestaurants] = useState([]);
@@ -287,14 +343,28 @@ const FoodInfo = () => {
             <div className="row justify-content-center">
                 {filteredRestaurants.map(restaurant => (
                 <div key={restaurant.id} className="col-md-4 mb-4"> {/* Responsive card column */}
-                    <div className="card" style={{ width: "100%" }}> {/* Set width inside column */}
-                    <img src={placeHolder} className="card-img-top" alt="Restaurant" style={{height: "200px", objectFit: "cover"}} />
 
-                    <div className="card-body">
-                        <h5 className="card-title">{restaurant.tags.name || "Unnamed Restaurant"}</h5>
+                    <div className="card" 
+                        style={{ width: "100%", border: "6px solid #101010", boxShadow: "rgba(0, 0, 0, 0.4) 0px 3px 8px", transition: "all 0.3s ease-in-out"}}
+                        onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.02)")}
+                        onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
+                    >
+                            
+                    <img src={getCuisineImage(restaurant.tags.cuisine)} className="" alt="Restaurant" style={{height: "200px", objectFit: "cover"}} />
+
+                    <div className="card-body text-white" style={{backgroundColor: "#101010"}}>
+                        <h5 className="card-title fw-bold">{restaurant.tags.name || "Unnamed Restaurant"}</h5>
                         <p className="card-text">
-                        <strong>Cuisine:</strong> {formatCuisine(restaurant.tags.cuisine) || "Unknown"} <br />
-                        <strong>Distance:</strong> {restaurant.distance_km} km <br />
+                        <div className='d-flex align-items-center justify-content-between'>
+                            <div>                            
+                                <strong>Cuisine:</strong> {formatCuisine(restaurant.tags.cuisine) || "Unknown"} {cuisineEmojiMapping[restaurant.tags.cuisine]}
+                            </div>
+                            <div>
+                                <strong>Distance:</strong> {restaurant.distance_km} mi
+
+                            </div>
+                        </div>
+                        
                         <strong>Address:</strong> {restaurant.tags?.["addr:street"] || "Not Available"}
                         </p>
                     </div>

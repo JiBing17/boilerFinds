@@ -408,7 +408,9 @@ def haversine(lat1, lon1, lat2, lon2):
     dlon = lon2 - lon1
     a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
     c = 2 * atan2(sqrt(a), sqrt(1 - a))
-    return R * c  # Distance in km
+    distance_km = R * c  # Distance in km
+    distance_miles = distance_km * 0.621371  # Convert to miles
+    return distance_miles
 
 
     
@@ -503,6 +505,7 @@ def food_info():
         "restaurants": restaurants,
         "cuisines": sorted(cuisines_set)  # Convert to sorted list for UI
     })
+    
 # run server
 if __name__ == '__main__':
     app.run(debug=True)
