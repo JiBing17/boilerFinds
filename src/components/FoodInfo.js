@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import placeHolder from '../pictures/placeholder.jpg'
-
 import food from '../pictures/food/food.jpg'
 import food2 from '../pictures/food/food_2.jpg'
 import food3 from '../pictures/food/food_3.jpg'
@@ -11,6 +10,7 @@ import drink_2 from '../pictures/food/drink_2.jpg'
 
 
 const FoodInfo = () => {
+
 
     const cuisineEmojiMapping = {
         "italian": "🍕",
@@ -179,8 +179,19 @@ const FoodInfo = () => {
                                 <span class="me-2">📍</span> Find the perfect spot for your next bite!
                                 </li>
                             </ul>
-                            <button className='btn btn-primary d-flex w-100 align-items-center justify-content-center'>View More</button>
-
+                            <a
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault(); 
+                                    const section = document.getElementById("nearby_restaurant");
+                                    if (section) {
+                                        section.scrollIntoView({ behavior: "smooth" });
+                                    }
+                                }}
+                                className='btn btn-primary d-flex w-100 align-items-center justify-content-center'
+                            >
+                                View More
+                            </a>
                         </div>
                     </div>
 
@@ -230,23 +241,25 @@ const FoodInfo = () => {
                     
                 </div>
 
-            </div>
-            
+            </div>    
+        </div>
 
+        <div className="w-100" style={{backgroundColor: "#CFB991"}}>
 
-            <h1>Nearby Restaurants</h1>
-     
-            <div
+            <h1 className='fw-bold p-3'>Nearby Restaurants</h1>
+            <div 
+                id="nearby_restaurant"
                 style={{
                     width: "100%",
                     overflowX: "auto",
                     whiteSpace: "nowrap",
                     paddingBottom: "10px",
                 }}
+                className='p-3'
             >
             <   div className="d-flex flex-nowrap gap-2">
                 <button
-                    className={`btn ${selectedCuisine === null ? "btn-secondary" : "btn-outline-secondary"}`}
+                    className={`btn ${selectedCuisine === null ? "btn-light" : "btn-dark"}`}
                     onClick={() => setSelectedCuisine(null)}
                     style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
                 >
@@ -256,7 +269,7 @@ const FoodInfo = () => {
                 {cuisines.map((cuisine) => (
                 <button
                     key={cuisine}
-                    className={`btn ${selectedCuisine === cuisine ? "btn-primary" : "btn-outline-primary"}`}
+                    className={`btn ${selectedCuisine === cuisine ? "btn-light" : "btn-dark"}`}
                     onClick={() => setSelectedCuisine(cuisine)}
                     style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
                 >
@@ -270,7 +283,7 @@ const FoodInfo = () => {
         {filteredRestaurants.length === 0 ? (
         <p>No restaurants found near your location.</p>
         ) : (
-            <div className="container">
+            <div className="container p-4">
             <div className="row justify-content-center">
                 {filteredRestaurants.map(restaurant => (
                 <div key={restaurant.id} className="col-md-4 mb-4"> {/* Responsive card column */}
