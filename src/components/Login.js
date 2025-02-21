@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-
+import loginPicture from '../pictures/getStarted/login.jpg'
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -45,7 +45,10 @@ function Login() {
       <div 
         className="d-flex flex-column justify-content-center align-items-center col-12 col-md-6" 
         style={{
-          background: "linear-gradient(135deg, #101010 20%, #3b2e1c 65%, #CFB991 100%)",
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${loginPicture})`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundSize: "cover",          
           padding: "20px"
         }}
       >
@@ -53,7 +56,7 @@ function Login() {
           className="d-flex flex-column gap-2 p-4" 
         >
           <h1 
-          className="fw-bold text-md-start text-center" 
+          className="fw-bold text-center" 
           style={{
             fontSize: "clamp(1.5rem, 5vw, 3rem)",
             color: "white",
@@ -64,7 +67,7 @@ function Login() {
             Welcome Back!
           </h1>
 
-          <ul className='list-unstyled text-white text-md-start text-center ' style={{ fontSize: "clamp(.8rem, 1vw, 1.1rem)"}}>
+          <ul className='list-unstyled text-white d-flex flex-column text-center' style={{fontSize: "clamp(1rem, 2vw, 1.2rem)", textShadow: "2px 2px 4px rgba(0,0,0,0.7)"}}>
               <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>Personalized Experience – Your chats, contacts, and settings just the way you like them</li>
               <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>Real-Time Messaging – Instantly connect with friends, family, and communities</li>
               <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>Fast & Secure Access – Log in with one tap and get back to what matters</li>

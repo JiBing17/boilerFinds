@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-
+import signupPicture from '../pictures/getStarted/signup.jpg'
 function Signup() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -37,14 +37,16 @@ function Signup() {
       <div 
         className="d-flex flex-column justify-content-center align-items-center text-center col-md-6 col-12 h-auto" 
         style={{
-          background: "linear-gradient(135deg, #101010 20%, #3b2e1c 65%, #CFB991 100%)",
-          padding: "20px"
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${signupPicture})`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundSize: "cover",                padding: "20px"
 
         }}
       >
-        <div className='d-flex flex-column gap-2 p-4'>
+        <div className='d-flex flex-column gap-2 p-3'>
           <h1 
-            className="fw-bold text-center text-md-start" 
+            className="fw-bold text-center" 
             style={{
               color: "white",
               textShadow: "2px 2px 4px rgba(0,0,0,0.7)",
@@ -54,7 +56,8 @@ function Signup() {
             Create an Account!
           </h1>
 
-          <ul className='list-unstyled text-white d-flex flex-column text-center text-md-start' style={{fontSize: "clamp(.8rem, 1vw, 1.1rem)"}}>
+          <ul className='list-unstyled text-white d-flex flex-column text-center' style={{fontSize: "clamp(1rem, 2vw, 1.2rem)",               textShadow: "2px 2px 4px rgba(0,0,0,0.7)",
+}}>
               <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>All-in-One Super App – Messaging, voice & video calls, and more in one place</li>
               <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>Instant Sign-Up – Create an account in seconds with just your email</li>
               <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>Your Data, Your Control – No ads, no tracking – just secure and private conversations</li>
