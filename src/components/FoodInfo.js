@@ -8,6 +8,7 @@ import drink from '../pictures/food/drink.jpg'
 import drink_2 from '../pictures/food/drink_2.jpg'
 import { useNavigate } from 'react-router-dom';
 import { cuisineEmojiMapping, cuisineImageMapping } from "../mappings";
+import Loading from './Loading';
 
 
 const FoodInfo = () => {
@@ -88,7 +89,9 @@ const FoodInfo = () => {
     }
     }, []);
 
-    if (loading) return <div>Loading restaurants...</div>;
+    if (loading) return <Loading/>
+  
+  
     if (error) return <div style={{ color: 'red' }}>{error}</div>;
 
     // function used to format multiple cuisines (american;asian -> american, asian)

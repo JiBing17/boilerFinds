@@ -56,8 +56,7 @@ function Signup() {
             Create an Account!
           </h1>
 
-          <ul className='list-unstyled text-white d-flex flex-column text-center' style={{fontSize: "clamp(1rem, 2vw, 1.2rem)",               textShadow: "2px 2px 4px rgba(0,0,0,0.7)",
-}}>
+          <ul className='list-unstyled text-white d-flex flex-column text-center' style={{fontSize: "clamp(1rem, 2vw, 1.2rem)", textShadow: "2px 2px 4px rgba(0,0,0,0.7)"}}>
               <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>All-in-One Super App – Messaging, voice & video calls, and more in one place</li>
               <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>Instant Sign-Up – Create an account in seconds with just your email</li>
               <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>Your Data, Your Control – No ads, no tracking – just secure and private conversations</li>
