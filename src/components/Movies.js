@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import Header from './Header';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,6 +23,7 @@ const Movies = () => {
     const [heroIndex, setHeroIndex] = useState(0)
     const [selectedMovieFilter, setSelectedMovieFilter] = useState("popular")
     const MAX_HERO_INDEX = 5
+    const scrollContainerRef = useRef(null)
 
     const handleHeroRight = ()=> {
         setHeroIndex((prev) => {
@@ -41,6 +42,17 @@ const Movies = () => {
             }
             return prev
         } )
+    }
+
+    const handleScroll = (amount) => {
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollBy(
+                {
+                    left: amount,
+                    behavior: "smooth"
+                }
+            )
+        }
     }
     
     useEffect(()=>{
@@ -214,8 +226,34 @@ const Movies = () => {
                 </div>
             )}
             </div>
+            
+            <h1 className='text-white text-center mt-3'>Movies</h1>
 
-            <h1 className='text-white text-center my-3'>Movies</h1>
+            <div className='p-4 position-relative'>
+                <h2 className='text-white' style={{borderBottom: "2px solid #fff", paddingBottom: "1rem"}}>Upcomming...</h2>
+                <div ref={scrollContainerRef} class="d-flex gap-4 align-items-center text-center mt-4" style={{overflow: "hidden", overflowX: "auto", scrollbarWidth: "none"}}>
+                    
+                    {upcommingMovies.map((movie)=>(
+                        <div class="col-md-2 text-white">
+                            <div>
+                                <div>
+                                    <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} style={{objectFit: "contain"}} class="img-fluid"/>
+                                </div>
+                                <p className='text-start fw-bold'>{movie.title}</p>
+                                <div className='d-flex justify-content-between'>
+                                    <p>{movie.release_date.split("-")[0]}</p>
+                                    <p>{movie.vote_average}/10</p>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    ))}
+                    
+                </div>
+                <FontAwesomeIcon icon={faArrowLeft} onClick={()=> {handleScroll(-800)}} className='position-absolute top-50 start-0 z-3 text-white ms-4 p-3 rounded-circle' style={{fontSize: "2rem", cursor: "pointer", backgroundColor: "rgba(0,0,0,.6)"}}/>
+                <FontAwesomeIcon icon={faArrowRight} onClick={()=> {handleScroll(800)}} className='position-absolute top-50 end-0 z-3 text-white me-4 p-3 rounded-circle' style={{fontSize: "2rem", cursor: "pointer",  backgroundColor: "rgba(0,0,0,.6)"}}/>    
+            </div>
+            
             <div className='d-flex justify-content-evenly'>
                 <h5 style={{color: selectedMovieFilter == "popular"? "white": "", transform: selectedMovieFilter == "popular"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("popular")}>Popular</h5>
                 <h5 style={{color: selectedMovieFilter == "trending_now"? "white": "", transform: selectedMovieFilter == "trending_now"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("trending_now")}>Trending Now</h5>
