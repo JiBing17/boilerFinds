@@ -8,14 +8,20 @@ const Movies = () => {
     const TMD_URL_POPULAR = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1`
     const TMD_URL_TRENDING = `https://api.themoviedb.org/3/trending/movie/day?api_key=${API_KEY}`;
     const TMD_URL_TOP_RATED = `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=en-US&page=1`;
+    const TMD_URL_NOW_PLAYING = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`;
+    const TMD_URL_TOP_UPCOMMING = `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`;
 
 
     const [popularMovies, setPopularMovies] = useState([])
     const [trendingMovies, setTrendingMovies] = useState([])
     const [topRatedMovies, setTopRatedMovies] = useState([])
+    const [nowPlayingMovies, setNowPlayingMovies] = useState([])
+    const [upcommingMovies, setUpCommingMovies] = useState([])
+    const [movies, setMovies] = useState([])
     const [genres, setGenres] = useState({})
     const [durations, setDurations] = useState({});
     const [heroIndex, setHeroIndex] = useState(0)
+    const [selectedMovieFilter, setSelectedMovieFilter] = useState("popular")
     const MAX_HERO_INDEX = 5
 
     const handleHeroRight = ()=> {
@@ -36,6 +42,21 @@ const Movies = () => {
             return prev
         } )
     }
+    
+    useEffect(()=>{
+        const handleFilterMovies = ()=> {
+            if (selectedMovieFilter == "trending_now") {
+                setMovies(trendingMovies)
+            } else if (selectedMovieFilter == "popular") {      
+                setMovies(popularMovies)
+            } else if (selectedMovieFilter == "top_rated") {
+                setMovies(topRatedMovies)
+            } else if (selectedMovieFilter == "saved") {
+                setMovies([])
+            }
+        }
+        handleFilterMovies()
+    }, [selectedMovieFilter])
 
 
     useEffect(()=>{   
@@ -45,6 +66,7 @@ const Movies = () => {
                 const data = await response.json()
                 console.log("Fetched Movies:", data.results);
                 setPopularMovies(data.results)
+                setMovies(data.results)
                 data.results.forEach((movie) => fetchMovieDuration(movie.id));
 
             } catch(error) {
@@ -71,6 +93,30 @@ const Movies = () => {
                 const data = await response.json()
                 console.log("Fetched Movies:", data.results);
                 setTopRatedMovies(data.results)
+                data.results.forEach((movie) => fetchMovieDuration(movie.id));
+
+            } catch(error) {
+                console.log(error)
+            }
+        }
+        const fetchUpCommingMovies = async ()=> {
+            try {
+                const response = await fetch(TMD_URL_TOP_UPCOMMING)
+                const data = await response.json()
+                console.log("Fetched Movies:", data.results);
+                setUpCommingMovies(data.results)
+                data.results.forEach((movie) => fetchMovieDuration(movie.id));
+
+            } catch(error) {
+                console.log(error)
+            }
+        }
+        const fetchNowPlayingMovies = async ()=> {
+            try {
+                const response = await fetch(TMD_URL_NOW_PLAYING)
+                const data = await response.json()
+                console.log("Fetched Movies:", data.results);
+                setNowPlayingMovies(data.results)
                 data.results.forEach((movie) => fetchMovieDuration(movie.id));
 
             } catch(error) {
@@ -114,6 +160,8 @@ const Movies = () => {
         fetchPopularMovies()
         fetchTopRatedMovies()
         fetchTrendingMovies()
+        fetchUpCommingMovies()
+        fetchNowPlayingMovies()
         fetchGenres()
 
         },[])
@@ -132,15 +180,23 @@ const Movies = () => {
                         style={{ height: "80vh", objectFit: "cover" }}
                         alt={trendingMovies[heroIndex].title}
                     />
-                    <div className="position-absolute text-white bg-dark bg-opacity-50 p-3 rounded" style={{top: "50%", left: "30%", transform: "translate(-50%, -50%)", maxWidth: "500px"}}>
+                    <div className="position-absolute text-white p-3 rounded" style={{top: "50%", left: "30%", transform: "translate(-50%, -50%)", maxWidth: "500px", backgroundColor: "rgba(0,0,0,.6)"}}>
                         
                         <p>Duration: {durations[trendingMovies[heroIndex].id]} mins</p>
                         <div className='d-flex justify-content-start'>
                             <p className='me-3 fw-bold'>⭐{trendingMovies[heroIndex].vote_average}</p>
                             <div>
-                                {trendingMovies[heroIndex].genre_ids.map((genre_num) =>(
-                                    <span> {genres[genre_num]} |</span>
-                                ))}
+                                {trendingMovies[heroIndex].genre_ids.map((genre_num) => {
+                                    let n = trendingMovies[heroIndex].genre_ids.length 
+                                    if (genre_num == trendingMovies[heroIndex].genre_ids[n-1]) {
+                                        return (
+                                            <span> {genres[genre_num]}</span>
+                                        )
+                                    }
+                                    return (
+                                        <span> {genres[genre_num]} |</span>
+                                    )
+                                })}
                             </div>
                             
                         </div>
@@ -159,11 +215,18 @@ const Movies = () => {
             )}
             </div>
 
+            <h1 className='text-white text-center my-3'>Movies</h1>
+            <div className='d-flex justify-content-evenly'>
+                <h5 style={{color: selectedMovieFilter == "popular"? "white": "", transform: selectedMovieFilter == "popular"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("popular")}>Popular</h5>
+                <h5 style={{color: selectedMovieFilter == "trending_now"? "white": "", transform: selectedMovieFilter == "trending_now"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("trending_now")}>Trending Now</h5>
+                <h5 style={{color: selectedMovieFilter == "top_rated"? "white": "", transform: selectedMovieFilter == "top_rated"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("top_rated")}>Top Rated</h5>
+                <h5 style={{color: selectedMovieFilter == "saved"? "white": "", transform: selectedMovieFilter == "saved"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("saved")}>Saved</h5>
+            </div>
 
-            <h1 className='text-white' >Movies</h1>
+
             <div class="container text-center mt-3">
                 <div class="row">
-                    {popularMovies.map((movie)=>(
+                    {movies.map((movie)=>(
                         <div class="col-md-2 text-white">
                             <div>
                                 <div>
