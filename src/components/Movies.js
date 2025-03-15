@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react'
 import Header from './Header';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import placeHolder from '../pictures/placeholder.jpg'
 const Movies = () => {
 
     const API_KEY = process.env.REACT_APP_API_KEY;
@@ -237,7 +238,7 @@ const Movies = () => {
                         <div class="col-md-2 text-white">
                             <div>
                                 <div>
-                                    <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} style={{objectFit: "contain"}} class="img-fluid"/>
+                                    <img src={movie.poster_path != null ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`: placeHolder} alt={movie.title} style={{objectFit: "contain"}} class="img-fluid"/>
                                 </div>
                                 <p className='text-start fw-bold'>{movie.title}</p>
                                 <div className='d-flex justify-content-between'>
@@ -268,7 +269,7 @@ const Movies = () => {
                         <div class="col-md-2 text-white">
                             <div>
                                 <div>
-                                    <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} style={{objectFit: "contain"}} class="img-fluid"/>
+                                    <img src={movie.poster_path != null ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`: placeHolder} alt={movie.title} style={{objectFit: "contain"}} class="img-fluid"/>
                                 </div>
                                 <p className='text-start fw-bold'>{movie.title}</p>
                                 <div className='d-flex justify-content-between'>
