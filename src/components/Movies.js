@@ -1,6 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react'
 import Header from './Header';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons"; 
+import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons"; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import placeHolder from '../pictures/placeholder.jpg'
 const Movies = () => {
@@ -23,6 +25,7 @@ const Movies = () => {
     const [durations, setDurations] = useState({});
     const [heroIndex, setHeroIndex] = useState(0)
     const [selectedMovieFilter, setSelectedMovieFilter] = useState("popular")
+    const [likedMovies, setLikedMovies] = useState({})
     const MAX_HERO_INDEX = 5
     const scrollContainerRef = useRef(null)
 
@@ -55,16 +58,23 @@ const Movies = () => {
             )
         }
     }
+    const toggleLikeMovie = (movie_id) => {
+        setLikedMovies((prev)=> ({
+            ...prev,
+            [movie_id] : !prev[movie_id]
+        
+        }))
+    }
     
     useEffect(()=>{
         const handleFilterMovies = ()=> {
-            if (selectedMovieFilter == "trending_now") {
+            if (selectedMovieFilter === "trending_now") {
                 setMovies(trendingMovies)
-            } else if (selectedMovieFilter == "popular") {      
+            } else if (selectedMovieFilter === "popular") {      
                 setMovies(popularMovies)
-            } else if (selectedMovieFilter == "top_rated") {
+            } else if (selectedMovieFilter === "top_rated") {
                 setMovies(topRatedMovies)
-            } else if (selectedMovieFilter == "saved") {
+            } else if (selectedMovieFilter === "saved") {
                 setMovies([])
             }
         }
@@ -201,7 +211,7 @@ const Movies = () => {
                             <div>
                                 {trendingMovies[heroIndex].genre_ids.map((genre_num) => {
                                     let n = trendingMovies[heroIndex].genre_ids.length 
-                                    if (genre_num == trendingMovies[heroIndex].genre_ids[n-1]) {
+                                    if (genre_num === trendingMovies[heroIndex].genre_ids[n-1]) {
                                         return (
                                             <span> {genres[genre_num]}</span>
                                         )
@@ -256,10 +266,10 @@ const Movies = () => {
             </div>
             
             <div className='d-flex justify-content-evenly'>
-                <h5 style={{color: selectedMovieFilter == "popular"? "white": "", transform: selectedMovieFilter == "popular"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("popular")}>Popular</h5>
-                <h5 style={{color: selectedMovieFilter == "trending_now"? "white": "", transform: selectedMovieFilter == "trending_now"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("trending_now")}>Trending Now</h5>
-                <h5 style={{color: selectedMovieFilter == "top_rated"? "white": "", transform: selectedMovieFilter == "top_rated"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("top_rated")}>Top Rated</h5>
-                <h5 style={{color: selectedMovieFilter == "saved"? "white": "", transform: selectedMovieFilter == "saved"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("saved")}>Saved</h5>
+                <h5 style={{color: selectedMovieFilter === "popular"? "white": "", transform: selectedMovieFilter == "popular"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("popular")}>Popular</h5>
+                <h5 style={{color: selectedMovieFilter === "trending_now"? "white": "", transform: selectedMovieFilter == "trending_now"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("trending_now")}>Trending Now</h5>
+                <h5 style={{color: selectedMovieFilter === "top_rated"? "white": "", transform: selectedMovieFilter == "top_rated"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("top_rated")}>Top Rated</h5>
+                <h5 style={{color: selectedMovieFilter === "saved"? "white": "", transform: selectedMovieFilter == "saved"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("saved")}>Saved</h5>
             </div>
 
 
@@ -271,10 +281,13 @@ const Movies = () => {
                                 <div>
                                     <img src={movie.poster_path != null ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`: placeHolder} alt={movie.title} style={{objectFit: "contain"}} class="img-fluid"/>
                                 </div>
-                                <p className='text-start fw-bold'>{movie.title}</p>
+                                <p className='text-start fw-bold m-0'>{movie.title}</p>
                                 <div className='d-flex justify-content-between'>
                                     <p>{movie.release_date.split("-")[0]}</p>
-                                    <p>{movie.vote_average}/10</p>
+                                    <div className='d-flex align-items-center'>
+                                        <FontAwesomeIcon icon={likedMovies[movie.id]? solidHeart: regularHeart } className='me-2' onClick={()=> {toggleLikeMovie(movie.id)}}/>
+                                        <p className='m-0'>⭐{movie.vote_average}</p>
+                                    </div>
                                 </div>
                                 
                             </div>
