@@ -9,7 +9,7 @@ import UsersList from './components/UserList';
 import ShopItem from './components/ShopItem';
 import FoodInfo from './components/FoodInfo';
 import Restaurant from './components/Restaurant';
-
+import Movies from './components/Movies';
 
 function App() {
   return (
@@ -24,6 +24,7 @@ function App() {
         <Route path="/shop-item/:id" element={<ShopItem/>} />
         <Route path="/foodInfo" element={<FoodInfo/>} />
         <Route path="/restaurant/:id" element={<Restaurant/>}/>
+        <Route path="/movies" element={<Movies/>}/>
       </Routes>
     </Router>
   );

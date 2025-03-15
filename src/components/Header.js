@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faRightFromBracket, faUser, faCircleQuestion, faUserGroup, faBars, faUtensils} from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faRightFromBracket, faUser, faCircleQuestion, faUserGroup, faBars, faUtensils, faFilm, faF} from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
 
@@ -60,7 +60,8 @@ const handleLogout = () => {
                 <FontAwesomeIcon icon={faUserGroup} style={{fontSize: "1.6rem", cursor: "pointer"}} onClick={ ()=> navigate('/userlist')}/>
                 <FontAwesomeIcon icon={faUser} style={{fontSize: "1.6rem", cursor: "pointer"}}  onClick={ ()=> navigate('/profile')}/>
                 <FontAwesomeIcon icon={faUtensils} style={{fontSize: "1.6rem", cursor: "pointer"}} onClick={ ()=> navigate('/foodInfo')}/>
-
+                <FontAwesomeIcon icon={faFilm} style={{fontSize: "1.6rem", cursor: "pointer"}} onClick={ ()=> navigate('/movies')}/>
+                
                 <FontAwesomeIcon icon={faRightFromBracket} style={{fontSize: "1.6rem", cursor: "pointer"}} onClick={handleLogout}/>
             </div>    
 
