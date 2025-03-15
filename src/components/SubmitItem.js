@@ -109,19 +109,23 @@ const SubmitItem = () => {
           <div 
               className="position-absolute top-0 start-0 w-100 h-100"
               style={{
-                  background: "rgba(0, 0, 0, 0.1)", 
+                  background: "rgba(0, 0, 0, 0.4)", 
                   borderRadius: "10px"
               }}
           >
           </div>
 
-          <div className='d-flex flex-column align-items-start justify-content-center position-absolute p-1 p-md-3 top-0 start-0'>
-            <h1 className='text-white' style={{textShadow: "2px 2px 8px rgba(0, 0, 0, 0.8)"}}>🔖Want to sell an item?</h1>
+          <div className='position-absolute top-50 start-50 ' style={{transform: "translate(-50%, -50%)"}}>
+            <h1 className='text-white text-center' 
+              style={{textShadow: "2px 2px 8px rgba(0, 0, 0, 0.8)",
+              fontSize: "clamp(.7rem, 4vw, 2rem)"
+            }}>
+              🔖Want to sell an item?</h1>
             <ul 
-              className='text-white fw-light' 
+              className='text-white fw-bold' 
               style={{
                 textShadow: "2px 2px 8px rgba(0, 0, 0, 0.8)",
-                fontSize: "clamp(.9rem, 2vw, 1.2rem)",
+                fontSize: "clamp(.4rem, 2vw, 1rem)",
               }}
             >
               <li>📸 Upload an image of your item</li>
