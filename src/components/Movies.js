@@ -16,12 +16,25 @@ const Movies = () => {
     const [genres, setGenres] = useState({})
     const [durations, setDurations] = useState({});
     const [heroIndex, setHeroIndex] = useState(0)
+    const MAX_HERO_INDEX = 5
 
     const handleHeroRight = ()=> {
-        setHeroIndex((prev) => prev + 1 )
+        setHeroIndex((prev) => {
+            prev = prev + 1
+            if (prev > MAX_HERO_INDEX) {
+                prev = 0
+            }
+            return prev
+        } )
     }
     const handleHeroLeft = ()=> {
-        setHeroIndex((prev) => prev + 1 )
+        setHeroIndex((prev) =>{
+            prev = prev - 1
+            if (prev < 0) {
+                prev = 10
+            }
+            return prev
+        } )
     }
 
 
@@ -111,27 +124,37 @@ const Movies = () => {
         <div style={{backgroundColor: "#101010"}}>
 
         <div className="container-fluid p-0" style={{marginTop: "3rem"}}>
-            {trendingMovies.length > 0 && trendingMovies[0].poster_path && (
+            {trendingMovies.length > 0 && trendingMovies[heroIndex].poster_path && (
                 <div className="position-relative">
                     <img
-                        src={`https://image.tmdb.org/t/p/original${trendingMovies[0].backdrop_path}`}
+                        src={`https://image.tmdb.org/t/p/original${trendingMovies[heroIndex].backdrop_path}`}
                         className="img-fluid w-100"
                         style={{ height: "80vh", objectFit: "cover" }}
-                        alt={trendingMovies[0].title}
+                        alt={trendingMovies[heroIndex].title}
                     />
                     <div className="position-absolute text-white bg-dark bg-opacity-50 p-3 rounded" style={{top: "50%", left: "30%", transform: "translate(-50%, -50%)", maxWidth: "500px"}}>
-                        <p>Duration: {durations[trendingMovies[0].id]} mins</p>
-                        <p>{trendingMovies[0].vote_average}</p>
-                        {trendingMovies[0].genre_ids.map((genre_num) =>(
-                            <span> {genres[genre_num]} |</span>
-                        ))}
-                        <h1>{trendingMovies[0].title}</h1>
-                        <p>{trendingMovies[0].overview}</p>
-                        <button>Watch Now</button>
-                        <button>Add To List</button>
+                        
+                        <p>Duration: {durations[trendingMovies[heroIndex].id]} mins</p>
+                        <div className='d-flex justify-content-start'>
+                            <p className='me-3 fw-bold'>⭐{trendingMovies[heroIndex].vote_average}</p>
+                            <div>
+                                {trendingMovies[heroIndex].genre_ids.map((genre_num) =>(
+                                    <span> {genres[genre_num]} |</span>
+                                ))}
+                            </div>
+                            
+                        </div>
+                        <h1 className='fw-bold'>{trendingMovies[heroIndex].title}</h1>
+                        <p>{trendingMovies[heroIndex].overview}</p>
+
+                        <button className='btn btn-primary'>Watch Now</button>
+                        <button className='btn btn-dark ms-3'>Add To List</button>
                     </div>
-                    <FontAwesomeIcon icon={faArrowLeft}/>
-                    <FontAwesomeIcon icon={faArrowRight}/>
+                    <div>
+                        <FontAwesomeIcon icon={faArrowLeft} onClick={handleHeroLeft} className='position-absolute top-50 start-0 z-3 text-white ms-3 p-3 rounded-circle' style={{fontSize: "2rem", cursor: "pointer", backgroundColor: "rgba(0,0,0,.6)"}}/>
+                        <FontAwesomeIcon icon={faArrowRight} onClick={handleHeroRight} className='position-absolute top-50 end-0 z-3 text-white me-3 p-3 rounded-circle' style={{fontSize: "2rem", cursor: "pointer",  backgroundColor: "rgba(0,0,0,.6)"}}/>
+                    </div>
+                    
                 </div>
             )}
             </div>
