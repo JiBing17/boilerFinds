@@ -60,14 +60,17 @@ const BuyGrid = ({items}) => {
     return (
         <>
             {/* Grid for displaying items being sold from ALL users */}
-            <div className="container-fluid" style={{backgroundColor: "#CFB991"}}>
-
-                <h1 className="text-center fw-bold p-4" style={{ color: "#101010" }}>
-                <FontAwesomeIcon icon={faGlobe} className='me-2'/>
-                Browse Here for Potential Deals!
-                </h1>
+            <div className="container-fluid" style={{backgroundColor: "#CFB991", textAlign: "center"}}>
                 
-                <div className="position-relative mb-4" style={{ height: "500px" }}>
+                <div style={{ color: "#fff", backgroundColor: "#101010", display: "inline-block", borderRadius: "2rem", marginTop: "2rem", marginBottom: "2rem"}}>
+                    <h1 className="text-center fw-bold p-3" style={{fontSize: "clamp(1rem, 2vw, 3rem)"}} >
+                        <FontAwesomeIcon icon={faGlobe} className='me-2'/>
+                        Browse Here for Potential Deals!
+                    </h1>
+                </div>
+                
+                
+                <div className="position-relative mb-4" style={{ height: "auto" }}>
 
                     {/* Carousel Image */}
                     <img 
@@ -84,12 +87,12 @@ const BuyGrid = ({items}) => {
 
                     {/* Overlay text */}
                     <div className="position-absolute d-flex align-items-center justify-content-center rounded-circle"
-                        style={{ top: "50%", left: "26%", transform: "translate(-50%, -50%)"}}
+                        style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}
                     >
-                        <div className="text-white text-start px-3 p-4">
-                            <h1 className='text-white fw-bold' style={{textShadow: "2px 2px 8px rgba(0, 0, 0, 0.8)", fontSize: "3rem"}}>{picturesAndText[currentIndex].titleText}</h1>
-                            <p className='text-white fw-bold' style={{textShadow: "2px 2px 8px rgba(0, 0, 0, 0.8)", fontSize: "1.2rem"}}>{picturesAndText[currentIndex].descriptionText}</p>
-                            <button className='btn btn-dark fw-bold' style={{boxShadow: "2px 2px 8px rgba(255, 255, 255, 0.4)"}} onClick={() => document.getElementById('productDisplay').scrollIntoView({ behavior: 'smooth' })}>Shop Now</button>
+                        <div className="text-white text-center px-3 p-4 rounded" style={{backgroundColor: "rgba(0,0,0,.7)"}}>
+                            <h1 className='text-white fw-bold' style={{textShadow: "2px 2px 8px rgba(0, 0, 0, 0.8)", fontSize: "clamp(.8rem,2vw,3rem)"}}>{picturesAndText[currentIndex].titleText}</h1>
+                            <p className='text-white fw-bold' style={{textShadow: "2px 2px 8px rgba(0, 0, 0, 0.8)", fontSize: "clamp(.6rem,1vw,2rem)"}}>{picturesAndText[currentIndex].descriptionText}</p>
+                            <button className='btn btn-dark fw-bold' style={{boxShadow: "2px 2px 8px rgba(255, 255, 255, 0.4)", fontSize: "clamp(.6rem,1vw,2rem)"}} onClick={() => document.getElementById('productDisplay').scrollIntoView({ behavior: 'smooth' })}>Shop Now</button>
                         </div>
                     </div>
 
@@ -120,7 +123,8 @@ const BuyGrid = ({items}) => {
 
                 
                 <div className='p-4'>
-                    <h1 id="productDisplay" className='border-bottom border-black mb-4'>Products on feature</h1>
+                    
+                    <h1 id="productDisplay" className='border-bottom border-black mb-4 fw-bold'>Products on feature</h1>
 
                     <div className="row">
                     {items.map((itm) => (
