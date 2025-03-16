@@ -5,6 +5,7 @@ import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons"; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import placeHolder from '../pictures/placeholder.jpg'
+
 const Movies = () => {
 
     const API_KEY = process.env.REACT_APP_API_KEY;
@@ -13,7 +14,6 @@ const Movies = () => {
     const TMD_URL_TOP_RATED = `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=en-US&page=1`;
     const TMD_URL_NOW_PLAYING = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`;
     const TMD_URL_TOP_UPCOMMING = `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`;
-
 
     const [popularMovies, setPopularMovies] = useState([])
     const [trendingMovies, setTrendingMovies] = useState([])
@@ -75,7 +75,8 @@ const Movies = () => {
             } else if (selectedMovieFilter === "top_rated") {
                 setMovies(topRatedMovies)
             } else if (selectedMovieFilter === "saved") {
-                setMovies([])
+                const savedMovies = movies.filter((movie) => likedMovies[movie.id])
+                setMovies(savedMovies)
             }
         }
         handleFilterMovies()
