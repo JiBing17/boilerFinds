@@ -29,6 +29,9 @@ const Movies = () => {
     const MAX_HERO_INDEX = 5
     const scrollContainerRef = useRef(null)
 
+    const storedUser = JSON.parse(localStorage.getItem('user'))
+
+
     const handleHeroRight = ()=> {
         setHeroIndex((prev) => {
             prev = prev + 1
@@ -58,14 +61,52 @@ const Movies = () => {
             )
         }
     }
-    const toggleLikeMovie = (movie_id) => {
+    const toggleLikeMovie = (movie) => {
         setLikedMovies((prev)=> ({
             ...prev,
-            [movie_id] : !prev[movie_id]
+            [movie.id] : !prev[movie.id]
         
         }))
+        const payload = {
+            user_id: storedUser.id, 
+            movie_id: movie.id,
+            title: movie.title,
+            poster_path: movie.poster_path,
+            vote_average: movie.vote_average
+        };
+
+        const saveMovie = async()=> {
+            try {
+                const response = await fetch("http://127.0.0.1:5000/save_movie", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                })
+                const data = await response.json()
+                console.log(data.result)
+            } catch(error) {
+                console.log(error)
+            }
+        }
+        saveMovie()
     }
-    
+
+
+    useEffect(()=>{
+        const getSavedMovies = async ()=> {
+            const response = await fetch(`http://127.0.0.1:5000/saved_movies?user_id=${storedUser.id}`) 
+            const data = await response.json()
+            console.log(data)
+            const savedMovieIds = data.map(savedMovie => savedMovie.movie_id);
+            let n = savedMovieIds.length
+            for (let i = 0; i < n; i++) {
+                likedMovies[savedMovieIds[i]] = true
+            }
+        }
+        getSavedMovies()
+    }, [storedUser.id])
+
+
     useEffect(()=>{
         const handleFilterMovies = ()=> {
             if (selectedMovieFilter === "trending_now") {
@@ -75,8 +116,23 @@ const Movies = () => {
             } else if (selectedMovieFilter === "top_rated") {
                 setMovies(topRatedMovies)
             } else if (selectedMovieFilter === "saved") {
-                const savedMovies = movies.filter((movie) => likedMovies[movie.id])
-                setMovies(savedMovies)
+                //const savedMovies = movies.filter((movie) => likedMovies[movie.id])
+                //setMovies(savedMovies)
+                
+                const getSavedMovies = async ()=> {
+                    const response = await fetch(`http://127.0.0.1:5000/saved_movies?user_id=${storedUser.id}`) 
+                    const data = await response.json()
+                    console.log(data)
+                    const savedMovieIds = data.map(savedMovie => savedMovie.movie_id);
+                    const savedMovies = movies.filter(movie => 
+                    savedMovieIds.includes(movie.id)
+                    );
+                    setMovies(savedMovies)
+                }
+                getSavedMovies()
+
+                
+
             }
         }
         handleFilterMovies()
@@ -273,10 +329,17 @@ const Movies = () => {
                 <h5 style={{color: selectedMovieFilter === "saved"? "white": "", transform: selectedMovieFilter == "saved"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("saved")}>Saved</h5>
             </div>
 
-
             <div class="container text-center mt-3">
                 <div class="row">
-                    {movies.map((movie)=>(
+                    {movies.length <= 0 ? 
+                    (
+                    <div className='text-white my-4'>
+                        <h1 className='fw-bold'>No saved Movies</h1>
+                        <p className='fst-italic'>Start saving your favorite movies!</p>
+                    </div>
+                    ) 
+                    :
+                    (movies.map((movie)=>(
                         <div class="col-md-2 text-white">
                             <div>
                                 <div>
@@ -286,14 +349,14 @@ const Movies = () => {
                                 <div className='d-flex justify-content-between'>
                                     <p>{movie.release_date.split("-")[0]}</p>
                                     <div className='d-flex align-items-center'>
-                                        <FontAwesomeIcon icon={likedMovies[movie.id]? solidHeart: regularHeart } className='me-2' onClick={()=> {toggleLikeMovie(movie.id)}}/>
+                                        <FontAwesomeIcon icon={likedMovies[movie.id]? solidHeart: regularHeart } className='me-2' onClick={()=> {toggleLikeMovie(movie)}}/>
                                         <p className='m-0'>⭐{movie.vote_average}</p>
                                     </div>
-                                </div>
-                                
+                                </div>                                
                             </div>
                         </div>
-                    ))}
+                    )))}
+                    
                 </div>
             </div>
         </div>

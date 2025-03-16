@@ -104,11 +104,33 @@ def create_users_table():
         print("✅ Table 'users' checked/created successfully.")
     except Exception as e:
         print(f"⚠️ Error creating users table: {e}")
-
+        
+def create_saved_movies_table():
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        create_table_query = """
+        CREATE TABLE IF NOT EXISTS saved_movies (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER NOT NULL,
+            movie_id INTEGER NOT NULL,
+            title VARCHAR(255) NOT NULL,
+            poster_path TEXT,
+            vote_average DECIMAL(3,1)
+        );
+        """
+        cur.execute(create_table_query)
+        conn.commit()
+        cur.close()
+        conn.close()
+        print("✅ Table 'saved_movies' checked/created successfully.")
+    except Exception as e:
+        print(f"⚠️ Error creating saved_movies table: {e}")
 
 # tables gets created on server start
 create_items_table()
 create_users_table()
+create_saved_movies_table()
 
 # signup endpoint
 @app.route('/signup', methods=['POST'])
@@ -505,6 +527,93 @@ def food_info():
         "restaurants": restaurants,
         "cuisines": sorted(cuisines_set)  # Convert to sorted list for UI
     })
+
+# End point to save movie 
+@app.route('/save_movie', methods=['POST'])
+def save_movie():
+    
+    # get passed in args from POST call from frontend
+    data = request.get_json()
+    user_id = data.get('user_id')
+    movie_id = data.get('movie_id')
+    title = data.get('title')
+    poster_path = data.get('poster_path')
+    vote_average = data.get('vote_average')
+
+    if not all([user_id, movie_id, title]):
+        return jsonify({"error": "User ID, movie ID, and title are required."}), 400
+
+    try:
+        # get db connection
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # check if this movie is already saved for the user
+        cur.execute("SELECT id FROM saved_movies WHERE user_id=%s AND movie_id=%s", (user_id, movie_id))
+        result = cur.fetchone()
+
+        if result:
+            # movie is already saved, remove it (toggle off)
+            cur.execute("DELETE FROM saved_movies WHERE user_id=%s AND movie_id=%s", (user_id, movie_id))
+            message = "Movie unsaved successfully."
+        else:
+            # movie is not saved, insert it
+            cur.execute(
+                "INSERT INTO saved_movies (user_id, movie_id, title, poster_path, vote_average) VALUES (%s, %s, %s, %s, %s)",
+                (user_id, movie_id, title, poster_path, vote_average)
+            )
+            message = "Movie saved successfully."
+
+        # save changes and close db connection
+        conn.commit()
+        cur.close()
+        conn.close()
+        
+        return jsonify({"message": message}), 200
+    except Exception as e:
+        print(f"Error saving movie: {e}")
+        return jsonify({"error": "An error occurred while saving the movie."}), 500
+
+
+# End point for fetching saved movies based on current user_id 
+@app.route('/saved_movies', methods=['GET'])
+def get_saved_movies():
+    
+    # obtain passed in user_id from frontend get call
+    user_id = request.args.get('user_id')
+    if not user_id:
+        return jsonify({"error": "User ID is required."}), 400
+
+    try:
+        # connect to db
+        conn = get_db_connection()
+        cur = conn.cursor()
+        
+        # run query to get all rows where user_id matches
+        cur.execute("SELECT movie_id, title, poster_path, vote_average FROM saved_movies WHERE user_id=%s", (user_id,))
+        rows = cur.fetchall()
+        
+        # close db connection (no save needed)
+        cur.close()
+        conn.close()
+
+        # store result in array of dictionaries
+        movies = []
+        for row in rows:
+            movies.append({
+                "movie_id": row[0],
+                "title": row[1],
+                "poster_path": row[2],
+                "vote_average": float(row[3]) if row[3] is not None else None
+            })
+        # return that array to frontend
+        return jsonify(movies), 200
+    # error handling for server error
+    except Exception as e:
+        print(f"Error fetching saved movies: {e}")
+        return jsonify({"error": "An error occurred while fetching saved movies."}), 500
+
+
     
 # run server
 if __name__ == '__main__':
