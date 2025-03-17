@@ -5,6 +5,7 @@ import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons"; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import placeHolder from '../pictures/placeholder.jpg'
+import { useNavigate } from 'react-router-dom';
 
 const Movies = () => {
 
@@ -30,7 +31,7 @@ const Movies = () => {
     const scrollContainerRef = useRef(null)
 
     const storedUser = JSON.parse(localStorage.getItem('user'))
-
+    const navigate = useNavigate()
 
     const handleHeroRight = ()=> {
         setHeroIndex((prev) => {
@@ -260,7 +261,18 @@ const Movies = () => {
                         style={{ height: "80vh", objectFit: "cover" }}
                         alt={trendingMovies[heroIndex].title}
                     />
-                    <div className="position-absolute text-white p-3 rounded" style={{top: "50%", left: "30%", transform: "translate(-50%, -50%)", maxWidth: "500px", backgroundColor: "rgba(0,0,0,.6)"}}>
+                    {/* Overlay div */}
+                    <div
+                        style={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            width: "100%",
+                            height: "100%",
+                            backgroundColor: "rgba(0,0,0,0.3)", 
+                        }}
+                    ></div>
+                    <div className="position-absolute text-white p-3 rounded" style={{top: "50%", left: "25%", transform: "translate(-50%, -50%)", maxWidth: "500px"}}>
                         
                         <p>Duration: {durations[trendingMovies[heroIndex].id]} mins</p>
                         <div className='d-flex justify-content-start'>
@@ -302,7 +314,7 @@ const Movies = () => {
                 <div ref={scrollContainerRef} class="d-flex gap-4 align-items-center text-center mt-4" style={{overflow: "hidden", overflowX: "auto", scrollbarWidth: "none"}}>
                     
                     {upcommingMovies.map((movie)=>(
-                        <div class="col-md-2 text-white">
+                        <div class="col-md-2 text-white" onClick={()=> navigate(`/movie/${movie.id}`, {state: {movie, genres, durations}})}>
                             <div>
                                 <div>
                                     <img src={movie.poster_path != null ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`: placeHolder} alt={movie.title} style={{objectFit: "contain"}} class="img-fluid"/>
@@ -340,7 +352,7 @@ const Movies = () => {
                     ) 
                     :
                     (movies.map((movie)=>(
-                        <div class="col-md-2 text-white">
+                        <div class="col-md-2 text-white" onClick={()=> navigate(`/movie/${movie.id}`, {state: {movie, genres, durations}})}>
                             <div>
                                 <div>
                                     <img src={movie.poster_path != null ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`: placeHolder} alt={movie.title} style={{objectFit: "contain"}} class="img-fluid"/>
