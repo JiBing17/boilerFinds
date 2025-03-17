@@ -307,10 +307,9 @@ const Movies = () => {
             )}
             </div>
             
-            <h1 className='text-white text-center mt-3'>Movies</h1>
 
             <div className='p-4 position-relative'>
-                <h2 className='text-white' style={{borderBottom: "2px solid #fff", paddingBottom: "1rem"}}>Upcomming...</h2>
+                <h2 className='text-white my-4' style={{borderBottom: "2px solid #fff", paddingBottom: "1rem"}}>🎟️Upcomming...</h2>
                 <div ref={scrollContainerRef} class="d-flex gap-4 align-items-center text-center mt-4" style={{overflow: "hidden", overflowX: "auto", scrollbarWidth: "none"}}>
                     
                     {upcommingMovies.map((movie)=>(
@@ -319,10 +318,10 @@ const Movies = () => {
                                 <div>
                                     <img src={movie.poster_path != null ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`: placeHolder} alt={movie.title} style={{objectFit: "contain"}} class="img-fluid"/>
                                 </div>
-                                <p className='text-start fw-bold'>{movie.title}</p>
+                                <p className='text-start fw-bold m-0'>{movie.title}</p>
                                 <div className='d-flex justify-content-between'>
-                                    <p>{movie.release_date.split("-")[0]}</p>
-                                    <p>{movie.vote_average}/10</p>
+                                    <p className='m-0'>{movie.release_date.split("-")[0]}</p>
+                                    <p className='m-0'>{movie.vote_average}/10</p>
                                 </div>
                                 
                             </div>
@@ -334,11 +333,11 @@ const Movies = () => {
                 <FontAwesomeIcon icon={faArrowRight} onClick={()=> {handleScroll(800)}} className='position-absolute top-50 end-0 z-3 text-white me-4 p-3 rounded-circle' style={{fontSize: "2rem", cursor: "pointer",  backgroundColor: "rgba(0,0,0,.6)"}}/>    
             </div>
             
-            <div className='d-flex justify-content-evenly'>
-                <h5 style={{color: selectedMovieFilter === "popular"? "white": "", transform: selectedMovieFilter == "popular"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("popular")}>Popular</h5>
-                <h5 style={{color: selectedMovieFilter === "trending_now"? "white": "", transform: selectedMovieFilter == "trending_now"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("trending_now")}>Trending Now</h5>
-                <h5 style={{color: selectedMovieFilter === "top_rated"? "white": "", transform: selectedMovieFilter == "top_rated"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("top_rated")}>Top Rated</h5>
-                <h5 style={{color: selectedMovieFilter === "saved"? "white": "", transform: selectedMovieFilter == "saved"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("saved")}>Saved</h5>
+            <div className='d-flex justify-content-evenly my-4'>
+                <h5 style={{color: selectedMovieFilter === "popular"? "white": "", transform: selectedMovieFilter == "popular"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("popular")}>🔥Popular</h5>
+                <h5 style={{color: selectedMovieFilter === "trending_now"? "white": "", transform: selectedMovieFilter == "trending_now"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("trending_now")}>📈Trending Now</h5>
+                <h5 style={{color: selectedMovieFilter === "top_rated"? "white": "", transform: selectedMovieFilter == "top_rated"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("top_rated")}>⭐Top Rated</h5>
+                <h5 style={{color: selectedMovieFilter === "saved"? "white": "", transform: selectedMovieFilter == "saved"? "scale(1.5)": "", transition: "all .3s ease-in-out"}} onClick={()=> setSelectedMovieFilter("saved")}>❤️Saved</h5>
             </div>
 
             <div class="container text-center mt-3">
@@ -360,8 +359,8 @@ const Movies = () => {
                                 <p className='text-start fw-bold m-0'>{movie.title}</p>
                                 <div className='d-flex justify-content-between'>
                                     <p>{movie.release_date.split("-")[0]}</p>
-                                    <div className='d-flex align-items-center'>
-                                        <FontAwesomeIcon icon={likedMovies[movie.id]? solidHeart: regularHeart } className='me-2' onClick={()=> {toggleLikeMovie(movie)}}/>
+                                    <div className='d-flex'>
+                                        <p className='m-0 me-2'><FontAwesomeIcon icon={likedMovies[movie.id]? solidHeart: regularHeart } className='' onClick={()=> {toggleLikeMovie(movie)}}/></p>
                                         <p className='m-0'>⭐{movie.vote_average}</p>
                                     </div>
                                 </div>                                
