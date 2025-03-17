@@ -314,7 +314,7 @@ const Movies = () => {
                 <div ref={scrollContainerRef} class="d-flex gap-4 align-items-center text-center mt-4" style={{overflow: "hidden", overflowX: "auto", scrollbarWidth: "none"}}>
                     
                     {upcommingMovies.map((movie)=>(
-                        <div class="col-md-2 text-white" onClick={()=> navigate(`/movie/${movie.id}`, {state: {movie, genres, durations}})}>
+                        <div class="col-md-2 text-white" onClick={()=> navigate(`/movie/${movie.id}`, {state: {movie, genres, durations, key: API_KEY}})}>
                             <div>
                                 <div>
                                     <img src={movie.poster_path != null ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`: placeHolder} alt={movie.title} style={{objectFit: "contain"}} class="img-fluid"/>
@@ -352,7 +352,7 @@ const Movies = () => {
                     ) 
                     :
                     (movies.map((movie)=>(
-                        <div class="col-md-2 text-white" onClick={()=> navigate(`/movie/${movie.id}`, {state: {movie, genres, durations}})}>
+                        <div class="col-md-2 text-white" onClick={()=> navigate(`/movie/${movie.id}`, {state: {movie, genres, durations, key: API_KEY}})}>
                             <div>
                                 <div>
                                     <img src={movie.poster_path != null ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`: placeHolder} alt={movie.title} style={{objectFit: "contain"}} class="img-fluid"/>
