@@ -9,13 +9,6 @@ import { useNavigate } from 'react-router-dom';
 
 const Movies = () => {
 
-    const API_KEY = process.env.REACT_APP_API_KEY;
-    const TMD_URL_POPULAR = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1`
-    const TMD_URL_TRENDING = `https://api.themoviedb.org/3/trending/movie/day?api_key=${API_KEY}`;
-    const TMD_URL_TOP_RATED = `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=en-US&page=1`;
-    const TMD_URL_NOW_PLAYING = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`;
-    const TMD_URL_TOP_UPCOMMING = `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`;
-
     const [popularMovies, setPopularMovies] = useState([])
     const [trendingMovies, setTrendingMovies] = useState([])
     const [topRatedMovies, setTopRatedMovies] = useState([])
@@ -27,9 +20,16 @@ const Movies = () => {
     const [heroIndex, setHeroIndex] = useState(0)
     const [selectedMovieFilter, setSelectedMovieFilter] = useState("popular")
     const [likedMovies, setLikedMovies] = useState({})
+    const [currentPage, setCurrentPage] = useState(1)
     const MAX_HERO_INDEX = 5
     const scrollContainerRef = useRef(null)
 
+    const API_KEY = process.env.REACT_APP_API_KEY;
+    const TMD_URL_POPULAR = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${currentPage}`
+    const TMD_URL_TRENDING = `https://api.themoviedb.org/3/trending/movie/day?api_key=${API_KEY}&language=en-US&page=${currentPage}`;
+    const TMD_URL_TOP_RATED = `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=en-US&page=${currentPage}`;
+    const TMD_URL_NOW_PLAYING = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${currentPage}`;
+    const TMD_URL_TOP_UPCOMMING = `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${currentPage}`;
     const storedUser = JSON.parse(localStorage.getItem('user'))
     const navigate = useNavigate()
 
@@ -146,8 +146,8 @@ const Movies = () => {
                 const response = await fetch(TMD_URL_POPULAR)
                 const data = await response.json()
                 console.log("Fetched Movies:", data.results);
-                setPopularMovies(data.results)
-                setMovies(data.results)
+                setPopularMovies((prevMovies) =>[...prevMovies ,...data.results])
+                setMovies((prevMovies) =>[...prevMovies ,...data.results])
                 data.results.forEach((movie) => fetchMovieDuration(movie.id));
 
             } catch(error) {
@@ -161,7 +161,7 @@ const Movies = () => {
                 console.log("Fetched Movies:", data.results);
                 console.log("Fetched Movies:", data.results[0].poster_path
                 );
-                setTrendingMovies(data.results)
+                setTrendingMovies((prevMovies) =>[...prevMovies ,...data.results])
                 data.results.forEach((movie) => fetchMovieDuration(movie.id));
 
             } catch(error) {
@@ -173,7 +173,7 @@ const Movies = () => {
                 const response = await fetch(TMD_URL_TOP_RATED)
                 const data = await response.json()
                 console.log("Fetched Movies:", data.results);
-                setTopRatedMovies(data.results)
+                setTopRatedMovies((prevMovies) =>[...prevMovies ,...data.results])
                 data.results.forEach((movie) => fetchMovieDuration(movie.id));
 
             } catch(error) {
@@ -185,7 +185,7 @@ const Movies = () => {
                 const response = await fetch(TMD_URL_TOP_UPCOMMING)
                 const data = await response.json()
                 console.log("Fetched Movies:", data.results);
-                setUpCommingMovies(data.results)
+                setUpCommingMovies((prevMovies) =>[...prevMovies ,...data.results])
                 data.results.forEach((movie) => fetchMovieDuration(movie.id));
 
             } catch(error) {
@@ -197,7 +197,7 @@ const Movies = () => {
                 const response = await fetch(TMD_URL_NOW_PLAYING)
                 const data = await response.json()
                 console.log("Fetched Movies:", data.results);
-                setNowPlayingMovies(data.results)
+                setNowPlayingMovies((prevMovies) =>[...prevMovies ,...data.results])
                 data.results.forEach((movie) => fetchMovieDuration(movie.id));
 
             } catch(error) {
@@ -245,7 +245,7 @@ const Movies = () => {
         fetchNowPlayingMovies()
         fetchGenres()
 
-        },[])
+        },[currentPage])
 
     return (
         <>
@@ -367,12 +367,16 @@ const Movies = () => {
                             </div>
                         </div>
                     )))}
-                    
                 </div>
+                <button className='btn btn-primary px-4 py-1 my-1 fw-bold' 
+                    onClick={()=> {
+                        setCurrentPage((prev)=>prev+1)
+                    }}>
+                    🎬 View More
+                </button>
             </div>
         </div>
-        </>
-
+    </>
     )
 }
 
