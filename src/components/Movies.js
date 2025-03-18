@@ -84,7 +84,7 @@ const Movies = () => {
                     body: JSON.stringify(payload)
                 })
                 const data = await response.json()
-                console.log(data.result)
+                // console.log(data.result)
             } catch(error) {
                 console.log(error)
             }
@@ -97,7 +97,7 @@ const Movies = () => {
         const getSavedMovies = async ()=> {
             const response = await fetch(`http://127.0.0.1:5000/saved_movies?user_id=${storedUser.id}`) 
             const data = await response.json()
-            console.log(data)
+            // console.log(data)
             const savedMovieIds = data.map(savedMovie => savedMovie.movie_id);
             let n = savedMovieIds.length
             for (let i = 0; i < n; i++) {
@@ -123,7 +123,7 @@ const Movies = () => {
                 const getSavedMovies = async ()=> {
                     const response = await fetch(`http://127.0.0.1:5000/saved_movies?user_id=${storedUser.id}`) 
                     const data = await response.json()
-                    console.log(data)
+                    // console.log(data)
                     const savedMovieIds = data.map(savedMovie => savedMovie.movie_id);
                     const savedMovies = movies.filter(movie => 
                     savedMovieIds.includes(movie.id)
@@ -145,9 +145,21 @@ const Movies = () => {
             try {
                 const response = await fetch(TMD_URL_POPULAR)
                 const data = await response.json()
-                console.log("Fetched Movies:", data.results);
-                setPopularMovies((prevMovies) =>[...prevMovies ,...data.results])
-                setMovies((prevMovies) =>[...prevMovies ,...data.results])
+                // console.log("Fetched Movies:", data.results);
+                 // Append new movies to the existing state
+                // Reset movies on initial load (currentPage === 1)
+
+                if (currentPage === 1) {
+                    setPopularMovies(data.results); // Reset popularMovies
+                    setMovies(data.results); // Reset movies
+                } else {
+                    // Append new movies when currentPage > 1
+                    setPopularMovies((prevMovies) => [...prevMovies, ...data.results]);
+                    setMovies((prevMovies) => [...prevMovies, ...data.results]);
+                }
+
+
+                console.log("fetch fetch")
                 data.results.forEach((movie) => fetchMovieDuration(movie.id));
 
             } catch(error) {
@@ -158,10 +170,14 @@ const Movies = () => {
             try {
                 const response = await fetch(TMD_URL_TRENDING)
                 const data = await response.json()
-                console.log("Fetched Movies:", data.results);
-                console.log("Fetched Movies:", data.results[0].poster_path
-                );
-                setTrendingMovies((prevMovies) =>[...prevMovies ,...data.results])
+                // console.log("Fetched Movies:", data.results);
+                // console.log("Fetched Movies:", data.results[0].poster_path);
+                if (currentPage == 1) {
+                    setTrendingMovies(data.results)
+                } else {
+                    setTrendingMovies((prevMovies) => [...prevMovies, ...data.results])
+                }
+
                 data.results.forEach((movie) => fetchMovieDuration(movie.id));
 
             } catch(error) {
@@ -172,8 +188,13 @@ const Movies = () => {
             try {
                 const response = await fetch(TMD_URL_TOP_RATED)
                 const data = await response.json()
-                console.log("Fetched Movies:", data.results);
-                setTopRatedMovies((prevMovies) =>[...prevMovies ,...data.results])
+                // console.log("Fetched Movies:", data.results);
+
+                if (currentPage == 1) {
+                    setTopRatedMovies(data.results)
+                } else {
+                    setTopRatedMovies((prevMovies) => [...prevMovies, ...data.results])
+                }
                 data.results.forEach((movie) => fetchMovieDuration(movie.id));
 
             } catch(error) {
@@ -184,8 +205,13 @@ const Movies = () => {
             try {
                 const response = await fetch(TMD_URL_TOP_UPCOMMING)
                 const data = await response.json()
-                console.log("Fetched Movies:", data.results);
-                setUpCommingMovies((prevMovies) =>[...prevMovies ,...data.results])
+                // console.log("Fetched Movies:", data.results);
+
+                if (currentPage == 1) {
+                    setUpCommingMovies(data.results)
+                } else {
+                    setUpCommingMovies((prevMovies) => [...prevMovies, ...data.results])
+                }
                 data.results.forEach((movie) => fetchMovieDuration(movie.id));
 
             } catch(error) {
@@ -196,8 +222,14 @@ const Movies = () => {
             try {
                 const response = await fetch(TMD_URL_NOW_PLAYING)
                 const data = await response.json()
-                console.log("Fetched Movies:", data.results);
-                setNowPlayingMovies((prevMovies) =>[...prevMovies ,...data.results])
+                // console.log("Fetched Movies:", data.results);
+
+                if (currentPage == 1) {
+                    setNowPlayingMovies(data.results)
+                } else {
+                    setNowPlayingMovies((prevMovies) => [...prevMovies, ...data.results])
+                }
+                
                 data.results.forEach((movie) => fetchMovieDuration(movie.id));
 
             } catch(error) {
@@ -214,7 +246,7 @@ const Movies = () => {
                 data.genres.forEach((genre) => {
                 genreMap[genre.id] = genre.name;
                 });
-                console.log("genre_map: ", genreMap)
+                // console.log("genre_map: ", genreMap)
                 setGenres(genreMap)
 
             } catch(error) {
@@ -313,15 +345,19 @@ const Movies = () => {
                 <div ref={scrollContainerRef} class="d-flex gap-4 align-items-center text-center mt-4" style={{overflow: "hidden", overflowX: "auto", scrollbarWidth: "none"}}>
                     
                     {upcommingMovies.map((movie)=>(
-                        <div class="col-md-2 text-white" onClick={()=> navigate(`/movie/${movie.id}`, {state: {movie, genres, durations, key: API_KEY}})}>
+                        <div class="col-md-2 text-white">
                             <div>
-                                <div>
+                                <div onClick={()=> navigate(`/movie/${movie.id}`, {state: {movie, genres, durations, key: API_KEY}})}>
                                     <img src={movie.poster_path != null ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`: placeHolder} alt={movie.title} style={{objectFit: "contain"}} class="img-fluid"/>
                                 </div>
                                 <p className='text-start fw-bold m-0'>{movie.title}</p>
                                 <div className='d-flex justify-content-between'>
+
                                     <p className='m-0'>{movie.release_date.split("-")[0]}</p>
-                                    <p className='m-0'>{movie.vote_average}/10</p>
+                                    <div className='d-flex'>
+                                        <p className='m-0 me-2'><FontAwesomeIcon icon={likedMovies[movie.id]? solidHeart: regularHeart } className='' onClick={()=> {toggleLikeMovie(movie)}}/></p>
+                                        <p className='m-0'>⭐{movie.vote_average}</p>
+                                    </div>
                                 </div>
                                 
                             </div>
@@ -351,9 +387,9 @@ const Movies = () => {
                     ) 
                     :
                     (movies.map((movie)=>(
-                        <div class="col-md-2 text-white" onClick={()=> navigate(`/movie/${movie.id}`, {state: {movie, genres, durations, key: API_KEY}})}>
+                        <div class="col-md-2 text-white">
                             <div>
-                                <div>
+                                <div onClick={()=> navigate(`/movie/${movie.id}`, {state: {movie, genres, durations, key: API_KEY}})}>
                                     <img src={movie.poster_path != null ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`: placeHolder} alt={movie.title} style={{objectFit: "contain"}} class="img-fluid"/>
                                 </div>
                                 <p className='text-start fw-bold m-0'>{movie.title}</p>
