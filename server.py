@@ -105,6 +105,8 @@ def create_users_table():
     except Exception as e:
         print(f"⚠️ Error creating users table: {e}")
         
+# function to create the 'saved movies' table if it doesn't exist
+        
 def create_saved_movies_table():
     try:
         conn = get_db_connection()
@@ -127,10 +129,34 @@ def create_saved_movies_table():
     except Exception as e:
         print(f"⚠️ Error creating saved_movies table: {e}")
 
+# function to create the 'friend request' table if it doesn't exist
+def create_friend_requests_table():
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        create_table_query = """
+        CREATE TABLE IF NOT EXISTS friend_requests (
+            id SERIAL PRIMARY KEY,
+            requester_id INTEGER NOT NULL,
+            recipient_id INTEGER NOT NULL,
+            status VARCHAR(20) DEFAULT 'pending',
+            UNIQUE(requester_id, recipient_id)
+        );
+        """
+        cur.execute(create_table_query)
+        conn.commit()
+        cur.close()
+        conn.close()
+        print("✅ Table 'friend_requests' checked/created successfully.")
+    except Exception as e:
+        print(f"⚠️ Error creating friend_requests table: {e}")
+        
+
 # tables gets created on server start
 create_items_table()
 create_users_table()
 create_saved_movies_table()
+create_friend_requests_table()
 
 # signup endpoint
 @app.route('/signup', methods=['POST'])
@@ -403,14 +429,34 @@ def get_all_users():
         # get the logged-in user's email from query params
         current_user_email = request.args.get("email")
 
-        # fetch all users except the logged-in user
-        cur.execute("SELECT id, name, email, profile_pic FROM users WHERE email != %s", (current_user_email,))
+        # First, get the current user's ID
+        cur.execute("SELECT id FROM users WHERE email = %s", (current_user_email,))
+        user_row = cur.fetchone()
+        if not user_row:
+            return jsonify({"error": "User not found"}), 404
+        current_user_id = user_row[0]
+
+        # Exclude users that are:
+        # 1. The current user.
+        # 2. Already friends (accepted friend_requests in either direction).
+        # 3. Already have a pending friend request (sent by current user).
+        query = """
+            SELECT id, name, email, profile_pic FROM users
+            WHERE email != %s 
+            AND id NOT IN (
+                SELECT recipient_id FROM friend_requests 
+                WHERE requester_id = %s AND status IN ('pending', 'accepted')
+                UNION
+                SELECT requester_id FROM friend_requests 
+                WHERE recipient_id = %s AND status = 'accepted'
+            )
+        """
+        cur.execute(query, (current_user_email, current_user_id, current_user_id))
         users = cur.fetchall()
 
         cur.close()
         conn.close()
 
-        # format response
         user_list = [
             {"id": user[0], "name": user[1], "email": user[2], "profile_pic": user[3] or ""}
             for user in users
@@ -612,9 +658,194 @@ def get_saved_movies():
     except Exception as e:
         print(f"Error fetching saved movies: {e}")
         return jsonify({"error": "An error occurred while fetching saved movies."}), 500
-
-
     
+@app.route('/send_friend_request', methods=['POST'])
+def send_friend_request():
+    data = request.get_json()
+    requester_id = data.get('requester_id')
+    recipient_id = data.get('recipient_id')
+    
+    if not all([requester_id, recipient_id]):
+        return jsonify({"error": "Both requester_id and recipient_id are required."}), 400
+    
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        
+        # Check if a request (or friendship) already exists
+        cur.execute("""
+            SELECT status FROM friend_requests 
+            WHERE requester_id = %s AND recipient_id = %s
+        """, (requester_id, recipient_id))
+        existing = cur.fetchone()
+        
+        if existing:
+            status = existing[0]
+            if status == 'pending':
+                return jsonify({"message": "Friend request already sent and pending."}), 200
+            elif status == 'accepted':
+                return jsonify({"message": "You are already friends."}), 200
+        
+        # Insert new friend request (status will be 'pending' by default)
+        cur.execute("""
+            INSERT INTO friend_requests (requester_id, recipient_id)
+            VALUES (%s, %s)
+        """, (requester_id, recipient_id))
+        conn.commit()
+        cur.close()
+        conn.close()
+        
+        return jsonify({"message": "Friend request sent!"}), 200
+    
+    except Exception as e:
+        print(f"Error sending friend request: {e}")
+        return jsonify({"error": "An error occurred while sending the friend request."}), 500
+    
+@app.route('/friend_requests', methods=['GET'])
+def get_friend_requests():
+    try:
+        # Get the current user's ID from query parameters
+        user_id = request.args.get('user_id')
+        if not user_id:
+            return jsonify({"error": "User id is required."}), 400
+        
+        # Connect to the database
+        conn = get_db_connection()
+        cur = conn.cursor()
+        
+        # Query pending friend requests where the current user is the recipient,
+        # and join with the users table to get the requester's details.
+        query = """
+            SELECT fr.id, fr.requester_id, u.name, u.email, u.profile_pic
+            FROM friend_requests fr
+            JOIN users u ON fr.requester_id = u.id
+            WHERE fr.recipient_id = %s AND fr.status = 'pending'
+        """
+        cur.execute(query, (user_id,))
+        rows = cur.fetchall()
+        
+        cur.close()
+        conn.close()
+        
+        # Build the list of friend requests
+        friend_requests = []
+        for row in rows:
+            friend_requests.append({
+                "request_id": row[0],
+                "requester_id": row[1],
+                "requester": {
+                    "name": row[2],
+                    "email": row[3],
+                    "profile_pic": row[4] if row[4] is not None else ""
+                }
+            })
+        
+        return jsonify(friend_requests), 200
+    except Exception as e:
+        print(f"Error fetching friend requests: {e}")
+        return jsonify({"error": "An error occurred while fetching friend requests."}), 500
+    
+
+@app.route('/accept_friend_request', methods=['POST'])
+def accept_friend_request():
+    try:
+        data = request.get_json()
+        request_id = data.get('request_id')
+        if not request_id:
+            return jsonify({"error": "Request id is required."}), 400
+        
+        conn = get_db_connection()
+        cur = conn.cursor()
+        
+        # Update the friend request status to 'accepted'
+        cur.execute("UPDATE friend_requests SET status = 'accepted' WHERE id = %s", (request_id,))
+        if cur.rowcount == 0:
+            return jsonify({"error": "Friend request not found."}), 404
+        
+        conn.commit()
+        cur.close()
+        conn.close()
+        
+        return jsonify({"message": "Friend request accepted!"}), 200
+    except Exception as e:
+        print(f"Error accepting friend request: {e}")
+        return jsonify({"error": "An error occurred while accepting the friend request."}), 500
+    
+@app.route('/reject_friend_request', methods=['POST'])
+def reject_friend_request():
+    try:
+        data = request.get_json()
+        request_id = data.get('request_id')
+        if not request_id:
+            return jsonify({"error": "Request id is required."}), 400
+        
+        conn = get_db_connection()
+        cur = conn.cursor()
+        
+        # Update the friend request status to 'rejected'
+        cur.execute("UPDATE friend_requests SET status = 'rejected' WHERE id = %s", (request_id,))
+        if cur.rowcount == 0:
+            return jsonify({"error": "Friend request not found."}), 404
+        
+        conn.commit()
+        cur.close()
+        conn.close()
+        
+        return jsonify({"message": "Friend request rejected!"}), 200
+    except Exception as e:
+        print(f"Error rejecting friend request: {e}")
+        return jsonify({"error": "An error occurred while rejecting the friend request."}), 500
+    
+@app.route('/friends', methods=['GET'])
+def get_friends():
+    try:
+        user_id = request.args.get('user_id')
+        if not user_id:
+            return jsonify({"error": "User id is required."}), 400
+
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # The query selects accepted friend relationships.
+        # It uses a CASE statement to determine the friend's ID.
+        query = """
+            SELECT fr.id,
+                CASE 
+                    WHEN fr.requester_id = %s THEN fr.recipient_id 
+                    ELSE fr.requester_id 
+                END AS friend_id,
+                u.name, u.email, u.profile_pic
+            FROM friend_requests fr
+            JOIN users u 
+              ON u.id = CASE 
+                          WHEN fr.requester_id = %s THEN fr.recipient_id 
+                          ELSE fr.requester_id 
+                        END
+            WHERE fr.status = 'accepted' 
+              AND (fr.requester_id = %s OR fr.recipient_id = %s)
+        """
+        cur.execute(query, (user_id, user_id, user_id, user_id))
+        rows = cur.fetchall()
+
+        cur.close()
+        conn.close()
+
+        friends = []
+        for row in rows:
+            friends.append({
+                "friendship_id": row[0],
+                "friend_id": row[1],
+                "name": row[2],
+                "email": row[3],
+                "profile_pic": row[4] if row[4] is not None else ""
+            })
+
+        return jsonify(friends), 200
+    except Exception as e:
+        print(f"Error fetching friends: {e}")
+        return jsonify({"error": "An error occurred while fetching friends."}), 500
+
+
 # run server
 if __name__ == '__main__':
     app.run(debug=True)

@@ -68,9 +68,12 @@ function Login() {
           </h1>
 
           <ul className='list-unstyled text-white d-flex flex-column text-center' style={{fontSize: "clamp(1rem, 2vw, 1.2rem)", textShadow: "2px 2px 4px rgba(0,0,0,0.7)"}}>
-              <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>Personalized Experience – Your chats, contacts, and settings just the way you like them</li>
-              <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>Real-Time Messaging – Instantly connect with friends, family, and communities</li>
-              <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2'></FontAwesomeIcon>Fast & Secure Access – Log in with one tap and get back to what matters</li>
+            <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2' />Personalized Setup – Chats, contacts & preferences your way</li>
+            <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2' />Real-Time Messaging – Instantly chat with anyone</li>
+            <li><FontAwesomeIcon icon={faCheckCircle} className='text-success me-2' />Fast & Secure Login – One tap to access everything</li>
+
+
+
           </ul>
         </div>
       </div>
