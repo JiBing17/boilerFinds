@@ -151,12 +151,34 @@ def create_friend_requests_table():
     except Exception as e:
         print(f"⚠️ Error creating friend_requests table: {e}")
         
-
+# function to create the 'messages' table if it doesn't exist
+def create_messages_table():
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        create_table_query = """
+            CREATE TABLE IF NOT EXISTS messages (
+                id SERIAL PRIMARY KEY,
+                sender_id INTEGER NOT NULL,
+                recipient_id INTEGER NOT NULL,
+                content TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        """
+        cur.execute(create_table_query)
+        conn.commit()
+        cur.close()
+        conn.close()
+        print("✅ Table 'messages' checked/created successfully.")
+    except Exception as e:
+        print(f"⚠️ Error creating messages table: {e}")
+        
 # tables gets created on server start
 create_items_table()
 create_users_table()
 create_saved_movies_table()
 create_friend_requests_table()
+create_messages_table()
 
 # signup endpoint
 @app.route('/signup', methods=['POST'])
@@ -451,18 +473,21 @@ def get_all_users():
                 WHERE recipient_id = %s AND status = 'accepted'
             )
         """
-        cur.execute(query, (current_user_email, current_user_id, current_user_id))
-        users = cur.fetchall()
+        cur.execute(query, (current_user_email, current_user_id, current_user_id)) # run the SQL query
+        users = cur.fetchall() # obtain all rows that match
 
-        cur.close()
-        conn.close()
+        cur.close() # close cursor
+        conn.close() # close db connection
 
+        # store results in an array of dicts
         user_list = [
             {"id": user[0], "name": user[1], "email": user[2], "profile_pic": user[3] or ""}
             for user in users
         ]
+        # return array as string
         return jsonify(user_list), 200
-
+    
+    # db connection error handling 
     except Exception as e:
         print(f"⚠️ Error fetching users: {e}")
         return jsonify({"error": "Failed to fetch users"}), 500
@@ -659,16 +684,18 @@ def get_saved_movies():
         print(f"Error fetching saved movies: {e}")
         return jsonify({"error": "An error occurred while fetching saved movies."}), 500
     
+# end point for handling friend requests
 @app.route('/send_friend_request', methods=['POST'])
 def send_friend_request():
-    data = request.get_json()
-    requester_id = data.get('requester_id')
-    recipient_id = data.get('recipient_id')
+    data = request.get_json() # parse string into dict
+    requester_id = data.get('requester_id') # obtain requester id from body 
+    recipient_id = data.get('recipient_id') # obtain recipient id from body
     
-    if not all([requester_id, recipient_id]):
+    if not all([requester_id, recipient_id]): # error handling for missing arguments needed
         return jsonify({"error": "Both requester_id and recipient_id are required."}), 400
     
     try:
+        # connect to db 
         conn = get_db_connection()
         cur = conn.cursor()
         
@@ -679,24 +706,31 @@ def send_friend_request():
         """, (requester_id, recipient_id))
         existing = cur.fetchone()
         
+        # requester and recipient already have interacted (status isn't null)
         if existing:
+            
             status = existing[0]
+            # already sent a request
             if status == 'pending':
                 return jsonify({"message": "Friend request already sent and pending."}), 200
+            # already friends 
             elif status == 'accepted':
                 return jsonify({"message": "You are already friends."}), 200
         
-        # Insert new friend request (status will be 'pending' by default)
+        # insert new friend request if no existing relationship
         cur.execute("""
             INSERT INTO friend_requests (requester_id, recipient_id)
             VALUES (%s, %s)
         """, (requester_id, recipient_id))
+        
+        # save and close db changes
         conn.commit()
         cur.close()
         conn.close()
         
         return jsonify({"message": "Friend request sent!"}), 200
     
+    # error handling for db connection
     except Exception as e:
         print(f"Error sending friend request: {e}")
         return jsonify({"error": "An error occurred while sending the friend request."}), 500
@@ -745,16 +779,17 @@ def get_friend_requests():
         print(f"Error fetching friend requests: {e}")
         return jsonify({"error": "An error occurred while fetching friend requests."}), 500
     
-
+# endpoint for accepting friend requests
 @app.route('/accept_friend_request', methods=['POST'])
 def accept_friend_request():
     try:
-        data = request.get_json()
-        request_id = data.get('request_id')
+        data = request.get_json() # parse JSON string into dict
+        request_id = data.get('request_id') # get request id from passed in argument from body
         if not request_id:
             return jsonify({"error": "Request id is required."}), 400
         
-        conn = get_db_connection()
+        # connect to db and activiate cursor for SQL queries
+        conn = get_db_connection()  
         cur = conn.cursor()
         
         # Update the friend request status to 'accepted'
@@ -762,23 +797,27 @@ def accept_friend_request():
         if cur.rowcount == 0:
             return jsonify({"error": "Friend request not found."}), 404
         
+        # save and close changes
         conn.commit()
         cur.close()
         conn.close()
-        
         return jsonify({"message": "Friend request accepted!"}), 200
+    
+    # error handling
     except Exception as e:
         print(f"Error accepting friend request: {e}")
         return jsonify({"error": "An error occurred while accepting the friend request."}), 500
     
+# endpoint to reject friend request 
 @app.route('/reject_friend_request', methods=['POST'])
 def reject_friend_request():
     try:
-        data = request.get_json()
+        data = request.get_json() # parse JSON string into dict
         request_id = data.get('request_id')
-        if not request_id:
+        if not request_id: # needs request id from body 
             return jsonify({"error": "Request id is required."}), 400
         
+        # connect to db
         conn = get_db_connection()
         cur = conn.cursor()
         
@@ -787,22 +826,26 @@ def reject_friend_request():
         if cur.rowcount == 0:
             return jsonify({"error": "Friend request not found."}), 404
         
+        # save and close db connection
         conn.commit()
         cur.close()
         conn.close()
         
         return jsonify({"message": "Friend request rejected!"}), 200
+    # db error handling
     except Exception as e:
         print(f"Error rejecting friend request: {e}")
         return jsonify({"error": "An error occurred while rejecting the friend request."}), 500
     
+# endpoint used to display current user's friends
 @app.route('/friends', methods=['GET'])
 def get_friends():
     try:
-        user_id = request.args.get('user_id')
+        user_id = request.args.get('user_id') # get current user's id from query argument
         if not user_id:
             return jsonify({"error": "User id is required."}), 400
 
+        # connect to db
         conn = get_db_connection()
         cur = conn.cursor()
 
@@ -824,13 +867,20 @@ def get_friends():
             WHERE fr.status = 'accepted' 
               AND (fr.requester_id = %s OR fr.recipient_id = %s)
         """
+        
+        # run SQL query
         cur.execute(query, (user_id, user_id, user_id, user_id))
+        
+        # store result in array for the SQL query
         rows = cur.fetchall()
-
+        
+        # close db connection
         cur.close()
         conn.close()
 
         friends = []
+        
+        # store result into array of dicts
         for row in rows:
             friends.append({
                 "friendship_id": row[0],
@@ -841,9 +891,81 @@ def get_friends():
             })
 
         return jsonify(friends), 200
+    # db error handling
     except Exception as e:
         print(f"Error fetching friends: {e}")
         return jsonify({"error": "An error occurred while fetching friends."}), 500
+    
+@app.route('/send_message', methods=['POST'])
+def send_message():
+    try:
+        data = request.get_json()
+        sender_id = data.get('sender_id')
+        recipient_id = data.get('recipient_id')
+        content = data.get('content')
+        
+        if not all([sender_id, recipient_id, content]):
+            return jsonify({"error": "Sender, recipient, and content are required."}), 400
+        
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            INSERT INTO messages (sender_id, recipient_id, content)
+            VALUES (%s, %s, %s)
+            RETURNING id, created_at
+        """, (sender_id, recipient_id, content))
+        row = cur.fetchone()
+        conn.commit()
+        cur.close()
+        conn.close()
+        
+        return jsonify({
+            "message": "Message sent successfully!",
+            "message_id": row[0],
+            "timestamp": row[1].isoformat() if row[1] else None
+        }), 200
+        
+    except Exception as e:
+        print(f"Error sending message: {e}")
+        return jsonify({"error": "An error occurred while sending the message."}), 500
+    
+@app.route('/messages', methods=['GET'])
+def get_messages():
+    try:
+        sender_id = request.args.get('sender_id')
+        recipient_id = request.args.get('recipient_id')
+        
+        if not all([sender_id, recipient_id]):
+            return jsonify({"error": "Sender and recipient IDs are required."}), 400
+        
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT id, sender_id, recipient_id, content, created_at
+            FROM messages
+            WHERE (sender_id = %s AND recipient_id = %s)
+               OR (sender_id = %s AND recipient_id = %s)
+            ORDER BY created_at ASC
+        """, (sender_id, recipient_id, recipient_id, sender_id))
+        rows = cur.fetchall()
+        cur.close()
+        conn.close()
+        
+        messages = []
+        for row in rows:
+            messages.append({
+                "id": row[0],
+                "sender_id": row[1],
+                "recipient_id": row[2],
+                "content": row[3],
+                "timestamp": row[4].isoformat() if row[4] else None
+            })
+            
+        return jsonify(messages), 200
+        
+    except Exception as e:
+        print(f"Error retrieving messages: {e}")
+        return jsonify({"error": "An error occurred while retrieving messages."}), 500
 
 
 # run server

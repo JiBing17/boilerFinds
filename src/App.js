@@ -11,6 +11,7 @@ import FoodInfo from './components/FoodInfo';
 import Restaurant from './components/Restaurant';
 import Movies from './components/Movies';
 import Movie from './components/Movie'
+import ChatWindow from './components/ChatWindow';
 function App() {
   return (
     <Router>
@@ -26,6 +27,8 @@ function App() {
         <Route path="/restaurant/:id" element={<Restaurant/>}/>
         <Route path="/movies" element={<Movies/>}/>
         <Route path="/movie/:id" element={<Movie/>}/>
+        <Route path="/chat/:friendId" element={<ChatWindow />} />
+
       </Routes>
     </Router>
   );
