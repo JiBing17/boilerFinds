@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import placeHolder from '../pictures/placeholder.jpg'
-
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-
 
 const ChatWindow = () => {
   const { friendId } = useParams();
@@ -17,8 +14,7 @@ const ChatWindow = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef(null);
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
 
   // Fetch messages between the current user and the selected friend
   const fetchMessages = () => {
@@ -80,77 +76,138 @@ const ChatWindow = () => {
   };
 
   return (
-    <>
-        <div className="container-fluid" style={{ height: "100vh", display: "flex", flexDirection: "column", padding: 0}}>
-            <div
-                className="text-white d-flex align-items-center justify-content-start py-3 px-4 gap-2"
-                style={{ fontSize: "1.5rem", fontWeight: "bold", backgroundColor: "#CFB991" }}
-            >   
-                <FontAwesomeIcon icon={faArrowLeft} onClick={()=> navigate("/userlist")}/>
-                <img    
-                    src={
-                    friend && friend.profile_pic
-                        ? `http://127.0.0.1:5000/uploads/${friend.profile_pic}`
-                        : placeHolder
-                    }
-                    alt={friend ? friend.name : "User"}
-                    style={{
-                    width: "50px",
-                    height: "50px",
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                    marginLeft: "1rem",
-                    }}
-                />
-                {friend ? friend.name : `User ${friendId}`}
-            </div>
-
-        
-            {/* Messages */}
-            <div className="flex-grow-1 p-3" style={{ overflowY: "auto", backgroundColor: "#e5ddd5" }}>
-                {messages.map((msg) => (
-                <div 
-                    key={msg.id} 
-                    className="d-flex mb-3" 
-                    style={{ justifyContent: msg.sender_id === currentUser.id ? "flex-end" : "flex-start" }}
-                >
-                    <div 
-                    className="p-2" 
-                    style={{
-                        maxWidth: "70%",
-                        backgroundColor: msg.sender_id === currentUser.id ? "#DCF8C6" : "#ffffff",
-                        borderRadius: "15px",
-                        boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
-                    }}
-                    >
-                    <p className="mb-1" style={{ margin: 0 }}>{msg.content}</p>
-                    <small style={{ fontSize: "0.75rem", color: "#555", display: "block", textAlign: "right" }}>
-                        {formatTimestamp(msg.timestamp)}
-                    </small>
-                    </div>
-                </div>
-                ))}
-                <div ref={messagesEndRef}></div>
-            </div>
-            
-            {/* Input Area */}
-            <div className="p-3 bg-light" style={{ borderTop: "1px solid #ddd" }}>
-                <div className="input-group">
-                <textarea
-                    className="form-control"
-                    placeholder="Type your message..."
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    style={{ resize: "none", height: "50px" }}
-                />
-                <button className="btn" style={{backgroundColor: "#CFB991"}} onClick={sendMessage}>
-                    <FontAwesomeIcon icon={faPaperPlane} />
-                </button>
-                </div>
-            </div>
+    <div className="container-fluid p-0" style={{ 
+      height: "100vh", 
+      display: "flex", 
+      flexDirection: "column",
+      backgroundColor: "#f8f9fa",
+      fontFamily: "'Segoe UI', 'Helvetica Neue', sans-serif"
+    }}>
+      {/* Header */}
+      <div className="d-flex align-items-center p-3" style={{
+        backgroundColor: "#CFB991",
+        color: "white",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.2)"
+      }}>
+        <button 
+          onClick={() => navigate("/userlist")}
+          className="btn btn-link p-0 me-3"
+          style={{ color: "white", fontSize: "1.2rem" }}
+        >
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </button>
+        <img
+          src={
+            friend && friend.profile_pic
+              ? `http://127.0.0.1:5000/uploads/${friend.profile_pic}`
+              : placeHolder
+          }
+          alt={friend ? friend.name : "User"}
+          style={{
+            width: "40px",
+            height: "40px",
+            borderRadius: "50%",
+            objectFit: "cover",
+            border: "2px solid rgba(255,255,255,0.3)"
+          }}
+        />
+        <div className="ms-3">
+          <h6 className="mb-0" style={{ fontWeight: 600 }}>{friend ? friend.name : `User ${friendId}`}</h6>
+          <small style={{ opacity: 0.8, fontSize: "0.75rem" }}>Online</small>
         </div>
-    </>
+      </div>
+      
+      {/* Messages */}
+      <div 
+        className="flex-grow-1 p-3" 
+        style={{ 
+          overflowY: "auto", 
+          backgroundImage: "linear-gradient(rgba(229, 221, 213, 0.8), rgba(229, 221, 213, 0.8))",
+          backgroundAttachment: "fixed",
+          backgroundSize: "cover"
+        }}
+      >
+        <div className="d-flex flex-column" style={{ gap: "12px" }}>
+          {messages.map((msg) => (
+            <div 
+              key={msg.id} 
+              className="d-flex" 
+              style={{ 
+                justifyContent: msg.sender_id === currentUser.id ? "flex-end" : "flex-start",
+                alignItems: "flex-end"
+              }}
+            >
+              <div 
+                className="position-relative p-3" 
+                style={{
+                  maxWidth: "75%",
+                  backgroundColor: msg.sender_id === currentUser.id ? "#dcf8c6" : "white",
+                  borderRadius: msg.sender_id === currentUser.id ? "18px 0 18px 18px" : "0 18px 18px 18px",
+                  boxShadow: "0 1px 0.5px rgba(0,0,0,0.1)",
+                  wordWrap: "break-word",
+                  position: "relative"
+                }}
+              >
+                <p className="mb-1" style={{ margin: 0, lineHeight: 1.4 }}>{msg.content}</p>
+                <small 
+                  style={{ 
+                    fontSize: "0.6875rem", 
+                    color: "rgba(0,0,0,0.45)", 
+                    display: "block", 
+                    textAlign: "right",
+                    marginTop: "4px",
+                    lineHeight: 1
+                  }}
+                >
+                  {formatTimestamp(msg.timestamp)}
+                </small>
+              </div>
+            </div>
+          ))}
+          <div ref={messagesEndRef}></div>
+        </div>
+      </div>
+      
+      {/* Input Area */}
+      <div className="p-3" style={{ 
+        backgroundColor: "#f0f0f0",
+        borderTop: "1px solid #e5e5e5"
+      }}>
+        <div className="input-group">
+          <textarea
+            className="form-control border-0"
+            placeholder="Type a message..."
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            onKeyPress={handleKeyPress}
+            style={{ 
+              resize: "none", 
+              height: "44px", 
+              borderRadius: "20px",
+              padding: "10px 16px",
+              fontSize: "0.9375rem",
+              boxShadow: "none"
+            }}
+            rows="1"
+          />
+          <button 
+            className="btn rounded-circle ms-2" 
+            onClick={sendMessage}
+            style={{
+              width: "44px",
+              height: "44px",
+              backgroundColor: "#CFB991",
+              color: "white",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+          >
+            <FontAwesomeIcon icon={faPaperPlane} />
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 

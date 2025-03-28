@@ -95,7 +95,14 @@ const Movie = () => {
             </div>
             <h1 className='fw-bold'>{movie.title}</h1>
 
-            <button className='btn btn-primary'>Watch Now</button>
+            <button
+                className="btn btn-primary"
+                onClick={() =>
+                    window.open(`https://www.themoviedb.org/movie/${movie.id}`, '_blank', 'noopener,noreferrer')
+                }
+                >
+                Watch on TMDB
+            </button>
             <button className='btn btn-dark ms-3'>Add To List</button>
 
             <p className='mt-3'>{movie.overview}</p>

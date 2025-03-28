@@ -63,6 +63,7 @@ const Movies = () => {
         }
     }
     const toggleLikeMovie = (movie) => {
+        console.log(movie)
         setLikedMovies((prev)=> ({
             ...prev,
             [movie.id] : !prev[movie.id]
@@ -327,8 +328,15 @@ const Movies = () => {
                         <h1 className='fw-bold'>{trendingMovies[heroIndex].title}</h1>
                         <p>{trendingMovies[heroIndex].overview}</p>
 
-                        <button className='btn btn-primary'>Watch Now</button>
-                        <button className='btn btn-dark ms-3'>Add To List</button>
+                        <button
+                            className="btn btn-primary"
+                            onClick={() =>
+                                window.open(`https://www.themoviedb.org/movie/${trendingMovies[heroIndex].id}`, '_blank', 'noopener,noreferrer')
+                            }
+                            >
+                            Watch on TMDB
+                        </button>
+                        <button className='btn btn-dark ms-3' onClick={()=> toggleLikeMovie(trendingMovies[heroIndex])}>Add To List</button>
                     </div>
                     <div>
                         <FontAwesomeIcon icon={faArrowLeft} onClick={handleHeroLeft} className='position-absolute top-50 start-0 z-3 text-white ms-3 p-3 rounded-circle' style={{fontSize: "2rem", cursor: "pointer", backgroundColor: "rgba(0,0,0,.6)"}}/>
@@ -404,12 +412,14 @@ const Movies = () => {
                         </div>
                     )))}
                 </div>
-                <button className='btn btn-primary px-4 py-1 my-1 fw-bold' 
+
+                {selectedMovieFilter !== "saved" ? (<button className='btn btn-primary px-4 py-1 my-1 fw-bold' 
                     onClick={()=> {
                         setCurrentPage((prev)=>prev+1)
                     }}>
                     🎬 View More
-                </button>
+                </button>) : null } 
+                
             </div>
         </div>
     </>
