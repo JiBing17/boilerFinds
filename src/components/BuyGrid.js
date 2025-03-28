@@ -134,7 +134,7 @@ const BuyGrid = ({items}) => {
                             className="card"
                             style={{
                                 backgroundColor: "#101010",
-                                border: "4px solid #ffffff",
+                                border: "4px solid #000",
                                 borderRadius: ".5rem",
                                 height: "400px",
                                 transition: "all .3s ease-in-out"
